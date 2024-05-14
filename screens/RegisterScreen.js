@@ -1,10 +1,11 @@
 import React from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, Image, KeyboardAvoidingView } from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, Image, KeyboardAvoidingView , } from 'react-native';
+import { Picker } from '@react-native-picker/picker';
 import { useState } from 'react';
 
 
 
-export default function EsqueciaSenha({ navigation }) {
+export default function RegisterScreen({ navigation }) {
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [surname, setSurname] = useState('');
@@ -12,11 +13,12 @@ export default function EsqueciaSenha({ navigation }) {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
+
   return (
     
     <KeyboardAvoidingView style={styles.container} behavior="padding">
       <View>
-        <TouchableOpacity onPress={() => navigation.goBack('app')}>
+        <TouchableOpacity onPress={() => navigation.navigate('Home')}>
           <Text style={styles.voltar}>Voltar</Text>
         </TouchableOpacity>
         <Text style={styles.name}>Nome</Text>

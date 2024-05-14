@@ -1,11 +1,26 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Image, KeyboardAvoidingView } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+
+import { UseState } from 'react';
+import { Controller, useForm } from "react-hook-form";
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+
+
+const schema = yup.object({
+  email: yup.string().email("Email invalido").required("informe seu email"),
+  password: yup.string().required("informe sua senha").min(6, "a senha deve ter pelo menos 6 digitos"),
+})
 
 export default function LoginScreen({ navigation }) {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+
+  const { control, handleSubmit, formState: { errors } } = useForm({
+    resolver: yupResolver(schema),
+  });
+
+    function handleSigin(Data){
+      console.log(Data);
+    }
 
     return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
@@ -18,28 +33,52 @@ export default function LoginScreen({ navigation }) {
         <View style={styles.inputContainer}>
 
         <Text style={styles.label}>Email</Text>
-        <TextInput
-            placeholder="Ex: Lucas.gomes@gmail.com"
-            value={email}
-            onChangeText={setEmail}
-            style={styles.input}
-        />
         
+        <Controller
+        control={control}
+        name='email'
+        render={({field: {onChange, onBlur , value}}) => (
+          <TextInput
+          placeholder="Ex: Lucas.gomes@gmail.com"
+          value={value}
+          onChangeText={onChange}
+          onBlur={onBlur} //chamado quando o texttinput e tocado 
+          style={[styles.input,{
+            borderWidth:errors.email && 1,
+            borderColor: errors.email && '#ff375b'
+          }]}
+      />  
+    )}
+      />
+      {errors.email && <Text style={styles.labelError}>{errors.email?.massege}</Text>}
         <Text style={styles.label}>Senha</Text>
 
-        <TextInput
-            placeholder="*********"
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry ={true} 
-            style={styles.input}
-        />
+        <Controller
+  control={control}
+  name='password'
+  render={({ field: { onChange, onBlur, value } }) => (
+    <TextInput
+      placeholder="*********"
+      value={value}
+      onChangeText={onChange}
+      secureTextEntry={true}
+      style={[
+        styles.input, {
+          borderWidth: errors.password && 1,
+          borderColor: errors.password && '#ff375b'
+        }]}
+    />
+  )}
+/>
+
+      {errors.password && <Text style={styles.labelError}>{errors.password?.massege}</Text>}
+
         <TouchableOpacity onPress={() => { navigation.navigate('EsqueciaSenha') }}>
             <Text style={styles.forgotPasswordText}>Esqueceu sua senha?</Text>
         </TouchableOpacity>
         </View>
         <View style={styles.buttonContainer}>
-        <TouchableOpacity onPress={() => navigation.navigate('Home')} style={styles.button}>
+        <TouchableOpacity onPress={() => {navigation.navigate('Home'); handleSigin(handleSigin);}} style={styles.button} >
             <Text style={styles.buttonText}>Entrar</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate('Criar Conta')} style={styles.buttonOutline}>
@@ -135,4 +174,9 @@ const styles = StyleSheet.create({
       marginBottom: 0, // Reduzir a margem inferior para aproximar do TextInput
     top:0,
     },
+    labelError:{
+      alignSelf: 'flex-start',
+      color: "#ff375b",
+      marginBottom: 8,
+    }
 });
