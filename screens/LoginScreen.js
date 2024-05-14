@@ -7,7 +7,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
 
-const schema = yup.object({
+const schema = yup.object().shape({
   email: yup.string().email("Email invalido").required("informe seu email"),
   password: yup.string().required("informe sua senha").min(6, "a senha deve ter pelo menos 6 digitos"),
 })
@@ -18,8 +18,13 @@ export default function LoginScreen({ navigation }) {
     resolver: yupResolver(schema),
   });
 
-    function handleSigin(Data){
-      console.log(Data);
+  const handleSigin = (data) => {
+      navigation.navigate('Home');
+      console.log(data);
+    }
+  
+    const onSubmit = (data) => {
+      handleSigin(data);
     }
 
     return (
@@ -33,7 +38,7 @@ export default function LoginScreen({ navigation }) {
         <View style={styles.inputContainer}>
 
         <Text style={styles.label}>Email</Text>
-        
+        {errors.email?.message && <Text style={styles.labelError}>{errors.email?.message}</Text>}
         <Controller
         control={control}
         name='email'
@@ -50,9 +55,9 @@ export default function LoginScreen({ navigation }) {
       />  
     )}
       />
-      {errors.email && <Text style={styles.labelError}>{errors.email?.massege}</Text>}
+    
         <Text style={styles.label}>Senha</Text>
-
+        {errors.password?.message && <Text style={styles.labelError}>{errors.password?.message}</Text>}
         <Controller
   control={control}
   name='password'
@@ -71,16 +76,17 @@ export default function LoginScreen({ navigation }) {
   )}
 />
 
-      {errors.password && <Text style={styles.labelError}>{errors.password?.massege}</Text>}
+
 
         <TouchableOpacity onPress={() => { navigation.navigate('EsqueciaSenha') }}>
             <Text style={styles.forgotPasswordText}>Esqueceu sua senha?</Text>
         </TouchableOpacity>
         </View>
         <View style={styles.buttonContainer}>
-        <TouchableOpacity onPress={() => {navigation.navigate('Home'); handleSigin(handleSigin);}} style={styles.button} >
-            <Text style={styles.buttonText}>Entrar</Text>
+        <TouchableOpacity onPress={handleSubmit(onSubmit)} style={styles.button} >
+          <Text style={styles.buttonText}>Entrar</Text>
         </TouchableOpacity>
+
         <TouchableOpacity onPress={() => navigation.navigate('Criar Conta')} style={styles.buttonOutline}>
             <Text style={styles.buttonOutlineText} numberOfLines={2}>Não tem uma conta? Cadastre-se</Text>
         </TouchableOpacity>
