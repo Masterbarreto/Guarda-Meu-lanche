@@ -26,6 +26,13 @@ export default function RegisterScreen({ navigation }) {
         <TouchableOpacity onPress={() => navigation.navigate('Home')}>
           <Text style={styles.voltar}>Voltar</Text>
         </TouchableOpacity>
+        <SelectList 
+          setSelected={(val) => setSelected(val)} 
+          data={data} 
+          save="value"
+          boxStyles={styles.selectBox}
+          dropdownStyles={styles.selectDropdown}
+        />
         <Text style={styles.name}>Nome</Text>
         <TextInput
         placeholder=""
@@ -73,13 +80,6 @@ export default function RegisterScreen({ navigation }) {
       <TouchableOpacity onPress={() => navigation.navigate('Home')} style={styles.button}>
           <Text style={styles.buttonText}>Entrar</Text>
       </TouchableOpacity>
-      <SelectList 
-        setSelected={(val) => setSelected(val)} 
-      data={data} 
-      save="value"
-      boxStyles={styles.selectBox}
-      dropdownStyles={styles.selectDropdown}
-      />
       </View>
     </KeyboardAvoidingView>
   );
