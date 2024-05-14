@@ -22,6 +22,7 @@
     "react-final-form": "^6.5.9",
     "react-hook-form": "^7.51.4",
     "react-native": "0.74.1",
+    "react-native-dropdown-select-list": "^2.0.5",
     "react-native-elements": "^3.4.3",
     "react-native-fbsdk": "^3.0.0",
     "react-native-gesture-handler": "~2.16.1",

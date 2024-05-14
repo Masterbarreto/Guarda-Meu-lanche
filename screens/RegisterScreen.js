@@ -1,8 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Image, KeyboardAvoidingView , } from 'react-native';
-import { Picker } from '@react-native-picker/picker';
 import { useState } from 'react';
-
+import { SelectList } from 'react-native-dropdown-select-list'
 
 
 export default function RegisterScreen({ navigation }) {
@@ -13,6 +12,12 @@ export default function RegisterScreen({ navigation }) {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
+  const [selected, setSelected] = React.useState("");
+
+  const data = [
+    {key:'1', value:'Aluno', disabled:true},
+    {key:'2', value:'Funcionario'},
+]
 
   return (
     
@@ -68,6 +73,13 @@ export default function RegisterScreen({ navigation }) {
       <TouchableOpacity onPress={() => navigation.navigate('Home')} style={styles.button}>
           <Text style={styles.buttonText}>Entrar</Text>
       </TouchableOpacity>
+      <SelectList 
+        setSelected={(val) => setSelected(val)} 
+      data={data} 
+      save="value"
+      boxStyles={styles.selectBox}
+      dropdownStyles={styles.selectDropdown}
+      />
       </View>
     </KeyboardAvoidingView>
   );
@@ -164,5 +176,21 @@ export default function RegisterScreen({ navigation }) {
       textAlign: 'center',
       
     },
+    selectBox: {
+      backgroundColor: 'white',
+      width: 300,
+      paddingVertical: 14,
+      borderRadius: 21,
+      marginTop: 40,
+      position: 'absolute',
+      top: -90,
+      
+    },
+    selectDropdown: {
+      borderRadius: 21,
+      marginTop: 5,
+      color: '#0000',
+    },
+    
     }
 );
