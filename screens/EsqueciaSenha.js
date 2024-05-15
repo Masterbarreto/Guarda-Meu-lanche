@@ -13,7 +13,7 @@ export default function EsqueciaSenha({ navigation }) {
     
     <KeyboardAvoidingView style={styles.container} behavior="padding">
       <View>
-        <TouchableOpacity onPress={() => navigation.goBack('Login')}>
+        <TouchableOpacity onPress={() => navigation.navigate('Login')}>
           <Text style={styles.voltar}>Voltar</Text>
         </TouchableOpacity>
         <Text style={styles.titulo}>Esqueceu a senha?</Text>
