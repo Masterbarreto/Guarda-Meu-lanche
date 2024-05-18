@@ -42,7 +42,7 @@ export default function RegisterScreen({ navigation }) {
         <TouchableOpacity onPress={() => navigation.navigate('Login')}>
           <Text style={styles.voltar}>Voltar</Text>
         </TouchableOpacity>
-        <Text style={styles.surname}>Pai ou aluno</Text>
+        <Text style={styles.surname}>Aluno ou Funcionario</Text>
         <SelectList
           setSelected={(val) => setSelected(val)}
           data={select}
