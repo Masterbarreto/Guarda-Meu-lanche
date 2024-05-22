@@ -43,9 +43,26 @@ O **Guarda-Meu-Lanche** é um aplicativo de venda e gestão de lanches desenvolv
      expo start
      ```
 
-3. **API**:
-   - Acesse a API para cadastro, login e gerenciamento de produtos.
-   - Documentação detalhada da API está disponível em [API Documentation](https://guardameulanche-api.com/docs).
+  3. **A.P.i**
+     O **Guarda-Meu-Lanche** utiliza uma API própria para gerenciar funcionalidades como login, cadastro de usuários, saída de usuários e administração de produtos. 
+
+Aqui estão alguns dos principais endpoints da API:
+
+- **`POST /api/login`**: Realiza o login de um usuário. Requer um payload com informações de login (por exemplo, e-mail e senha) e retorna um token de acesso.
+
+- **`POST /api/register`**: Cadastra um novo usuário. Requer um payload com informações de registro (por exemplo, nome, e-mail e senha).
+
+- **`POST /api/logout`**: Realiza a saída de um usuário. Requer um token de acesso válido.
+
+- **`GET /api/products`**: Retorna a lista de produtos disponíveis.
+
+- **`POST /api/products`**: Adiciona um novo produto à lista. Requer autenticação de administrador.
+
+- **`PUT /api/products/:id`**: Atualiza as informações de um produto existente. Requer autenticação de administrador.
+
+- **`DELETE /api/products/:id`**: Remove um produto da lista. Requer autenticação de administrador.
+
+---
 
 ## Bibliotecas Utilizadas
 
