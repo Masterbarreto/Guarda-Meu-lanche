@@ -2,30 +2,22 @@
 import { token } from "morgan";
 import userModel from "../models/userModel.js";
 import cloudinary from "cloudinary";
-import { getDataUri } from "../utils/Features.js"
-
-
+import { getDataUri } from "../utils/features.js"
 
 export const registerController = async (req, res) => {
     try {
-    const {  name, email, password } =
-        req.body;
+    const { name, email, password, sobrenome } = req.body;
       // validation
-    if (
-        !name ||
-        !email ||
-        !password ||
-        !sobrenome
-    ) {
+    if (!name ||!email ||!password ||!sobrenome) {
         return res.status(500).send({
         success: false,
         message: "Please Provide All Fields",
         });
-}
-  //check exisiting user
-    const exisitingUSer = await userModel.findOne({ email });
-      //validation
-    if (exisitingUSer) {
+    }
+      // check existing user
+    const existingUser = await userModel.findOne({ email });
+      // validation
+    if (existingUser) {
         return res.status(500).send({
         success: false,
         message: "email already taken",
@@ -35,6 +27,7 @@ export const registerController = async (req, res) => {
         name,
         email,
         password,
+        sobrenome,
     });
     res.status(201).send({
         success: true,
