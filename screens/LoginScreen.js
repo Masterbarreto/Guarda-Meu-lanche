@@ -1,99 +1,135 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, Image, KeyboardAvoidingView } from 'react-native';
+//importaçoes do firebase 
 
-import { UseState } from 'react';
-import { Controller, useForm } from "react-hook-form";
+import React, { useState } from 'react';
+//import { createUserWithEmailAndPassword } from 'firebase/auth';
+import {  signInWithEmailAndPassword  } from 'firebase/auth';
+import { auth } from '../firebase.js';
+
+//______________//____________________________//
+
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, Image, KeyboardAvoidingView } from 'react-native';
+import { AppRegistry } from 'react-native';
+import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
-
 const schema = yup.object().shape({
-  email: yup.string().email("Email invalido").required("informe seu email"),
-  password: yup.string().required("informe sua senha").min(6, "a senha deve ter pelo menos 6 digitos"),
-})
+  email: yup.string().email("Email inválido").required("Informe seu email"),
+  password: yup.string().required("Informe sua senha").min(6, "A senha deve ter pelo menos 6 dígitos"),
+});
 
 export default function LoginScreen({ navigation }) {
-
   const { control, handleSubmit, formState: { errors } } = useForm({
     resolver: yupResolver(schema),
   });
 
-  const handleSigin = (data) => {
-      navigation.navigate('Home');
-      console.log(data);
-    }
+  //one code bit
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
   
-    const onSubmit = (data) => {
-      handleSigin(data);
+    const handleLoging = ( ) =>{
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          const user = userCredential.user;
+            console.log(user);
+              setUser(user);
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message; 
+
+  console.log(errorMessage);
+  });
     }
 
-    return (
+    const handleLogin = () => {
+      signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+          const user = userCredential.user;
+          console.log(`Login successful! `);
+          navigation.navigate('Home'); // Navigate to Home screen
+        })
+      .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          console.log(`Login failed: ${errorMessage}`);
+          Alert.alert('Erro', 'Usuário ou senha estão errados');// Show alert
+        });
+    }
+    
+
+  return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
-        <View>
+      <View>
         <Image
-            source={require("../assets/icon.png")}
-            style={styles.containerLogo}
+          source={require("../assets/icon.png")}
+          style={styles.containerLogo}
         />
-        </View>
-        <View style={styles.inputContainer}>
+      </View>
+      <View style={styles.inputContainer}>
 
         <Text style={styles.label}>Email</Text>
         {errors.email?.message && <Text style={styles.labelError}>{errors.email?.message}</Text>}
         <Controller
-        control={control}
-        name='email'
-        render={({field: {onChange, onBlur , value}}) => (
-          <TextInput
-          placeholder="Ex: Lucas.gomes@gmail.com"
-          value={value}
-          onChangeText={onChange}
-          onBlur={onBlur} //chamado quando o texttinput e tocado 
-          style={[styles.input,{
-            borderWidth:errors.email && 1,
-            borderColor: errors.email && '#ff375b'
-          }]}
-      />  
-    )}
-      />
-    
+          control={control}
+          name='email'
+          render={({ field: { onChange, onBlur, value } }) => (
+            <TextInput
+              placeholder="Ex: Lucas.gomes@gmail.com"
+              value={email}
+              onChangeText={(val) => {
+                setEmail(val);
+              }}
+              onBlur={onBlur} //chamado quando o texttinput e tocado 
+              style={[styles.input,{
+                borderWidth:errors.email && 1,
+                borderColor: errors.email && '#ff375b'
+              }]}
+            />
+          )}
+        />
+
         <Text style={styles.label}>Senha</Text>
         {errors.password?.message && <Text style={styles.labelError}>{errors.password?.message}</Text>}
         <Controller
-  control={control}
-  name='password'
-  render={({ field: { onChange, onBlur, value } }) => (
-    <TextInput
-      placeholder="*********"
-      value={value}
-      onChangeText={onChange}
-      secureTextEntry={true}
-      style={[
-        styles.input, {
-          borderWidth: errors.password && 1,
-          borderColor: errors.password && '#ff375b'
-        }]}
-    />
-  )}
-/>
-
-
+          control={control}
+          name='password'
+          render={({ field: { onChange, onBlur, value } }) => (
+            <TextInput
+              placeholder="*********"
+              value={password}
+              onChangeText={(val) => {
+                setPassword(val);
+              }}
+              secureTextEntry={true}
+              style={[
+                styles.input, {
+                  borderWidth: errors.password && 1,
+                  borderColor: errors.password && '#ff375b'
+                }
+              ]}
+            />
+          )}
+        />
 
         <TouchableOpacity onPress={() => { navigation.navigate('EsqueciaSenha') }}>
-            <Text style={styles.forgotPasswordText}>Esqueceu sua senha?</Text>
+          <Text style={styles.forgotPasswordText}>Esqueceu sua senha?</Text>
         </TouchableOpacity>
-        </View>
-        <View style={styles.buttonContainer}>
-        <TouchableOpacity onPress={handleSubmit(onSubmit)} style={styles.button} >
+      </View>
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity onPress={handleLogin} style={styles.button}>
           <Text style={styles.buttonText}>Entrar</Text>
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => navigation.navigate('Criar Conta')} style={styles.buttonOutline}>
-            <Text style={styles.buttonOutlineText} numberOfLines={2}>Não tem uma conta? Cadastre-se</Text>
+          <Text style={styles.buttonOutlineText} numberOfLines={2}>Não tem uma conta? Cadastre-se</Text>
         </TouchableOpacity>
-        </View>
+      </View>
     </KeyboardAvoidingView>
-    );
+  );
 }
+
+
 
 const styles = StyleSheet.create({
     container: {

@@ -1,9 +1,11 @@
-import React from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, Image, KeyboardAvoidingView , } from 'react-native';
-import { SelectList } from 'react-native-dropdown-select-list'
+import React, { useState } from 'react';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, Image, KeyboardAvoidingView } from 'react-native';
+import { SelectList } from 'react-native-dropdown-select-list';
 import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import { createUserWithEmailAndPassword} from 'firebase/auth';
+import { auth } from '../firebase.js';
 
 
 const schema = yup.object().shape({
@@ -17,18 +19,34 @@ const schema = yup.object().shape({
 
 export default function RegisterScreen({ navigation }) {
   const [selected, setSelected] = React.useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [user, setUser] = useState(null);
 
   const { control, handleSubmit, formState: { errors } } = useForm({
     resolver: yupResolver(schema),
   });
 
-  const handleSigin = (data) => {
+const handleSigin = () => {
+  createUserWithEmailAndPassword(auth, email, password)
+ .then((userCredential) => {
+    const user = userCredential.user;
+    console.log(user);
+    setUser(user);
     navigation.navigate('Home');
-    console.log(data);
-  }
-
+  })
+ .catch((error) => {
+    if (error.code === 'auth/email-already-in-use') {
+      alert('Este email já está em uso. Tente novamente com um email diferente.');
+    } else {
+      console.error('Erro ao criar usuário:', error);
+    }
+  });
+}
   const onSubmit = (data) => {
-    handleSigin(data);
+    setEmail(data.email);
+    setPassword(data.password);
+    handleSigin();
   }
 
   const select = [

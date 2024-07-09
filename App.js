@@ -1,6 +1,8 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import firebase from './firebase.js';
+
 
 import LoginScreen from './screens/LoginScreen';
 import EsqueciaSenha from './screens/EsqueciaSenha';
