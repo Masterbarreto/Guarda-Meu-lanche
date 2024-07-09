@@ -53,7 +53,7 @@ export default function LoginScreen({ navigation }) {
           const errorCode = error.code;
           const errorMessage = error.message;
           console.log(`Login failed: ${errorMessage}`);
-          Alert.alert('Erro', 'Usuário ou senha estão errados');// Show alert
+          alert(' Usuário ou senha estão errados');// Show alert
         });
     }
     

@@ -6,7 +6,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { createUserWithEmailAndPassword} from 'firebase/auth';
 import { auth } from '../firebase.js';
-
+import { addDoc, collection, doc, getFirestore, setDoc } from 'firebase/firestore';
 
 const schema = yup.object().shape({
   email: yup.string().email("Email invalido").required("informe seu email"),
@@ -22,27 +22,29 @@ export default function RegisterScreen({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [user, setUser] = useState(null);
+  const db = getFirestore();
 
   const { control, handleSubmit, formState: { errors } } = useForm({
     resolver: yupResolver(schema),
   });
 
-const handleSigin = () => {
-  createUserWithEmailAndPassword(auth, email, password)
- .then((userCredential) => {
-    const user = userCredential.user;
-    console.log(user);
-    setUser(user);
-    navigation.navigate('Home');
-  })
- .catch((error) => {
-    if (error.code === 'auth/email-already-in-use') {
-      alert('Este email já está em uso. Tente novamente com um email diferente.');
-    } else {
-      console.error('Erro ao criar usuário:', error);
-    }
-  });
-}
+  const handleSigin = () => {
+    createUserWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+        const user = userCredential.user;
+        console.log(`Registration successful! `);
+        setUser(user);
+        navigation.navigate('Home');
+      })
+    .catch((error) => {
+        if (error.code === 'auth/email-already-in-use') {
+          alert('Este email já está em uso. Tente novamente com um email diferente.');
+        } else {
+          console.error('Erro ao criar usuário:', error);
+        }
+      });
+  }
+
   const onSubmit = (data) => {
     setEmail(data.email);
     setPassword(data.password);
@@ -278,6 +280,10 @@ const styles = StyleSheet.create({
     marginTop: 5,
     color: '#FFFFFF',
   },
+  alert: {
+    color: '#FFFFFF',
+    marginTop: 20
+  }
 });
 
 
