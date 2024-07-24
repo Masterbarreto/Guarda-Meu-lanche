@@ -19,6 +19,7 @@ const schema = yup.object().shape({
 
 export default function RegisterScreen({ navigation }) {
   const [selected, setSelected] = React.useState("");
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [user, setUser] = useState(null);
@@ -28,28 +29,32 @@ export default function RegisterScreen({ navigation }) {
     resolver: yupResolver(schema),
   });
 
-  const handleSigin = () => {
-    createUserWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-        const user = userCredential.user;
-        console.log(`Registration successful! `);
-        setUser(user);
-        navigation.navigate('Home');
-      })
-    .catch((error) => {
-        if (error.code === 'auth/email-already-in-use') {
-          alert('Este email já está em uso. Tente novamente com um email diferente.');
-        } else {
-          console.error('Erro ao criar usuário:', error);
-        }
-      });
-  }
+  const handleRegister = async (data) => {
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, data.email, data.password);
+      const user = userCredential.user;
 
-  const onSubmit = (data) => {
-    setEmail(data.email);
-    setPassword(data.password);
-    handleSigin();
-  }
+      // Store user data in Firestore
+      await setDoc(doc(db, "users", user.uid), {
+        email: data.email,
+        password: data.password,
+        name: data.name,
+        birthDate: data.birthDate,
+        surname: data.surname,
+        confirmPassword: data.confirmPassword,
+        // ... other user data
+      });
+
+      console.log('Usuário criado com sucesso!');
+      navigation.navigate('Home'); 
+    } catch (error) {
+      if (error.code === 'auth/email-already-in-use') {
+        console.error('O endereço de e-mail já está em uso. Por favor, tente um endereço de e-mail diferente.');
+      } else {
+        console.error('Erro ao criar usuário:', error);
+      }
+    }
+  };
 
   const select = [
     {key:'1', value:'Aluno'},
@@ -84,7 +89,6 @@ export default function RegisterScreen({ navigation }) {
                 onBlur={onBlur}
                 style={[styles.input, { borderColor: errors.name && '#ff375b' }]}
               />
-              
             </View>
           )}
         />
@@ -102,7 +106,6 @@ export default function RegisterScreen({ navigation }) {
                 onBlur={onBlur}
                 style={[styles.input, { borderColor: errors.surname && '#ff375b' }]}
               />
-              
             </View>
           )}
         />
@@ -114,13 +117,12 @@ export default function RegisterScreen({ navigation }) {
               <Text style={styles.label}>Data de nacimento</Text>
               {errors.birthDate?.message && <Text style={styles.labelError}>{errors.birthDate?.message}</Text>}
               <TextInput
-                placeholder="  "
+                placeholder=" Data de nacimento "
                 value={value}
                 onChangeText={onChange}
                 onBlur={onBlur}
                 style={[styles.input, { borderColor: errors.birthDate && '#ff375b' }]}
               />
-              
             </View>
           )}
         />
@@ -138,7 +140,6 @@ export default function RegisterScreen({ navigation }) {
                 onBlur={onBlur}
                 style={[styles.input, { borderColor: errors.email && '#ff375b' }]}
               />
-              
             </View>
           )}
         />
@@ -157,7 +158,6 @@ export default function RegisterScreen({ navigation }) {
                 onBlur={onBlur}
                 style={[styles.input, { borderColor: errors.password && '#ff375b' }]}
               />
-              
             </View>
           )}
         />
@@ -176,11 +176,10 @@ export default function RegisterScreen({ navigation }) {
                 onBlur={onBlur}
                 style={[styles.input, { borderColor: errors.confirmPassword && '#ff375b' }]}
               />
-              
             </View>
           )}
         />
-        <TouchableOpacity onPress={handleSubmit(onSubmit)} style={styles.button}>
+        <TouchableOpacity onPress={handleSubmit(handleRegister)} style={styles.button}>
           <Text style={styles.buttonText}>Entrar</Text>
         </TouchableOpacity>
       </View>
@@ -189,6 +188,7 @@ export default function RegisterScreen({ navigation }) {
 }
 
 
+///__________________________________________________________________________________________///
 const styles = StyleSheet.create({
   container: {
     flex: 1,
