@@ -1,17 +1,45 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons'; // Certifique-se de instalar esta biblioteca
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { getFirestore, doc, getDoc } from 'firebase/firestore';
 
 const FoodPricingScreen = () => {
+const [user, setUser] = useState(null);
+const [userName, setUserName] = useState('');
+
+useEffect(() => {
+    const auth = getAuth();
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    setUser(user);
+    if (user) {
+    const db = getFirestore();
+    getDoc(doc(db, 'users', user.uid))
+    .then((docSnap) => {
+    if (docSnap.exists()) {
+    setUserName(docSnap.data().name);
+    }
+    })
+    .catch((error) => {
+        console.error('Error fetching user data:', error);
+    });
+}
+});
+
+return () => unsubscribe();
+}, []);
+
 return (
-    
     <View style={styles.container}>
     <Image
-source={require("../assets/icon.png")}
-style={styles.containerLogo}
-/>
+        source={require('../assets/icon.png')}
+        style={styles.containerLogo}
+    />
+    {user ? (
+        <Text style={styles.greeting}>Olá, {userName}</Text>
+    ) : null}
     <TouchableOpacity style={styles.button}>
-        <Icon name="restaurant-menu" size={24} color="#000000"   />
+        <Icon name="restaurant-menu" size={24} color="#000000" />
         <Text style={styles.buttonText}>Preço de alimentação - P1</Text>
     </TouchableOpacity>
     <TouchableOpacity style={styles.button}>
@@ -60,6 +88,13 @@ containerLogo: {
     top: -240,
     left: -140,
 },
+greeting: {
+    color: '#fff',
+    fontSize: 20,
+    marginBottom: 1,
+    top: -280,
+    left: -50,
+  },
 
 });
 

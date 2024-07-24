@@ -37,12 +37,10 @@ export default function RegisterScreen({ navigation }) {
       // Store user data in Firestore
       await setDoc(doc(db, "users", user.uid), {
         email: data.email,
-        password: data.password,
         name: data.name,
         birthDate: data.birthDate,
         surname: data.surname,
-        confirmPassword: data.confirmPassword,
-        // ... other user data
+        role: selected,
       });
 
       console.log('Usuário criado com sucesso!');
