@@ -12,4 +12,4 @@ measurementId: "G-5CQ9GZ93XT"
 };
 
 const app = initializeApp(firebaseConfig);
-export const auth = getAuth(app); // Remove the app parameter
+export const auth = getAuth(app); 

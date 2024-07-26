@@ -9,13 +9,16 @@ import { auth } from '../firebase.js';
 import { addDoc, collection, doc, getFirestore, setDoc } from 'firebase/firestore';
 
 const schema = yup.object().shape({
-  email: yup.string().email("Email invalido").required("informe seu email"),
-  password: yup.string().required("informe sua senha").min(6, "a senha deve ter pelo menos 6 digitos"),
-  name: yup.string().required("informe seu nome"),
-  birthDate: yup.string().required("informe seu aniversario"),
-  surname: yup.string().required("informe seu Sobrenome"),
-  confirmPassword: yup.string().required("informe sua senha").min(6, "a senha deve ter pelo menos 6 digitos"),
-})
+  email: yup.string().email("Email inválido").required("Informe seu email"),
+  password: yup.string().required("Informe sua senha").min(6, "A senha deve ter pelo menos 6 dígitos"),
+  name: yup.string().required("Informe seu nome"),
+  birthDate: yup.string().required("Informe seu aniversário").test("data-valida","Data inválida. Utilize o formato DD/MM/AAAA",(value) => {const regex = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/([12][0-9]{3})$/;return regex.test(value);}),
+  surname: yup.string().required("Informe seu sobrenome"),
+  confirmPassword: yup.string()
+    .required("Informe sua senha")
+    .min(6, "A senha deve ter pelo menos 6 dígitos")
+    .oneOf([yup.ref("password")], "As senhas devem ser iguais"),
+});
 
 export default function RegisterScreen({ navigation }) {
   const [selected, setSelected] = React.useState("");

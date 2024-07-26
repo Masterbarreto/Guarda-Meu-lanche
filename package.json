@@ -11,6 +11,7 @@
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",
     "@react-native-async-storage/async-storage": "^1.23.1",
+    "@react-native-community/datetimepicker": "^8.2.0",
     "@react-native-community/masked-view": "^0.1.11",
     "@react-native-picker/picker": "^2.7.5",
     "@react-navigation/bottom-tabs": "^6.5.20",
@@ -24,6 +25,7 @@
     "react-final-form": "^6.5.9",
     "react-hook-form": "^7.51.4",
     "react-native": "^0.74.3",
+    "react-native-datepicker": "^1.7.2",
     "react-native-dropdown-select-list": "^2.0.5",
     "react-native-elements": "^3.4.3",
     "react-native-fbsdk": "^3.0.0",
