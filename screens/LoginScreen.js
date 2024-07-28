@@ -26,22 +26,7 @@ export default function LoginScreen({ navigation }) {
   //one code bit
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-  
-    const handleLoging = ( ) =>{
-      createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-          const user = userCredential.user;
-            console.log(user);
-              setUser(user);
-  })
-  .catch((error) => {
-    const errorCode = error.code;
-    const errorMessage = error.message; 
-
-  console.log(errorMessage);
-  });
-    }
-
+  // Adicionar depois se for adm ir para um tela diferente. 
     const handleLogin = () => {
       signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
