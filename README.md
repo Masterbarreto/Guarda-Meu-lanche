@@ -2,22 +2,17 @@
 
 O **Guarda-Meu-Lanche** é um aplicativo de venda e gestão de lanches desenvolvido para alunos e lojistas do SENAC. Nosso foco é a diminuição de filas e o melhor aproveitamento do intervalo dos alunos, além de reduzir o desperdício de alimentos pelas lanchonetes do SENAC.
 
-## Funcionalidades
+## 👩‍💻 Funcionalidades
 
-- **Gestão de Filas**: Reduza o tempo de espera pedindo seu lanche antecipadamente.
-- **Aproveitamento do Intervalo**: Mais tempo para relaxar e menos tempo na fila.
-- **Redução de Desperdício**: As lanchonetes podem gerenciar melhor seus estoques e produção.
-- **Cadastro e Login**: Crie sua conta e faça login facilmente.
-- **Administração de Produtos**: Lojistas podem adicionar e gerenciar produtos.
+| Funçoes  |    explicação   |
+|-----------|----------------|
+|Gestão de Filas| Reduza o tempo de espera pedindo seu lanche antecipadamente.|
+|Aproveitamento do Intervalo| Mais tempo para relaxar e menos tempo na fila.|
+|Redução de Desperdício | As lanchonetes podem gerenciar melhor seus estoques e produção|
+|Redução de Desperdício | As lanchonetes podem gerenciar melhor seus estoques e produção|
+|Cadastro e Login | Crie sua conta e faça login facilmente.|
+|Administração de Produtos|  Lojistas podem adicionar e gerenciar produtos.|
 
-## Telas
-
-- **Tela Login**:
-<img height=600 src="https://cdn.discordapp.com/attachments/1078462922617016463/1242624316995010682/Screenshot_20240521_204223_Figma.jpg?ex=664e8394&is=664d3214&hm=a052fcf58c1bbf3b92b3d6f1ca42231dc3d7bbffb4e9e2bfff4f37d2ef4cb0f1&" alt="Texto Alternativo">
-
-
-- **Tela Inicials**:
-<img  height=600 src="https://cdn.discordapp.com/attachments/1078462922617016463/1242624317410508960/Screenshot_20240521_204216_Figma.jpg?ex=664e8394&is=664d3214&hm=93c34de2f57ef1002cfc2c48227fb46d656b63fa9ea4a1d845c50991d4df27fc&" alt="Texto Alternativo">
 
 
 ## Como Usar
@@ -42,28 +37,6 @@ O **Guarda-Meu-Lanche** é um aplicativo de venda e gestão de lanches desenvolv
      ```bash
      expo start
      ```
-
-  3. **A.P.i**
-     O **Guarda-Meu-Lanche** utiliza uma API própria para gerenciar funcionalidades como login, cadastro de usuários, saída de usuários e administração de produtos. 
-
-Aqui estão alguns dos principais endpoints da API:
-
-- **`POST /api/login`**: Realiza o login de um usuário. Requer um payload com informações de login (por exemplo, e-mail e senha) e retorna um token de acesso.
-
-- **`POST /api/register`**: Cadastra um novo usuário. Requer um payload com informações de registro (por exemplo, nome, e-mail e senha).
-
-- **`POST /api/logout`**: Realiza a saída de um usuário. Requer um token de acesso válido.
-
-- **`GET /api/products`**: Retorna a lista de produtos disponíveis.
-
-- **`POST /api/products`**: Adiciona um novo produto à lista. Requer autenticação de administrador.
-
-- **`PUT /api/products/:id`**: Atualiza as informações de um produto existente. Requer autenticação de administrador.
-
-- **`DELETE /api/products/:id`**: Remove um produto da lista. Requer autenticação de administrador.
-
----
-
 ## Bibliotecas Utilizadas
 
 - `@hookform/resolvers`: Para validação de formulários.
@@ -90,3 +63,17 @@ Contribuições são bem-vindas! Se você deseja melhorar o aplicativo, siga est
 ## Licença
 
 Este projeto está licenciado sob a [MIT License](LICENSE).
+
+## Suporte
+
+Para suporte, mande um email para Jpanela302@gmail.com .
+
+
+## Rodando os testes
+
+Para rodar aplicativo, rode o seguinte comando
+
+```bash
+  npm start
+```
+
