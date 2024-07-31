@@ -1,61 +1,52 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Button, Image } from 'react-native';
+import { StyleSheet, Text, View, Button, Image } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-import { fbUriToFirebaseStorage } from '../firebase/storage';
-import { collection, addDoc } from 'firebase/firestore';
-import { db } from '../firebase/config';
+import { fbUriToFirebaseStorage } from '../funçoes/fbUriToFirebaseStorage';
 
-export default function UploadScreen({ navigation }) {
-const [imageUri, setImageUri] = useState(null);
+export default function UploadImageScreen({ navigation }) {
+const [selectedImage, setSelectedImage] = useState();
 
-const handleChooseImage = async () => {
-    const imagePickerResult = await ImagePicker.launchImageLibraryAsync({
-    mediaTypes: ImagePicker.MediaTypeOptions.All,
+const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+    mediaTypes: ImagePicker.MediaTypeOptions.Images,
     allowsEditing: true,
     aspect: [4, 3],
     quality: 1,
     });
 
-    if (!imagePickerResult.cancelled) {
-    setImageUri(imagePickerResult.uri);
-    uploadImageToFirebase(imagePickerResult);
+    if (result.cancelled) {
+    console.log("User cancelled the picker");
+    } else if (!result.cancelled && result.assets?.length === 1) {
+    setSelectedImage(result.assets[0]);
+    } else {
+    console.log("Assets picked:", result.assets);
     }
 };
 
-const uploadImageToFirebase = async (imagePickerResult) => {
-    try {
-    await fbUriToFirebaseStorage(
-        imagePickerResult,
-        "my_food_images",
-        null,
-        (downloadUrl) => {
-        saveImageToFirestore(downloadUrl);
-        }
-    );
-    } catch (error) {
-    console.error('Erro ao fazer upload da imagem:', error);
-    }
+const myProgress = (ratio) => {
+  console.log('Upload progress:', ratio * 100);
 };
 
-const saveImageToFirestore = async (downloadUrl) => {
-    try {
-    const collRef = collection(db, "products");
-    await addDoc(collRef, {
-        name: 'Nome do Produto', // Substitua pelo nome do produto
-        photoUrl: downloadUrl
-    });
-    console.log('Imagem salva no Firestore!');
-      // Navegue para outra tela após o upload (opcional)
-      navigation.navigate('HomeScreen'); // Substitua 'HomeScreen' pelo nome da sua tela de destino
-    } catch (error) {
-    console.error('Erro ao salvar imagem no Firestore:', error);
-    }
+const myGotUrl = (url) => {
+console.log('URL da imagem no Firebase:', url);
+};
+
+const uploadImage = async () => {
+await fbUriToFirebaseStorage(selectedImage,
+    "my_pics",
+    myProgress,
+    myGotUrl);
+    console.log(url)
 };
 
 return (
     <View style={styles.container}>
-    {imageUri && <Image source={{ uri: imageUri }} style={styles.image} />}
-    <Button title="Escolher Imagem" onPress={handleChooseImage} />
+    <Text style={styles.title}>Upload de Imagem</Text>
+    <Button title="Selecionar Imagem" onPress={pickImage} />
+    {selectedImage && (
+        <Image source={{ uri: selectedImage.uri }} style={styles.image} />
+    )}
+    <Button title="Upload" onPress={uploadImage} />
     </View>
 );
 }
@@ -66,9 +57,14 @@ container: {
     alignItems: 'center',
     justifyContent: 'center',
 },
+title: {
+    fontSize: 24,
+    marginBottom: 20,
+},
 image: {
     width: 200,
     height: 200,
+    resizeMode: 'contain',
     marginBottom: 20,
-},
+  },
 });

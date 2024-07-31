@@ -11,6 +11,7 @@ import RegisterScreen from './screens/RegisterScreen';
 import Verificacao from './screens/verificação';
 import VendasScreen from './screens/VendasScreem.js';
 import NotificationScreen from './screens/Notificacoes';
+import UploadImageScreen from './screens/UploadScreen.js';
 
 
 const Stack = createStackNavigator();
@@ -26,6 +27,7 @@ export default function App() {
         <Stack.Screen name="Verificacao" component={Verificacao} options={{ headerShown: false }} />
         <Stack.Screen name="Vendas" component={VendasScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Notificacoes" component={NotificationScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="UploadImage" component={UploadImageScreen} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

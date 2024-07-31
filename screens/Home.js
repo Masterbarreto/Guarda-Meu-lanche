@@ -46,7 +46,7 @@ return (
         <Icon name="restaurant-menu" size={24} color="#000000" />
         <Text style={styles.buttonText}>Preço de alimentação - P1</Text>
     </TouchableOpacity>
-    <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Vendas')}>
+    <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('UploadImage')}>
         <Icon name="fastfood" size={24} color="#000000" />
         <Text style={styles.buttonText}>Preço de alimentação - P2</Text>
     </TouchableOpacity>
