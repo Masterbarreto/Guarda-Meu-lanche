@@ -1,7 +1,8 @@
 import {myStorage} from '../firebase.js';
 import { getAuth } from 'firebase/auth';
-import { ref, child, put, uploadBytesResumable } from 'firebase/storage';
+import { ref, child, put, uploadBytesResumable, getDownloadURL, getStorage} from 'firebase/storage';
 import cuid from 'cuid';
+
 
 /**
  * Uploads data from given `uri` to Firebase Storage and returns
