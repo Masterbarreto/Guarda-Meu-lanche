@@ -55,11 +55,10 @@ try {
         throw error;
     },
     () => {
-        uploadTask.snapshot.ref
         getDownloadURL(uploadTask.snapshot.ref)
         .then((downloadUrl) => {
-        console.log("got the download url:", downloadUrl);
-        downloadUrlCallback && downloadUrlCallback(downloadUrl);
+            console.log("got the download url:", downloadUrl);
+            downloadUrlCallback && downloadUrlCallback(downloadUrl);
         })
         .catch((error) => {
             console.error(`ERROR updating user profile pic: ${error.message}`);

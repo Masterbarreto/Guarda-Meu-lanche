@@ -13,8 +13,6 @@ O **Guarda-Meu-Lanche** é um aplicativo de venda e gestão de lanches desenvolv
 |Cadastro e Login | Crie sua conta e faça login facilmente.|
 |Administração de Produtos|  Lojistas podem adicionar e gerenciar produtos.|
 
-
-
 ## Como Usar
 
 1. **Instalação**:
