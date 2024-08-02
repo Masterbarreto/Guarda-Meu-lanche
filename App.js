@@ -7,9 +7,9 @@ import firebase from './firebase.js';
 import LoginScreen from './screens/LoginScreen';
 import EsqueciaSenha from './screens/EsqueciaSenha';
 import FoodPricingScreen from './screens/Home';
-import RegisterScreen from './screens/RegisterScreen';
+import RegisterScreen from './screens/RegisterScreen'; 
 import Verificacao from './screens/verificação';
-import VendasScreen from './screens/VendasScreem.js';
+import VendasScreen from './screens/VendasScreen.js';
 import NotificationScreen from './screens/Notificacoes';
 import UploadImageScreen from './screens/UploadScreen.js';
 
