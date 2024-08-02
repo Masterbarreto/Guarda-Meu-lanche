@@ -1,36 +1,36 @@
-import { StyleSheet, Text, View, Button, Image } from 'react-native';
-import { SelectList } from 'react-native-dropdown-select-list';
-import React, { useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
-import { TextInput } from 'react-native';
+import { StyleSheet, Text, View, Button, Image } from "react-native";
+import { SelectList } from "react-native-dropdown-select-list";
+import React, { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import { TextInput } from "react-native";
 
 //----------------- ---------------importaçoes do firebase-----------------------------------------------//
-import * as ImagePicker from 'expo-image-picker';
-import { fbUriToFirebaseStorage } from '../funçoes/fbUriToFirebaseStorage';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../firebase.js';
-import { addDoc, collection, getFirestore, setDoc } from 'firebase/firestore';
+import * as ImagePicker from "expo-image-picker";
+import { fbUriToFirebaseStorage } from "../funçoes/fbUriToFirebaseStorage";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../firebase.js";
+import { addDoc, collection, getFirestore, setDoc } from "firebase/firestore";
 //----------------- -------------------------------------------------------------------------------------//
 
 const schema = yup.object({
-  name: yup.string().required('Nome é obrigatório'),
-  description: yup.string().required('Descrição é obrigatória'),
-  url: yup.string().required('URL é obrigatória'),
+  name: yup.string().required("Nome é obrigatório"),
+  description: yup.string().required("Descrição é obrigatória"),
+  url: yup.string().required("URL é obrigatória"),
 });
 
 const select = [
-  { key: 'Eletrônicos', value: 'Eletrônicos' },
-  { key: 'Roupas', value: 'Roupas' },
-  { key: 'Livros', value: 'Livros' },
+  { key: "Eletrônicos", value: "Eletrônicos" },
+  { key: "Roupas", value: "Roupas" },
+  { key: "Livros", value: "Livros" },
   // Adicione mais categorias aqui
 ];
 
 export default function UploadImageScreen({ navigation }) {
   const [selectedImage, setSelectedImage] = useState();
-  const [url, setUrl] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('');
+  const [url, setUrl] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
   const db = getFirestore();
 
   const {
@@ -42,12 +42,12 @@ export default function UploadImageScreen({ navigation }) {
   });
 
   const myProgress = (ratio) => {
-    console.log('Upload progress:', ratio * 100);
+    console.log("Upload progress:", ratio * 100);
   };
 
   const myGotUrl = (urlFromFirebase) => {
     setUrl(urlFromFirebase);
-    console.log('URL da imagem no Firebase:', urlFromFirebase);
+    console.log("URL da imagem no Firebase:", urlFromFirebase);
   };
 
   const pickImage = async () => {
@@ -59,17 +59,17 @@ export default function UploadImageScreen({ navigation }) {
     });
 
     if (result.cancelled) {
-      console.log('User cancelled the picker');
+      console.log("User cancelled the picker");
     } else if (!result.cancelled && result.assets?.length === 1) {
       setSelectedImage(result.assets[0]);
       await fbUriToFirebaseStorage(
         result.assets[0],
-        'my_pics',
+        "my_pics",
         myProgress,
-        myGotUrl
+        myGotUrl,
       );
     } else {
-      console.log('Assets picked:', result.assets);
+      console.log("Assets picked:", result.assets);
     }
   };
 
@@ -81,7 +81,7 @@ export default function UploadImageScreen({ navigation }) {
       imageUrl: url,
     };
 
-    const itemsRef = collection(db, 'items');
+    const itemsRef = collection(db, "items");
     const newDocRef = await addDoc(itemsRef, myNewData);
   };
 
@@ -91,11 +91,11 @@ export default function UploadImageScreen({ navigation }) {
         <Text style={styles.name}>Nome</Text>
         <Controller
           control={control}
-          name='name'
+          name="name"
           render={({ field: { onChange, onBlur, value } }) => (
             <TextInput
               style={styles.input}
-              placeholder=''
+              placeholder=""
               value={value}
               onChangeText={onChange}
               onBlur={onBlur}
@@ -110,7 +110,7 @@ export default function UploadImageScreen({ navigation }) {
         <SelectList
           setSelected={(val) => setSelectedCategory(val)}
           data={select}
-          save='value'
+          save="value"
           boxStyles={styles.selectBox}
           dropdownStyles={styles.selectDropdown}
         />
@@ -122,11 +122,11 @@ export default function UploadImageScreen({ navigation }) {
         <Text style={styles.description}>Descrição</Text>
         <Controller
           control={control}
-          name='description'
+          name="description"
           render={({ field: { onChange, onBlur, value } }) => (
             <TextInput
               style={styles.input}
-              placeholder=''
+              placeholder=""
               value={value}
               onChangeText={onChange}
               onBlur={onBlur}
@@ -139,10 +139,10 @@ export default function UploadImageScreen({ navigation }) {
           <Text style={styles.labelError}>{errors.description?.message}</Text>
         )}
 
-        <Button title='Selecionar Imagem' onPress={pickImage} />
+        <Button title="Selecionar Imagem" onPress={pickImage} />
         <Controller
           control={control}
-          name='url'
+          name="url"
           render={() => (
             <View>
               {selectedImage ? (
@@ -157,7 +157,7 @@ export default function UploadImageScreen({ navigation }) {
           )}
         />
 
-        <Button title='Upload' onPress={handleSubmit(uploadImage)} />
+        <Button title="Upload" onPress={handleSubmit(uploadImage)} />
         {url && <Text>URL da imagem: {url}</Text>}
       </View>
     </View>
@@ -166,79 +166,79 @@ export default function UploadImageScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#211D1D',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#211D1D",
   },
   contentContainer: {
-    width: '100%',
+    width: "100%",
     padding: 20,
   },
   voltar: {
-    color: '#FFF',
+    color: "#FFF",
     fontSize: 16,
   },
   input: {
-    backgroundColor: 'white',
-    width: '100%',
+    backgroundColor: "white",
+    width: "100%",
     paddingVertical: 11,
     borderRadius: 21,
     marginTop: 0,
   },
   label: {
-    color: '#FFF',
+    color: "#FFF",
     fontSize: 16,
-    alignSelf: 'flex-start',
+    alignSelf: "flex-start",
     marginLeft: 0,
   },
   labelError: {
-    alignSelf: 'flex-start',
-    color: '#ff375b',
+    alignSelf: "flex-start",
+    color: "#ff375b",
     marginBottom: 8,
     marginLeft: 0,
   },
   name: {
-    color: '#FFF', // Texto branco
+    color: "#FFF", // Texto branco
     fontSize: 16,
     marginTop: 20,
   },
   category: {
-    color: '#FFF', // Texto branco
+    color: "#FFF", // Texto branco
     fontSize: 16,
     marginTop: 20,
   },
   description: {
-    color: '#FFF', // Texto branco
+    color: "#FFF", // Texto branco
     fontSize: 16,
     marginTop: 30,
   },
   image: {
     width: 200,
     height: 200,
-    resizeMode: 'contain',
+    resizeMode: "contain",
     marginTop: 20,
   },
   alert: {
-    color: '#FFFFFF',
+    color: "#FFFFFF",
     marginTop: 20,
   },
   button: {
-    backgroundColor: '#0782F9',
-    width: '100%',
+    backgroundColor: "#0782F9",
+    width: "100%",
     padding: 15,
     borderRadius: 15,
-    alignItems: 'center',
+    alignItems: "center",
     marginTop: 20,
   },
   buttonText: {
-    color: 'white',
-    fontWeight: '700',
+    color: "white",
+    fontWeight: "700",
     fontSize: 16,
-    textAlign: 'center',
+    textAlign: "center",
   },
   selectBox: {
-    backgroundColor: 'white',
-    width: '100%',
+    backgroundColor: "white",
+    width: "100%",
     paddingVertical: 14,
     borderRadius: 21,
     marginTop: 20,
@@ -246,6 +246,6 @@ const styles = StyleSheet.create({
   selectDropdown: {
     borderRadius: 21,
     marginTop: 5,
-    color: '#FFFFFF',
+    color: "#FFFFFF",
   },
 });
