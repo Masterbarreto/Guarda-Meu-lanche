@@ -16,8 +16,8 @@ import { addDoc, collection, getFirestore, setDoc } from 'firebase/firestore';
 
 const schema = yup.object({
   name: yup.string().required('Nome é obrigatório'),
-  
   description: yup.string().required('Descrição é obrigatória'),
+  url: yup.string().required('URL é obrigatória'),
 });
 
 const select = [
@@ -37,6 +37,15 @@ export default function UploadImageScreen({ navigation }) {
     resolver: yupResolver(schema),
   });
 
+  const myProgress = (ratio) => {
+    console.log('Upload progress:', ratio * 100);
+  };
+
+  const myGotUrl = (urlFromFirebase) => {
+    setUrl(urlFromFirebase);
+    console.log('URL da imagem no Firebase:', urlFromFirebase);
+  };
+
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -49,35 +58,27 @@ export default function UploadImageScreen({ navigation }) {
       console.log("User cancelled the picker");
     } else if (!result.cancelled && result.assets?.length === 1) {
       setSelectedImage(result.assets[0]);
+      await fbUriToFirebaseStorage(
+        result.assets[0],
+        'my_pics',
+        myProgress,
+        myGotUrl,
+      );
     } else {
       console.log("Assets picked:", result.assets);
     }
   };
 
-  const myProgress = (ratio) => {
-    console.log('Upload progress:', ratio * 100);
-  };
-
-  const myGotUrl = (urlFromFirebase) => {
-    setUrl(urlFromFirebase);
-    console.log('URL da imagem no Firebase:', urlFromFirebase);
-  };
-
   const uploadImage = async (data) => {
-    await fbUriToFirebaseStorage(selectedImage,
-      "my_pics",
-      myProgress,
-      myGotUrl);
+    const myNewData = {
+      name: data.name,
+      category: selectedCategory,
+      description: data.description,
+      imageUrl: url,
+    };
 
-      const myNewData = {
-        "name":  data.name,
-        "category": selectedCategory,
-        "description": data.description,
-        "imageUrl": url
-      };
-      
-      const itemsRef = collection(db, "items");
-      const newDocRef = await addDoc(itemsRef, myNewData);
+    const itemsRef = collection(db, 'items');
+    const newDocRef = await addDoc(itemsRef, myNewData);
   };
 
   return (
@@ -129,11 +130,23 @@ export default function UploadImageScreen({ navigation }) {
         {errors.description?.message && <Text style={styles.labelError}>{errors.description?.message}</Text>}
 
         <Button title="Selecionar Imagem" onPress={pickImage} />
-        {selectedImage ? (
-          <Image source={{ uri: selectedImage.uri }} style={styles.image} />
-        ) : (
-          <Text style={styles.alert}>Imagem não carregada ainda...</Text>
-        )}
+        <Controller
+          control={control}
+          name="url"
+          render={() => (
+            <View>
+              {selectedImage ? (
+                <Image
+                  source={{ uri: selectedImage.uri }}
+                  style={styles.image}
+                />
+              ) : (
+                <Text style={styles.alert}>Imagem não carregada ainda...</Text>
+              )}
+            </View>
+          )}
+        />
+
         <Button title="Upload" onPress={handleSubmit(uploadImage)} />
         {url && <Text>URL da imagem: {url}</Text>}
       </View>
