@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, Button, Image } from 'react-native';
 import { SelectList } from 'react-native-dropdown-select-list';
 import React, { useState } from 'react';
-import { Controller, useForm } from "react-hook-form";
+import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { TextInput } from 'react-native';
@@ -16,8 +16,8 @@ import { addDoc, collection, getFirestore, setDoc } from 'firebase/firestore';
 
 const schema = yup.object({
   name: yup.string().required('Nome é obrigatório'),
-  
   description: yup.string().required('Descrição é obrigatória'),
+  url: yup.string().required('URL é obrigatória'),
 });
 
 const select = [
@@ -33,26 +33,13 @@ export default function UploadImageScreen({ navigation }) {
   const [selectedCategory, setSelectedCategory] = useState('');
   const db = getFirestore();
 
-  const { control, handleSubmit, formState: { errors } } = useForm({
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
     resolver: yupResolver(schema),
   });
-
-  const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
-
-    if (result.cancelled) {
-      console.log("User cancelled the picker");
-    } else if (!result.cancelled && result.assets?.length === 1) {
-      setSelectedImage(result.assets[0]);
-    } else {
-      console.log("Assets picked:", result.assets);
-    }
-  };
 
   const myProgress = (ratio) => {
     console.log('Upload progress:', ratio * 100);
@@ -63,21 +50,39 @@ export default function UploadImageScreen({ navigation }) {
     console.log('URL da imagem no Firebase:', urlFromFirebase);
   };
 
-  const uploadImage = async (data) => {
-    await fbUriToFirebaseStorage(selectedImage,
-      "my_pics",
-      myProgress,
-      myGotUrl);
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
 
-      const myNewData = {
-        "name":  data.name,
-        "category": selectedCategory,
-        "description": data.description,
-        "imageUrl": url
-      };
-      
-      const itemsRef = collection(db, "items");
-      const newDocRef = await addDoc(itemsRef, myNewData);
+    if (result.cancelled) {
+      console.log('User cancelled the picker');
+    } else if (!result.cancelled && result.assets?.length === 1) {
+      setSelectedImage(result.assets[0]);
+      await fbUriToFirebaseStorage(
+        result.assets[0],
+        'my_pics',
+        myProgress,
+        myGotUrl
+      );
+    } else {
+      console.log('Assets picked:', result.assets);
+    }
+  };
+
+  const uploadImage = async (data) => {
+    const myNewData = {
+      name: data.name,
+      category: selectedCategory,
+      description: data.description,
+      imageUrl: url,
+    };
+
+    const itemsRef = collection(db, 'items');
+    const newDocRef = await addDoc(itemsRef, myNewData);
   };
 
   return (
@@ -86,38 +91,42 @@ export default function UploadImageScreen({ navigation }) {
         <Text style={styles.name}>Nome</Text>
         <Controller
           control={control}
-          name="name"
+          name='name'
           render={({ field: { onChange, onBlur, value } }) => (
             <TextInput
               style={styles.input}
-              placeholder=""
+              placeholder=''
               value={value}
               onChangeText={onChange}
               onBlur={onBlur}
             />
           )}
         />
-        {errors.name?.message && <Text style={styles.labelError}>{errors.name?.message}</Text>}
+        {errors.name?.message && (
+          <Text style={styles.labelError}>{errors.name?.message}</Text>
+        )}
 
         <Text style={styles.category}>Categoria</Text>
         <SelectList
           setSelected={(val) => setSelectedCategory(val)}
           data={select}
-          save="value"
+          save='value'
           boxStyles={styles.selectBox}
           dropdownStyles={styles.selectDropdown}
         />
 
-        {errors.category?.message && <Text style={styles.labelError}>{errors.category?.message}</Text>}
+        {errors.category?.message && (
+          <Text style={styles.labelError}>{errors.category?.message}</Text>
+        )}
 
         <Text style={styles.description}>Descrição</Text>
         <Controller
           control={control}
-          name="description"
+          name='description'
           render={({ field: { onChange, onBlur, value } }) => (
             <TextInput
               style={styles.input}
-              placeholder=""
+              placeholder=''
               value={value}
               onChangeText={onChange}
               onBlur={onBlur}
@@ -126,15 +135,29 @@ export default function UploadImageScreen({ navigation }) {
             />
           )}
         />
-        {errors.description?.message && <Text style={styles.labelError}>{errors.description?.message}</Text>}
-
-        <Button title="Selecionar Imagem" onPress={pickImage} />
-        {selectedImage ? (
-          <Image source={{ uri: selectedImage.uri }} style={styles.image} />
-        ) : (
-          <Text style={styles.alert}>Imagem não carregada ainda...</Text>
+        {errors.description?.message && (
+          <Text style={styles.labelError}>{errors.description?.message}</Text>
         )}
-        <Button title="Upload" onPress={handleSubmit(uploadImage)} />
+
+        <Button title='Selecionar Imagem' onPress={pickImage} />
+        <Controller
+          control={control}
+          name='url'
+          render={() => (
+            <View>
+              {selectedImage ? (
+                <Image
+                  source={{ uri: selectedImage.uri }}
+                  style={styles.image}
+                />
+              ) : (
+                <Text style={styles.alert}>Imagem não carregada ainda...</Text>
+              )}
+            </View>
+          )}
+        />
+
+        <Button title='Upload' onPress={handleSubmit(uploadImage)} />
         {url && <Text>URL da imagem: {url}</Text>}
       </View>
     </View>
@@ -170,7 +193,7 @@ const styles = StyleSheet.create({
   },
   labelError: {
     alignSelf: 'flex-start',
-    color: "#ff375b",
+    color: '#ff375b',
     marginBottom: 8,
     marginLeft: 0,
   },
@@ -197,7 +220,7 @@ const styles = StyleSheet.create({
   },
   alert: {
     color: '#FFFFFF',
-    marginTop: 20
+    marginTop: 20,
   },
   button: {
     backgroundColor: '#0782F9',
@@ -212,7 +235,6 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     fontSize: 16,
     textAlign: 'center',
-
   },
   selectBox: {
     backgroundColor: 'white',
@@ -226,5 +248,4 @@ const styles = StyleSheet.create({
     marginTop: 5,
     color: '#FFFFFF',
   },
-
 });
