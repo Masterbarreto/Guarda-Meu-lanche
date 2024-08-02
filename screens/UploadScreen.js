@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, Button, Image } from 'react-native';
 import { SelectList } from 'react-native-dropdown-select-list';
 import React, { useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { TextInput } from 'react-native';
@@ -55,7 +55,7 @@ export default function UploadImageScreen({ navigation }) {
     });
 
     if (result.cancelled) {
-      console.log('User cancelled the picker');
+      console.log("User cancelled the picker");
     } else if (!result.cancelled && result.assets?.length === 1) {
       setSelectedImage(result.assets[0]);
       await fbUriToFirebaseStorage(
@@ -65,7 +65,7 @@ export default function UploadImageScreen({ navigation }) {
         myGotUrl,
       );
     } else {
-      console.log('Assets picked:', result.assets);
+      console.log("Assets picked:", result.assets);
     }
   };
 
@@ -87,11 +87,11 @@ export default function UploadImageScreen({ navigation }) {
         <Text style={styles.name}>Nome</Text>
         <Controller
           control={control}
-          name='name'
+          name="name"
           render={({ field: { onChange, onBlur, value } }) => (
             <TextInput
               style={styles.input}
-              placeholder=''
+              placeholder=""
               value={value}
               onChangeText={onChange}
               onBlur={onBlur}
@@ -104,7 +104,7 @@ export default function UploadImageScreen({ navigation }) {
         <SelectList
           setSelected={(val) => setSelectedCategory(val)}
           data={select}
-          save='value'
+          save="value"
           boxStyles={styles.selectBox}
           dropdownStyles={styles.selectDropdown}
         />
@@ -114,11 +114,11 @@ export default function UploadImageScreen({ navigation }) {
         <Text style={styles.description}>Descrição</Text>
         <Controller
           control={control}
-          name='description'
+          name="description"
           render={({ field: { onChange, onBlur, value } }) => (
             <TextInput
               style={styles.input}
-              placeholder=''
+              placeholder=""
               value={value}
               onChangeText={onChange}
               onBlur={onBlur}
@@ -129,10 +129,10 @@ export default function UploadImageScreen({ navigation }) {
         />
         {errors.description?.message && <Text style={styles.labelError}>{errors.description?.message}</Text>}
 
-        <Button title='Selecionar Imagem' onPress={pickImage} />
+        <Button title="Selecionar Imagem" onPress={pickImage} />
         <Controller
           control={control}
-          name='url'
+          name="url"
           render={() => (
             <View>
               {selectedImage ? (
@@ -147,7 +147,7 @@ export default function UploadImageScreen({ navigation }) {
           )}
         />
 
-        <Button title='Upload' onPress={handleSubmit(uploadImage)} />
+        <Button title="Upload" onPress={handleSubmit(uploadImage)} />
         {url && <Text>URL da imagem: {url}</Text>}
       </View>
     </View>
