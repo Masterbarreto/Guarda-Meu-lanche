@@ -41,12 +41,14 @@ export default function UploadImageScreen({ navigation }) {
     console.log('Upload progress:', ratio * 100);
   };
 
-  const myGotUrl = (urlFromFirebase) => {
-    setUrl(urlFromFirebase);
-    console.log('URL da imagem no Firebase:', urlFromFirebase);
-  };
+  
+  const pickImage = async (onChange) => {
+    const myGotUrl = (urlFromFirebase) => {
+      setUrl(urlFromFirebase);
+      onChange(urlFromFirebase);
+      console.log('URL da imagem no Firebase:', urlFromFirebase);
+    };
 
-  const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
@@ -76,9 +78,13 @@ export default function UploadImageScreen({ navigation }) {
       description: data.description,
       imageUrl: url,
     };
+    
+    console.log('myNewData is: ', myNewData);
 
     const itemsRef = collection(db, 'items');
     const newDocRef = await addDoc(itemsRef, myNewData);
+
+    console.log('New document: ', newDocRef.id, newDocRef.path);
   };
 
   return (
@@ -129,23 +135,24 @@ export default function UploadImageScreen({ navigation }) {
         />
         {errors.description?.message && <Text style={styles.labelError}>{errors.description?.message}</Text>}
 
-        <Button title="Selecionar Imagem" onPress={pickImage} />
         <Controller
           control={control}
           name="url"
-          render={() => (
-            <View>
-              {selectedImage ? (
-                <Image
-                  source={{ uri: selectedImage.uri }}
-                  style={styles.image}
-                />
-              ) : (
-                <Text style={styles.alert}>Imagem não carregada ainda...</Text>
-              )}
-            </View>
+          render={({ field: { onChange, onBlur, value } }) => (
+            <Button title="Selecionar Imagem" onPress={() => pickImage(onChange)} />
           )}
-        />
+          />
+
+        <View>
+          {selectedImage ? (
+            <Image
+              source={{ uri: selectedImage.uri }}
+              style={styles.image}
+            />
+          ) : (
+            <Text style={styles.alert}>Imagem não carregada ainda...</Text>
+          )}
+        </View>
 
         <Button title="Upload" onPress={handleSubmit(uploadImage)} />
         {url && <Text>URL da imagem: {url}</Text>}
