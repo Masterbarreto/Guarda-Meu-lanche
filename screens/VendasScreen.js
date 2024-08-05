@@ -14,8 +14,9 @@ export default function VendasScreen({ navigation }) {
     const fetchPopularItems = async () => {
       try {
         const db = getFirestore();
-        const q = query(collection(db, 'items'), where('categories', 'array-contains', 'popular'));
+        const q = query(collection(db, 'items'));
         const snapshot = await getDocs(q);
+        console.log('Number of documents:', snapshot.size);
         const items = snapshot.docs.map(doc => ({
           id: doc.id,
           ...doc.data(),

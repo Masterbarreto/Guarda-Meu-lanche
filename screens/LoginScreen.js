@@ -1,17 +1,13 @@
-//importaçoes do firebase 
-
-import React, { useState } from 'react';
-//import { createUserWithEmailAndPassword } from 'firebase/auth';
-import {  signInWithEmailAndPassword  } from 'firebase/auth';
-import { auth } from '../firebase.js';
-
-//______________//____________________________//
-
+import React from 'react';
+import { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Image, KeyboardAvoidingView } from 'react-native';
 import { AppRegistry } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth, db } from '../firebase'; // Importe sua instância do Firebase
+import { getDoc, doc } from 'firebase/firestore';
 
 const schema = yup.object().shape({
   email: yup.string().email("Email inválido").required("Informe seu email"),
@@ -22,26 +18,39 @@ export default function LoginScreen({ navigation }) {
   const { control, handleSubmit, formState: { errors } } = useForm({
     resolver: yupResolver(schema),
   });
-
-  //one code bit
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-  // Adicionar depois se for adm ir para um tela diferente. 
-    const handleLogin = () => {
-      signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-          const user = userCredential.user;
-          console.log(`Login successful! `);
-          navigation.navigate('Home'); // Navigate to Home screen
-        })
-      .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          console.log(`Login failed: ${errorMessage}`);
-          alert(' Usuário ou senha estão errados');// Show alert
-        });
+  const db = getFirestore();
+  
+  const handleLogin = async (data) => {
+    try {
+      // Validação de entrada
+      if (!data.email || !data.password) {
+        throw new Error('Email e senha são obrigatórios.');
+      }
+  
+      // Fazer login
+      const userCredential = await signInWithEmailAndPassword(auth, data.email, data.password);
+      const user = userCredential.user;
+  
+      // Buscar dados do usuário no Firestore
+      const userDocRef = doc(db, 'users', user.uid);
+      const userDoc = await getDoc(userDocRef);
+      const userData = userDoc.data();
+  
+      // Verificar papel do usuário e navegar
+      if (userData.role === 'Aluno') {
+        navigation.navigate('Home');
+      } else if (userData.role === 'Lojista') {
+        navigation.navigate('UploadImage');
+      } else {
+        console.error('Papel não reconhecido:', userData.role);
+        // Tratar papéis não reconhecidos conforme necessário
+      }
+  
+    } catch (error) {
+      console.error('Erro ao fazer login:', error);
+      // Mostrar mensagens de erro ao usuário
     }
-    
+  };
 
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
@@ -61,13 +70,11 @@ export default function LoginScreen({ navigation }) {
           render={({ field: { onChange, onBlur, value } }) => (
             <TextInput
               placeholder="Ex: Lucas.gomes@gmail.com"
-              value={email}
-              onChangeText={(val) => {
-                setEmail(val);
-              }}
-              onBlur={onBlur} //chamado quando o texttinput e tocado 
-              style={[styles.input,{
-                borderWidth:errors.email && 1,
+              value={value} 
+              onChangeText={onChange} 
+              onBlur={onBlur} 
+              style={[styles.input, {
+                borderWidth: errors.email && 1,
                 borderColor: errors.email && '#ff375b'
               }]}
             />
@@ -82,10 +89,8 @@ export default function LoginScreen({ navigation }) {
           render={({ field: { onChange, onBlur, value } }) => (
             <TextInput
               placeholder="*********"
-              value={password}
-              onChangeText={(val) => {
-                setPassword(val);
-              }}
+              value={value} 
+              onChangeText={onChange} 
               secureTextEntry={true}
               style={[
                 styles.input, {
@@ -102,7 +107,7 @@ export default function LoginScreen({ navigation }) {
         </TouchableOpacity>
       </View>
       <View style={styles.buttonContainer}>
-        <TouchableOpacity onPress={handleLogin} style={styles.button}>
+        <TouchableOpacity onPress={handleSubmit(handleLogin)} style={styles.button}>
           <Text style={styles.buttonText}>Entrar</Text>
         </TouchableOpacity>
 
@@ -113,8 +118,6 @@ export default function LoginScreen({ navigation }) {
     </KeyboardAvoidingView>
   );
 }
-
-
 
 const styles = StyleSheet.create({
     container: {
