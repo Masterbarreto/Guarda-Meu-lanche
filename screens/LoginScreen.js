@@ -6,8 +6,9 @@ import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth, db } from '../firebase'; // Importe sua instância do Firebase
+import { auth } from '../firebase'; // Importe sua instância do Firebase
 import { getDoc, doc } from 'firebase/firestore';
+import { myFS } from '../firebase';
 
 const schema = yup.object().shape({
   email: yup.string().email("Email inválido").required("Informe seu email"),
@@ -18,36 +19,60 @@ export default function LoginScreen({ navigation }) {
   const { control, handleSubmit, formState: { errors } } = useForm({
     resolver: yupResolver(schema),
   });
-  const db = getFirestore();
   
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
   const handleLogin = async (data) => {
     try {
       // Validação de entrada
       if (!data.email || !data.password) {
         throw new Error('Email e senha são obrigatórios.');
       }
-  
+
       // Fazer login
       const userCredential = await signInWithEmailAndPassword(auth, data.email, data.password);
       const user = userCredential.user;
-  
+
       // Buscar dados do usuário no Firestore
-      const userDocRef = doc(db, 'users', user.uid);
+      const userDocRef = doc(myFS, 'users', user.uid);
       const userDoc = await getDoc(userDocRef);
       const userData = userDoc.data();
-  
+
       // Verificar papel do usuário e navegar
-      if (userData.role === 'Aluno') {
-        navigation.navigate('Home');
-      } else if (userData.role === 'Lojista') {
-        navigation.navigate('UploadImage');
+      if (userData && userData.role) {
+        if (userData.role === 'Aluno') {
+          navigation.navigate('Home');
+        } else if (userData.role === 'Lojista') {
+          navigation.navigate('UploadImage');
+        } else {
+          console.error('Papel não reconhecido:', userData.role);
+          // Tratar papéis não reconhecidos conforme necessário
+        }
       } else {
-        console.error('Papel não reconhecido:', userData.role);
-        // Tratar papéis não reconhecidos conforme necessário
+        console.error('Usuário sem papel definido');
+        // Tratar usuários sem papel definido conforme necessário
       }
-  
+
     } catch (error) {
       console.error('Erro ao fazer login:', error);
+      // Mostrar mensagens de erro ao usuário
+    }
+  };
+
+  const getUserRole = async () => {
+    try {
+      const userDocRef = doc(myFS, 'users', auth.currentUser.uid);
+      const userDoc = await getDoc(userDocRef);
+      const userData = userDoc.data();
+      if (userData && userData.role) {
+        return userData.role;
+      } else {
+        console.error('Usuário sem papel definido');
+        // Tratar usuários sem papel definido conforme necessário
+      }
+    } catch (error) {
+      console.error('Erro ao buscar papel do usuário:', error);
       // Mostrar mensagens de erro ao usuário
     }
   };
