@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import { sendPasswordResetEmail } from 'firebase/auth';
 import { auth } from '../firebase';
 
+
 export default function EsqueciaSenha() {
   const navigation = useNavigation();
   const [email, setEmail] = useState('');

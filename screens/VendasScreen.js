@@ -6,6 +6,7 @@ import 'firebase/firestore';
 import { getFirestore, doc, getDoc, collection, query, where } from 'firebase/firestore';
 import { Ionicons } from '@expo/vector-icons';
 import { getDocs } from 'firebase/firestore';
+import { myFS } from '../firebase';
 
 export default function VendasScreen({ navigation }) {
   const [popularItems, setPopularItems] = useState([]);
@@ -13,8 +14,7 @@ export default function VendasScreen({ navigation }) {
   useEffect(() => {
     const fetchPopularItems = async () => {
       try {
-        const db = getFirestore();
-        const q = query(collection(db, 'items'));
+        const q = query(collection(myFS, 'items'));
         const snapshot = await getDocs(q);
         console.log('Number of documents:', snapshot.size);
         const items = snapshot.docs.map(doc => ({

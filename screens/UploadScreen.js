@@ -12,6 +12,7 @@ import { fbUriToFirebaseStorage } from '../funçoes/fbUriToFirebaseStorage';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase.js';
 import { addDoc, collection, getFirestore, setDoc } from 'firebase/firestore';
+import { myFS } from '../firebase';
 //----------------- -------------------------------------------------------------------------------------//
 
 const schema = yup.object({
@@ -31,7 +32,6 @@ export default function UploadImageScreen({ navigation }) {
   const [selectedImage, setSelectedImage] = useState();
   const [url, setUrl] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
-  const db = getFirestore();
 
   const { control, handleSubmit, formState: { errors } } = useForm({
     resolver: yupResolver(schema),
@@ -77,7 +77,7 @@ export default function UploadImageScreen({ navigation }) {
       imageUrl: url,
     };
 
-    const itemsRef = collection(db, 'items');
+    const itemsRef = collection(myFS, 'items');
     const newDocRef = await addDoc(itemsRef, myNewData);
   };
 

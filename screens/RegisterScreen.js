@@ -7,6 +7,7 @@ import * as yup from 'yup';
 import { createUserWithEmailAndPassword} from 'firebase/auth';
 import { auth } from '../firebase.js';
 import { addDoc, collection, doc, getFirestore, setDoc } from 'firebase/firestore';
+import { myFS } from '../firebase';
 
 const schema = yup.object().shape({
   email: yup.string().email("Email inválido").required("Informe seu email"),
@@ -26,7 +27,7 @@ export default function RegisterScreen({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [user, setUser] = useState(null);
-  const db = getFirestore();
+  
 
   const { control, handleSubmit, formState: { errors } } = useForm({
     resolver: yupResolver(schema),
@@ -38,7 +39,7 @@ export default function RegisterScreen({ navigation }) {
       const user = userCredential.user;
 
       // Store user data in Firestore
-      await setDoc(doc(db, "users", user.uid), {
+      await setDoc(doc(myFS, "users", user.uid), {
         email: data.email,
         name: data.name,
         birthDate: data.birthDate,

@@ -4,6 +4,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { getFirestore, doc, getDoc } from 'firebase/firestore';
 import { Ionicons } from '@expo/vector-icons';
+import { myFS } from '../firebase';
 
 export default function FoodPricingScreen({ navigation }) {
 const [user, setUser] = useState(null);
@@ -14,8 +15,7 @@ useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
     setUser(user);
     if (user) {
-        const db = getFirestore();
-        getDoc(doc(db, 'users', user.uid))
+        getDoc(doc(myFS, 'users', user.uid))
         .then((docSnap) => {
             if (docSnap.exists()) {
             setUserName(docSnap.data().name);
