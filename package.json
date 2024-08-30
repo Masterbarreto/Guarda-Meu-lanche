@@ -40,7 +40,10 @@
     "react-native-screens": "3.31.1",
     "react-router-native": "^6.23.0",
     "typescript": "~5.3.3",
-    "yup": "^1.4.0"
+    "yup": "^1.4.0",
+    "react-native-web": "~0.19.10",
+    "react-dom": "18.2.0",
+    "@expo/metro-runtime": "~3.2.3"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"
