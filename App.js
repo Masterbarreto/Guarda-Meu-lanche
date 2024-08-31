@@ -12,12 +12,15 @@ import Verificacao from './screens/verificação';
 import VendasScreen from './screens/VendasScreen.js';
 import NotificationScreen from './screens/Notificacoes';
 import UploadImageScreen from './screens/UploadScreen.js';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 
 const Stack = createStackNavigator();
 
 export default function App() {
   return (
+    
+    <SafeAreaView style={{ flex: 1 }}>
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Login">
         <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
@@ -30,5 +33,6 @@ export default function App() {
         <Stack.Screen name="UploadImage" component={UploadImageScreen} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
+        </SafeAreaView>
   );
 }
