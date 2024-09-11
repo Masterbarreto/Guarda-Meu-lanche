@@ -7,7 +7,8 @@ export const up = function(knex) {
         t.foreign('restaurant_id').references('id').inTable(tableNames.restaurants); // Chave estrangeira para a tabela restaurants
         t.string('name', 100).notNullable();
         t.string('desc', 250).notNullable();
-        t.decimal('price').unsigned()
+        t.string('url', 2048).notNullable();
+        t.decimal('price').unsigned();
 
     });
 };

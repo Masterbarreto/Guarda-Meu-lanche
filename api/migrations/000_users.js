@@ -8,6 +8,7 @@ export const up = function(knex) {
         t.date('age').notNullable()
         t.string('cpf', 11).notNullable()
         t.string('name', 250).notNullable()
+        t.timestamp('createdAt').defaultTo(knex.fn.now());
     })
 };
 

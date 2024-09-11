@@ -25,7 +25,6 @@ export const createValidation = validation((schema) => ({
     })
 }));
 
-
 const createHash = async (password) => {
     try {
         const salt = await bcrypt.genSalt(10);
@@ -40,11 +39,11 @@ const createToken = async (user) => {
     const token = await jwt.sign({
         id: user.id,
         email: user.email,
-        cpf: user.cpf
+        cpf: user.cpf,
+        role: "user"
     }, secret, { expiresIn })
 
     const data = jwt.decode(token)
-    console.log(token.exp, 111)
     return token
 
 }
@@ -54,7 +53,6 @@ const createUser = async (body) => {
     const { password, ...rest } = body
     const { cpf, email } = rest
     const errors = []
-
 
     const checkExists = async (fields, table = "users") => {
         for (const [field, value] of Object.entries(fields)) {
@@ -87,7 +85,8 @@ const createUser = async (body) => {
         await Knex('tokens').insert({
             user_id: id,
             token,
-            expires_at: new Date(tokenDecoded.exp * 1000)
+            expires_at: new Date(tokenDecoded.exp * 1000),
+            type: "user"
         })
     }
     return { token, id }

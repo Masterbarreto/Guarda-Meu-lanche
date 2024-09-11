@@ -1,5 +1,6 @@
 import path from 'path'
-import 'dotenv/config'
+import dotenv from 'dotenv';
+dotenv.config({ path: '../.env' });
 
 const config = {
     production: {
@@ -39,6 +40,9 @@ const config = {
         }
     }
 
+
 }
+
+console.log(config.production)
 config.development = config.production
 export default config
