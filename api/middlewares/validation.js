@@ -5,6 +5,14 @@ const validation = (getAllSchemas) => async (req, res, next) => {
     const schemas = getAllSchemas(schema => schema);
     const errorResult = {};
 
+    if (schemas.params) {
+        const params = req.params;
+        for (const [key, value] of Object.entries(params)) {
+            if (!isNaN(value)) {
+                params[key] = parseInt(value)
+            }
+        }
+    }
     for (const [key, schema] of Object.entries(schemas)) {
         try {
 
@@ -19,7 +27,10 @@ const validation = (getAllSchemas) => async (req, res, next) => {
                     if (errItem.path) {
                         err[errItem.path] = errItem.message;
                     }
+                    err[errItem.type] = errItem.message;
+
                 });
+
                 errorResult[key] = err;
             }
         }

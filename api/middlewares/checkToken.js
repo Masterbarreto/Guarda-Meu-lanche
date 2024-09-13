@@ -45,7 +45,7 @@ export const checkToken = (role) => {
             })
 
         } catch (error) {
-            return res.status(400).json({ message: 'Token inválido!' })
+            return res.status(400).json({ message: 'token inválido!' })
         }
 
     }

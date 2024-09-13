@@ -43,6 +43,5 @@ const config = {
 
 }
 
-console.log(config.production)
 config.development = config.production
 export default config

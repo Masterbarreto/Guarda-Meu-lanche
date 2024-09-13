@@ -1,1 +1,5 @@
 export * from './create.js'
+export * from './createItem.js'
+export * from './getAllItems.js'
+export * from './updateItem.js'
+export * from './deleteItem.js'
