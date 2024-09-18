@@ -15,14 +15,14 @@ export const createValidation = validation((schema) => ({
     body: yup.object().shape({
         email: yup.string().email().required(),
         cpf: yup.string().length(11).required()
-            .test('valid', 'cpf invalido', (val) =>
+            .test('isValid', 'cpf invàlido', (val) =>
                 cpf.isValid(val)),
         password: yup.string().min(6).required(),
         age: yup.string()
             .matches(/^\d{4}-\d{2}-\d{2}$/, 'A data deve estar no formato yyyy-mm-dd')
             .required(),
         name: yup.string().required()
-    })
+    }).noUnknown(true, "chaves adicionais não são permitidas."),
 }));
 
 const createHash = async (password) => {
@@ -76,9 +76,9 @@ const createUser = async (body) => {
 
     const passwordHash = await createHash(password)
 
-    const user = await Knex('users').insert({ ...rest, passwordHash }).returning(['id', 'email', 'cpf'])
-    const token = await createToken(user[0])
-    const id = user[0].id
+    const [user] = await Knex('users').insert({ ...rest, passwordHash }).returning(['id', 'email', 'cpf'])
+    const token = await createToken(user)
+    const id = user.id
 
     if (token) {
         const tokenDecoded = jwt.decode(token)
@@ -94,7 +94,7 @@ const createUser = async (body) => {
 }
 
 export const create = async (req, res) => {
-
+    
     try {
         const userResponse = await createUser(req.body)
         if (userResponse.errors) {
@@ -103,6 +103,7 @@ export const create = async (req, res) => {
         return res.status(StatusCodes.CREATED).json(userResponse)
 
     } catch (e) {
+        console.log(e)
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: e.message });
     }
 };

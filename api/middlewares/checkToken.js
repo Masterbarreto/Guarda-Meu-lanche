@@ -41,11 +41,13 @@ export const checkToken = (role) => {
 
                 }
                 req.credentials = decode
+                console.log(decode);
+                
                 next()
             })
 
         } catch (error) {
-            return res.status(400).json({ message: 'Token inválido!' })
+            return res.status(400).json({ message: 'token inválido!' })
         }
 
     }

@@ -3,5 +3,6 @@ export const tableNames = {
     'restaurants': "restaurants",
     'menu_item': "menu_item",
     'food_order': "food_order",
-    'tokens': "tokens"
+    'tokens': "tokens",
+    'order_items': "order_items"
 }
