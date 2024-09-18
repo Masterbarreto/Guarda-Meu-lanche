@@ -22,7 +22,7 @@ export const createItemValidation = validation((schema) => ({
         .number()
         .required()
         .positive()
-        .test("max-decimals", "o preço precisa ter duas casas decimais"),
+        .test("maxDecimals", "o preço precisa ter duas casas decimais",maxDecimals),
       url: yup.string().url().required(),
     })
     .noUnknown(true, "chaves adicionais não são permitidas."),

@@ -12,21 +12,24 @@ const maxDecimals = (value) => {
 };
 
 export const updateValidation = validation((schema) => ({
-  body: yup.object().shape({
-    name: yup.string().optional(),
-    desc: yup.string().max("250").optional(),
-    price: yup
-      .number()
-      .optional()
-      .positive()
-      .test(
-        "max-decimals",
-        "o preço precisa ter duas casas decimais",
-        (value) => maxDecimals(value, 2)
-      ),
-    url: yup.string().url().optional(),
-  }).noUnknown(true, "chaves adicionais não são permitidas."),
-}))
+  body: yup
+    .object()
+    .shape({
+      name: yup.string().optional(),
+      desc: yup.string().max("250").optional(),
+      price: yup
+        .number()
+        .optional()
+        .positive()
+        .test(
+          "max-decimals",
+          "o preço precisa ter duas casas decimais",
+          (value) => maxDecimals(value, 2)
+        ),
+      url: yup.string().url().optional(),
+    })
+    .noUnknown(true, "chaves adicionais não são permitidas."),
+}));
 
 const updateItem = async (body) => {
   const { id } = body;
@@ -54,16 +57,15 @@ export const update = async (req, res) => {
   const { id, item_id } = req.params;
   const restaurant = await checkRestaurant(id);
 
-  if (restaurant.id !== req.credentials.id) {
-    return res
-      .status(StatusCodes.UNAUTHORIZED)
-      .json({ error: "não autorizado" });
-  }
-
   if (!restaurant) {
     return res
       .status(StatusCodes.NOT_FOUND)
       .json({ error: "lanchonete não encontrada" });
+  }
+  if (restaurant.id !== req.credentials.id) {
+    return res
+      .status(StatusCodes.UNAUTHORIZED)
+      .json({ error: "não autorizado" });
   }
 
   const item = await checkItem(item_id);
