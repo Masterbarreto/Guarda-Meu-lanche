@@ -42,8 +42,18 @@ router.delete(
 
 //#endregion
 
-// Nao implementado
-router.post("/orders", checkToken("user"), orderController.createOrderValidation, orderController.createOrder);
+router.post(
+  "/orders",
+  checkToken("user"),
+  orderController.createOrderValidation,
+  orderController.createOrder
+);
+router.get(
+  "/orders/:order_id",
+  checkToken("user"),
+  orderController.orderByIdValidation,
+  orderController.getOrderById
+);
 // router.delete('/orders',);
 
 export { router };
