@@ -2,6 +2,7 @@ import yup from "yup";
 import validation from "../../middlewares/validation.js";
 import { Knex } from "../../knex/knex.js";
 import { StatusCodes } from "http-status-codes";
+import { handleError } from "../handlers/handleServerError.js";
 
 const checkRestaurant = async (id) => Knex("restaurants").where({ id }).first();
 const checkItem = async (id) => Knex("menu_item").where({ id }).first();
@@ -35,11 +36,7 @@ export const deleteItem = async (req, res) => {
       return res.status(StatusCodes.OK).json({status:'ok'});
     });
   } catch (e) {
-    if (e.status) {
-      return res.status(e.status).json(e);
-    }
-    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-      error: "erro interno do servidor, por favor tente novamente mais tarde.",
-    });
+    return handleError({ r: res, e: error });
+
   }
 };

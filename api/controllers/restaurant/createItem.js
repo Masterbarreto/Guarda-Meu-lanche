@@ -3,6 +3,7 @@ import validation from "../../middlewares/validation.js";
 import { Knex } from "../../knex/knex.js";
 import { StatusCodes } from "http-status-codes";
 import jwt from "jsonwebtoken";
+import { handleError } from "../handlers/handleServerError.js";
 
 const maxDecimals = (value) => {
   if (value === undefined || value === null || value === "") {
@@ -22,7 +23,7 @@ export const createItemValidation = validation((schema) => ({
         .number()
         .required()
         .positive()
-        .test("maxDecimals", "o preço precisa ter duas casas decimais",maxDecimals),
+        .test("maxDecimals", "o preço precisa ter duas casas decimais", maxDecimals),
       url: yup.string().url().required(),
     })
     .noUnknown(true, "chaves adicionais não são permitidas."),
@@ -33,8 +34,6 @@ export const createItemValidation = validation((schema) => ({
     })
     .noUnknown(true, "chaves adicionais não são permitidas."),
 }));
-
-const decodeToken = (token) => jwt.decode(token);
 
 const create = async (body) => {
   const { price, name, desc, url, restaurant_id } = body;
@@ -59,15 +58,11 @@ export const createItem = async (req, res) => {
   const restaurant = await checkRestaurant(id);
 
   if (!restaurant) {
-    return res
-      .status(StatusCodes.NOT_FOUND)
-      .json({ error: "lanchonete não encontrada" });
+    return res.status(StatusCodes.NOT_FOUND).json({ error: "lanchonete não encontrada" });
   }
 
   if (restaurant.id !== req.credentials.id) {
-    return res
-      .status(StatusCodes.UNAUTHORIZED)
-      .json({ error: "não autorizado" });
+    return res.status(StatusCodes.UNAUTHORIZED).json({ error: "não autorizado" });
   }
 
   try {
@@ -76,12 +71,8 @@ export const createItem = async (req, res) => {
       ...req.body,
     });
     return res.status(StatusCodes.CREATED).json(response);
+
   } catch (e) {
-    if (e.status) {
-      return res.status(e.status).json(e);
-    }
-    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-      error: "erro interno do servidor, por favor tente novamente mais tarde.",
-    });
+    return handleError({ r: res, e: error });
   }
 };

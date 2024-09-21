@@ -2,6 +2,8 @@ import { StatusCodes } from "http-status-codes";
 import { Knex } from "../../knex/knex.js";
 import yup from "yup";
 import validation from "../../middlewares/validation.js";
+import { handleError } from "../handlers/handleServerError.js";
+
 
 //#region validation
 const arraySchema = yup.object().shape({
@@ -25,15 +27,6 @@ export const createOrderValidation = validation((schema) => ({
 const checkUser = async (id) => await Knex("users").where({ id }).first();
 const checkRestaurant = async (id) => await Knex("restaurants").where({ id }).first();
 
-const handleError = ({ r, e }) => {
-  console.log(e);
-
-  if (e.status) return r.status(e.status).json(e);
-
-  return r.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-    error: "erro interno do servidor, por favor tente novamente mais tarde.",
-  });
-};
 //#endregion
 
 const validateItems = async (body) => {

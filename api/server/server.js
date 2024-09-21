@@ -1,14 +1,13 @@
 import "dotenv/config";
 import "../shared/yup.js";
 import express from "express";
-import path from "path";
 import { router } from "../routes/router.js";
 import { apiRedirect } from "./apiRedirect.js";
 import swaggerJsdoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 
 const server = express();
-console.log(process.env.DATABASE_ENV);
+
 server.use(express.json());
 server.use(express.urlencoded({ extended: true }));
 server.use(apiRedirect);
@@ -20,9 +19,8 @@ const options = {
     info: {
       title: "Guarda meu lanche Api",
       version: "0.1.0",
-      description:
-        "Uma simples documentação da nossa api.",
-     
+      description: "Uma simples documentação da nossa api.",
+
       contact: {
         name: "elo1lson",
         url: "https://github.com/elo1lson",
@@ -34,10 +32,11 @@ const options = {
       },
     ],
   },
-  apis: ["./routes/*.js"],
+  apis: ["./controllers/*/*.js"],
 };
 
 const specs = swaggerJsdoc(options);
+
 server.use("/docs", swaggerUi.serve, swaggerUi.setup(specs));
 
 export { server };

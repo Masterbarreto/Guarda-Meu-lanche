@@ -2,20 +2,30 @@ import yup from "yup";
 import validation from "../../middlewares/validation.js";
 import { Knex } from "../../knex/knex.js";
 import { StatusCodes } from "http-status-codes";
+import { handleError } from "../handlers/handleServerError.js";
 
-export const createQueryValidation = validation((schema) => ({
-  query: yup
+export const idValidation = validation((schema) => ({
+  params: yup
     .object()
     .shape({
-      name: yup.string().optional(),
+      id: yup.number().optional(),
+      item_id: yup.number().optional(),
     })
     .noUnknown(true, "chaves adicionais não são permitidas."),
 }));
 
-const findItems = async (body) => {
+const findItem = async (id) => {
   try {
-    const items = await Knex("menu_item").where(body).returning("id");
-    return { length: items.length, items };
+    const item = await Knex("menu_item").where({ id }).first().returning("id");
+
+    if (!item) {
+      return {
+        error: "item não encontrado",
+        status: StatusCodes.NOT_FOUND,
+      };
+    }
+
+    return item;
   } catch (e) {
     console.log(e);
     throw {
@@ -27,28 +37,20 @@ const findItems = async (body) => {
 
 const checkRestaurant = async (id) => Knex("restaurants").where({ id }).first();
 
-export const getAllItems = async (req, res) => {
-  const { id } = req.params;
+export const getItem = async (req, res) => {
+  const { id, item_id } = req.params;
+
   const restaurant = await checkRestaurant(id);
 
   if (!restaurant) {
-    return res
-      .status(StatusCodes.NOT_FOUND)
-      .json({ error: "lanchonete não encontrada" });
+    return res.status(StatusCodes.NOT_FOUND).json({ error: "lanchonete não encontrada" });
   }
 
   try {
-    const items = await findItems({
-      restaurant_id: id,
-    });
+    const items = await findItem(item_id);
 
     return res.status(StatusCodes.CREATED).json(items);
   } catch (e) {
-    if (e.status) {
-      return res.status(e.status).json(e);
-    }
-    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-      error: "erro interno do servidor, por favor tente novamente mais tarde.",
-    });
+    return handleError({ r: res, e: error });
   }
 };

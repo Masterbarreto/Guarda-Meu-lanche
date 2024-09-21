@@ -2,6 +2,7 @@ import yup from "yup";
 import validation from "../../middlewares/validation.js";
 import { Knex } from "../../knex/knex.js";
 import { StatusCodes } from "http-status-codes";
+import { handleError } from "../handlers/handleServerError.js";
 
 const maxDecimals = (value) => {
   if (value === undefined || value === null || value === "") {
@@ -21,10 +22,8 @@ export const updateValidation = validation((schema) => ({
         .number()
         .optional()
         .positive()
-        .test(
-          "max-decimals",
-          "o preço precisa ter duas casas decimais",
-          (value) => maxDecimals(value, 2)
+        .test("max-decimals", "o preço precisa ter duas casas decimais", (value) =>
+          maxDecimals(value, 2)
         ),
       url: yup.string().url().optional(),
     })
@@ -58,22 +57,16 @@ export const update = async (req, res) => {
   const restaurant = await checkRestaurant(id);
 
   if (!restaurant) {
-    return res
-      .status(StatusCodes.NOT_FOUND)
-      .json({ error: "lanchonete não encontrada" });
+    return res.status(StatusCodes.NOT_FOUND).json({ error: "lanchonete não encontrada" });
   }
   if (restaurant.id !== req.credentials.id) {
-    return res
-      .status(StatusCodes.UNAUTHORIZED)
-      .json({ error: "não autorizado" });
+    return res.status(StatusCodes.UNAUTHORIZED).json({ error: "não autorizado" });
   }
 
   const item = await checkItem(item_id);
 
   if (!item) {
-    return res
-      .status(StatusCodes.NOT_FOUND)
-      .json({ error: "item não encontrado" });
+    return res.status(StatusCodes.NOT_FOUND).json({ error: "item não encontrado" });
   }
 
   try {
@@ -84,11 +77,6 @@ export const update = async (req, res) => {
 
     return res.status(StatusCodes.OK).json(items);
   } catch (e) {
-    if (e.status) {
-      return res.status(e.status).json(e);
-    }
-    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-      error: "erro interno do servidor, por favor tente novamente mais tarde.",
-    });
+    return handleError({ r: res, e: error });
   }
 };

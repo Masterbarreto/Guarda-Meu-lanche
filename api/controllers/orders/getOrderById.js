@@ -2,6 +2,7 @@ import { StatusCodes } from "http-status-codes";
 import { Knex } from "../../knex/knex.js";
 import yup from "yup";
 import validation from "../../middlewares/validation.js";
+import { handleError } from "../handlers/handleServerError.js";
 
 export const orderByIdValidation = validation((schema) => ({
   params: yup
@@ -13,16 +14,6 @@ export const orderByIdValidation = validation((schema) => ({
 }));
 
 const checkUser = async (id) => await Knex("users").where({ id }).first();
-
-const handleError = ({ r, e }) => {
-  console.log(e);
-
-  if (e.status) return r.status(e.status).json(e);
-
-  return r.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-    error: "erro interno do servidor, por favor tente novamente mais tarde.",
-  });
-};
 
 const gerOrder = async (order_id) => {
   const orderDetails = await Knex("food_order")
