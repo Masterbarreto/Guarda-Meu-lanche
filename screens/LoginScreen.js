@@ -19,7 +19,7 @@ export default function LoginScreen({ navigation }) {
     const { control, handleSubmit, formState: { errors } } = useForm({
         resolver: yupResolver(schema),
     });
-
+// função a ser muda para api 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
@@ -139,9 +139,13 @@ export default function LoginScreen({ navigation }) {
                 <TouchableOpacity onPress={handleSubmit(handleLogin)} style={styles.button}>
                     <Text style={styles.buttonText}>Entrar</Text>
                 </TouchableOpacity>
-
+                
                 <TouchableOpacity onPress={() => navigation.navigate('Criar Conta')} style={styles.buttonOutline}>
-                    <Text style={styles.buttonOutlineText} numberOfLines={2}>Não tem uma conta? Cadastre-se</Text>
+                <View style={styles.rect1}></View>
+                    <Text style={styles.buttonOutlineText} numberOfLines={2}>
+                    Não tem uma conta? Cadastre-se 
+                    </Text>
+                    <View style={styles.rect2}></View>
                 </TouchableOpacity>
             </View>
         </KeyboardAvoidingView>
@@ -155,44 +159,45 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        // backgroundColor: '#211D1D',
-        backgroundColor: '#ffb70a',
+        backgroundColor: '#211D1D',
+        backgroundColor: '#211D1D',
         padding: 1,
     },
     containerLogo: {
         justifyContent: 'center',
         alignItems: 'center',
-        width: 200,
-        height: 200,
+        width: 258,
+        height: 268,
         borderRadius: 300,
-        marginTop: 50,
+        marginTop: - 80,
     },
     containerBottom: {
         backgroundColor: '#211D1D',
-
-        marginHorizontal: 'auto'
-
+        marginHorizontal: 'auto',
+        top: 0,
     },
     inputContainer: {
         flex: 0.6,
-        marginTop: 2,
+        marginTop: 1,
         top: 40,
     },
-    input: {
+    input: { // entro da caixa 
+        width: 342, 
         backgroundColor: 'white',
         paddingHorizontal: 16,
         paddingVertical: 12,
         borderRadius: 12,
         marginTop: 10,
-        height: 45,
-        top: -4,
+        height: 42,
+        top: -2,
     },
-    buttonContainer: {
+    buttonContainer: { //botão de entrar
         width: '60%',
+        color: "#2C5697" , 
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 40,
-        top: 70,
+        marginTop: -170,
+        top: -60,
     },
     button: {
         backgroundColor: '#0782F9',
@@ -210,36 +215,39 @@ const styles = StyleSheet.create({
         textAlign: 'center',
 
     },
-    buttonOutline: {
+    buttonOutline: { //linha 
         backgroundColor: 'transparent',
         color: '#000',
         padding: '0px',
         textAlign: 'center',
         marginTop: 40,
         flexWrap: 'wrap',
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
         top: 10,
     },
     buttonOutlineText: {
-        color: '#0782F9', // Cor do texto do botão de cadastro
+        color: '#0782F9',
         fontWeight: '700',
-        fontSize: 16,
+        fontSize: 11,
         textAlign: 'center',
-        marginHorizontal: 'auto',
-        paddingHorizontal: "auto", // Remova o preenchimento horizontal
-
+        flex: 1, // Ocupa o espaço restante
     },
     forgotPasswordText: {
         color: '#0782F9',
         marginTop: 15,
         alignSelf: 'flex-start', // Alinha o texto à direita
         top: -10,
+        left: 197,
     },
     label: {
         color: '#fff', // Cor branca
         fontSize: 16,
         fontWeight: 'bold',
         marginBottom: 0, // Reduzir a margem inferior para aproximar do TextInput
-        top: 0,
+        top: 6,
+        left: 5,
     },
     labelError: {
         alignSelf: 'flex-start',
@@ -248,14 +256,24 @@ const styles = StyleSheet.create({
     },
     mainBottom: {
         flex: 0.8,
-        backgroundColor: "red",
         width: "100%",
         padding: 1,
-        margin: 1,
+        margin: -120,
         justifyContent: 'center',
         alignItems: 'center',
         borderTopLeftRadius: 25,
         borderTopRightRadius: 25
-
-    }
+    },
+    rect1: {
+            width: 20,
+            height: 1,
+            backgroundColor: "#E6E6E6",
+            marginLeft: 10
+    },
+    rect2: {
+        width: 20,
+        height: 1,
+        backgroundColor: "#E6E6E6",
+        marginLeft: 10
+},
 });
