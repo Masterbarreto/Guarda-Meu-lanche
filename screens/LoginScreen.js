@@ -10,6 +10,9 @@ import { auth } from '../firebase'; // Importe sua instância do Firebase
 import { getDoc, doc } from 'firebase/firestore';
 import { myFS } from '../firebase';
 
+import LogoPrincipal from '../components/LogoPrincipal.js';
+import EmailInput  from '../components/EmailIput.js'
+
 const schema = yup.object().shape({
     email: yup.string().email("Email inválido").required("Informe seu email"),
     password: yup.string().required("Informe sua senha").min(6, "A senha deve ter pelo menos 6 dígitos"),
@@ -19,7 +22,7 @@ export default function LoginScreen({ navigation }) {
     const { control, handleSubmit, formState: { errors } } = useForm({
         resolver: yupResolver(schema),
     });
-// função a ser muda para api 
+// função a ser mudada para api 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
@@ -79,16 +82,13 @@ export default function LoginScreen({ navigation }) {
 
     return (
 
-        <KeyboardAvoidingView style={styles.container} behavior="padding">
+        <KeyboardAvoidingView style={styles.container} behavior="padding" keyboardVerticalOffset={60} >
             <View style={{ top: 10 }}>
-                <Image
-                    source={require("../assets/icon.png")}
-                    style={styles.containerLogo}
-                />
+                <LogoPrincipal />
             </View>
+
             <View style={styles.mainBottom}>
                 <View style={styles.inputContainer}>
-
                     <Text style={styles.label}>Email</Text>
                     {errors.email?.message && <Text style={styles.labelError}>{errors.email?.message}</Text>}
                     <Controller
@@ -107,7 +107,7 @@ export default function LoginScreen({ navigation }) {
                             />
                         )}
                     />
-
+                    
                     <Text style={styles.label}>Senha</Text>
                     {errors.password?.message && <Text style={styles.labelError}>{errors.password?.message}</Text>}
                     <Controller
@@ -162,14 +162,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#211D1D',
         backgroundColor: '#211D1D',
         padding: 1,
-    },
-    containerLogo: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: 258,
-        height: 268,
-        borderRadius: 300,
-        marginTop: - 80,
     },
     containerBottom: {
         backgroundColor: '#211D1D',
@@ -262,7 +254,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         borderTopLeftRadius: 25,
-        borderTopRightRadius: 25
+        borderTopRightRadius: 25,
+        flexGrow: 1,
     },
     rect1: {
             width: 20,

@@ -1,10 +1,22 @@
-import {styled} from "nativewind"; 
-import { View } from "react-native-web";
+import React from 'react';
+import { Image, StyleSheet } from 'react-native';
 
-const ViewStyled = styled(View)
 
-export function LogoPrincipal (){
+export default function LogoPrincipal (){
     return(
-        <Image source={require('../assets/icon.png')} className={'w-258 h-268 flex-shrink-0 rounded-full bg-[url(<path-to-image>)] bg-lightgray bg-cover bg-center no-repeat'} />
+        <Image source={require('../assets/icon.png')} 
+        style={styles.logo} />
     )
 }
+
+const styles = StyleSheet.create({
+    logo: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        top: 1 ,
+        width: 258,
+        height: 268,
+        borderRadius: 300,
+        marginTop:  30,
+    },
+});
