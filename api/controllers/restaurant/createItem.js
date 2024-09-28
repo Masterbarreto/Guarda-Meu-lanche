@@ -2,8 +2,8 @@ import yup from "yup";
 import validation from "../../middlewares/validation.js";
 import { Knex } from "../../knex/knex.js";
 import { StatusCodes } from "http-status-codes";
-import jwt from "jsonwebtoken";
 import { handleError } from "../handlers/handleServerError.js";
+import { checkFoodAreaExists } from "./shared/checkFoodAreaExists.js";
 
 const maxDecimals = (value) => {
   if (value === undefined || value === null || value === "") {
@@ -27,12 +27,7 @@ export const createItemValidation = validation((schema) => ({
       url: yup.string().url().required(),
     })
     .noUnknown(true, "chaves adicionais não são permitidas."),
-  params: yup
-    .object()
-    .shape({
-      id: yup.number().required(),
-    })
-    .noUnknown(true, "chaves adicionais não são permitidas."),
+  
 }));
 
 const create = async (body) => {
@@ -46,23 +41,30 @@ const create = async (body) => {
     console.log(e);
     throw {
       status: StatusCodes.BAD_REQUEST,
-      error: "erro ao criar o item",
+      error: "erro ao criar o item.",
     };
   }
 };
 
-const checkRestaurant = async (id) => Knex("restaurants").where({ id }).first();
+const checkRestaurant = async (id, area_id) => Knex("restaurants").where({ id, area_id }).first();
 
 export const createItem = async (req, res) => {
-  const { id } = req.params;
-  const restaurant = await checkRestaurant(id);
+  const { area_id , id} = req.credentials;
+
+  const area = await checkFoodAreaExists(area_id);
+
+  if (area.error) {
+    return res.status(area.error.status).json(area);
+  }
+
+  const restaurant = await checkRestaurant(id, area_id);
 
   if (!restaurant) {
-    return res.status(StatusCodes.NOT_FOUND).json({ error: "lanchonete não encontrada" });
+    return res.status(StatusCodes.NOT_FOUND).json({ error: "lanchonete não encontrada." });
   }
 
   if (restaurant.id !== req.credentials.id) {
-    return res.status(StatusCodes.UNAUTHORIZED).json({ error: "não autorizado" });
+    return res.status(StatusCodes.UNAUTHORIZED).json({ error: "não autorizado." });
   }
 
   try {
@@ -71,8 +73,7 @@ export const createItem = async (req, res) => {
       ...req.body,
     });
     return res.status(StatusCodes.CREATED).json(response);
-
   } catch (e) {
-    return handleError({ r: res, e: error });
+    return handleError({ r: res, e });
   }
 };

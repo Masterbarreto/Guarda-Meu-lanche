@@ -3,12 +3,12 @@ import validation from "../../middlewares/validation.js";
 import { Knex } from "../../knex/knex.js";
 import { StatusCodes } from "http-status-codes";
 import { handleError } from "../handlers/handleServerError.js";
+import { checkFoodAreaExists } from "./shared/checkFoodAreaExists.js";
 
 export const idValidation = validation((schema) => ({
   params: yup
     .object()
     .shape({
-      id: yup.number().optional(),
       item_id: yup.number().optional(),
     })
     .noUnknown(true, "chaves adicionais não são permitidas."),
@@ -16,7 +16,10 @@ export const idValidation = validation((schema) => ({
 
 const findItem = async (id) => {
   try {
-    const item = await Knex("menu_item").where({ id }).first().returning("id");
+    const item = await Knex("menu_item")
+      .select(["name", "price", "id", "desc",'url'])
+      .where({ id })
+      .first();
 
     if (!item) {
       return {
@@ -27,10 +30,9 @@ const findItem = async (id) => {
 
     return item;
   } catch (e) {
-    console.log(e);
     throw {
       status: StatusCodes.BAD_REQUEST,
-      error: "erro ao buscar os items",
+      error: "erro ao buscar o item.",
     };
   }
 };
@@ -38,12 +40,19 @@ const findItem = async (id) => {
 const checkRestaurant = async (id) => Knex("restaurants").where({ id }).first();
 
 export const getItem = async (req, res) => {
-  const { id, item_id } = req.params;
+  const { item_id } = req.params;
+  const { id, area_id } = req.credentials;
+
+  const result = await checkFoodAreaExists(area_id);
+  if (result.error) {
+    return res.status(result.error.status).json(result);
+  }
 
   const restaurant = await checkRestaurant(id);
-
   if (!restaurant) {
-    return res.status(StatusCodes.NOT_FOUND).json({ error: "lanchonete não encontrada" });
+    return res
+      .status(StatusCodes.NOT_FOUND)
+      .json({ error: "lanchonete não encontrada." });
   }
 
   try {
@@ -51,6 +60,6 @@ export const getItem = async (req, res) => {
 
     return res.status(StatusCodes.CREATED).json(items);
   } catch (e) {
-    return handleError({ r: res, e: error });
+    return handleError({ r: res, e });
   }
 };

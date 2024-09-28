@@ -3,6 +3,7 @@ import validation from "../../middlewares/validation.js";
 import { Knex } from "../../knex/knex.js";
 import { StatusCodes } from "http-status-codes";
 import { handleError } from "../handlers/handleServerError.js";
+import { checkFoodAreaExists } from "./shared/checkFoodAreaExists.js";
 
 const maxDecimals = (value) => {
   if (value === undefined || value === null || value === "") {
@@ -28,6 +29,9 @@ export const updateValidation = validation((schema) => ({
       url: yup.string().url().optional(),
     })
     .noUnknown(true, "chaves adicionais não são permitidas."),
+  params: yup.object().shape({
+    item_id: yup.number(),
+  }),
 }));
 
 const updateItem = async (body) => {
@@ -36,7 +40,7 @@ const updateItem = async (body) => {
     const [item] = await Knex("menu_item")
       .where({ id })
       .update({ ...body })
-      .returning("id");
+      .returning(["name", "desc", "price", "url", "id"]);
     return item;
   } catch (e) {
     console.log(e);
@@ -47,14 +51,23 @@ const updateItem = async (body) => {
   }
 };
 
-const checkRestaurant = async (id) => Knex("restaurants").where({ id }).first();
+const checkRestaurant = async (id, area_id) =>
+  Knex("restaurants").where({ id, area_id }).first();
+
 const checkItem = async (id) => Knex("menu_item").where({ id }).first();
 
 export const update = async (req, res) => {
   const { body } = req;
 
-  const { id, item_id } = req.params;
-  const restaurant = await checkRestaurant(id);
+  const { item_id } = req.params;
+  const { area_id, id } = req.credentials;
+
+  const area = await checkFoodAreaExists(area_id);
+
+  if (area.error) {
+    return res.status(area.error.status).json(area);
+  }
+  const restaurant = await checkRestaurant(id, area_id);
 
   if (!restaurant) {
     return res.status(StatusCodes.NOT_FOUND).json({ error: "lanchonete não encontrada" });
