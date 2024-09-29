@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
         marginBottom: 50,
     },
     inputContainer: {
-        marginTop: -10,
+        marginTop: 0,
     },
     input: {
         width: 342,
@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 16,
         paddingVertical: 12,
         borderRadius: 16,
-        marginTop: 8,
+        
     },
     buttonContainer: {
         marginTop: -30,
@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
     button: {
         backgroundColor: '#2C5697',
         padding: 15,
-        borderRadius: 160,
+        borderRadius: 180,
         alignItems: 'center',
         width: 340,
     },
@@ -204,12 +204,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     rect1: {
-        width: 20,
+        width: 80,
         height: 1,
         backgroundColor: "#E6E6E6",
     },
     rect2: {
-        width: 20,
+        width: 80,
         height: 1,
         backgroundColor: "#E6E6E6",
     },
