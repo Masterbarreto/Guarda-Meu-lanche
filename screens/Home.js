@@ -7,41 +7,15 @@ import { Ionicons } from '@expo/vector-icons';
 import { myFS } from '../firebase';
 
 export default function FoodPricingScreen({ navigation }) {
-const [user, setUser] = useState(null);
-const [userName, setUserName] = useState('');
-
-useEffect(() => {
-    const auth = getAuth();
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-    setUser(user);
-    if (user) {
-        getDoc(doc(myFS, 'users', user.uid))
-        .then((docSnap) => {
-            if (docSnap.exists()) {
-            setUserName(docSnap.data().name);
-            }
-        })
-        .catch((error) => {
-            console.error('Error fetching user data:', error);
-        });
-    }
-    });
-
-    return () => unsubscribe();
-}, []);
-
 return (
     <View style={styles.container}>
     <TouchableOpacity onPress={() => navigation.navigate('Vendas')}>
         <Image
         source={require('../assets/icon.png')}
         style={styles.containerLogo}
-        
+
         />
     </TouchableOpacity>
-    {user ? (
-        <Text style={styles.greeting}>Olá, {userName}</Text>
-    ) : null}
     <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Vendas')}>
         <Icon name="restaurant-menu" size={24} color="#000000" />
         <Text style={styles.buttonText}>Preço de alimentação - P1</Text>
@@ -77,10 +51,10 @@ button: {
     alignItems: 'center',
     backgroundColor: '#fff',
     padding: 16,
-    marginVertical: 8,
-    borderRadius: 8,
+    marginVertical: 10,
+    borderRadius: 20,
     width: '80%',
-    top: -190,
+    top: -120,
     left: 8,
 },
 buttonText: {
@@ -95,7 +69,7 @@ containerLogo: {
     height: 54,
     borderRadius: 300,
     marginTop: 1,
-    top: -190,
+    top: -201,
     left: -140,
 },
 greeting: {

@@ -8,6 +8,7 @@ import { createUserWithEmailAndPassword} from 'firebase/auth';
 import { auth } from '../firebase.js';
 import { addDoc, collection, doc, getFirestore, setDoc } from 'firebase/firestore';
 import { myFS } from '../firebase';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const schema = yup.object().shape({
   email: yup.string().email("Email inválido").required("Informe seu email"),
@@ -67,9 +68,10 @@ export default function RegisterScreen({ navigation }) {
     <KeyboardAvoidingView style={styles.container} behavior="padding">
       <View style={styles.contentContainer}>
         <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-          <Text style={styles.voltar}>Voltar</Text>
+          <Icon name="arrow-back" size={24} color="#FFF" style={styles.voltar} />
         </TouchableOpacity>
-        <Text style={styles.surname}>Pai ou aluno</Text>
+
+        <Text style={styles.label}>Aluno ou Funcionário</Text>
         <SelectList
           setSelected={(val) => setSelected(val)}
           data={select}
@@ -190,153 +192,69 @@ export default function RegisterScreen({ navigation }) {
 }
 
 
-///__________________________________________________________________________________________///
+///__________________________________________________________________________________________//
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#211D1D',
+    backgroundColor: '#1B1B1B',
   },
   contentContainer: {
-    width: '100%',
-    padding: 20,
+    width: '90%', 
+    padding: 11,
+    marginTop: -50, 
   },
   voltar: {
     color: '#FFF',
-    fontSize: 16,
+    fontSize: 24,
+    marginBottom: 20,
   },
   input: {
     backgroundColor: 'white',
     width: '100%',
-    paddingVertical: 11,
-    borderRadius: 21,
-    marginTop: 0,
+    padding: 9,
+    borderRadius: 20, // Rounded corners for inputs
+    paddingHorizontal: 10,
+    marginTop: 1,
+    fontSize: 16,
   },
   label: {
     color: '#FFF',
-    fontSize: 16,
-    alignSelf: 'flex-start',
-    marginLeft: 0,
+    fontSize: 14,
+    marginBottom: 11,
+    marginLeft: 8,
   },
   labelError: {
-    alignSelf: 'flex-start',
     color: "#ff375b",
-    marginBottom: 8,
-    marginLeft: 0,
-  },
-  name: {
-    color: '#FFF', // Texto branco
-    fontSize: 16,
-    marginTop: 20,
-  },
-  surname: {
-    color: '#FFF', // Texto branco
-    fontSize: 16,
-    marginTop: 20,
-  },
-  birthDate: {
-    color: '#FFF', // Texto branco
-    fontSize: 16,
-    marginTop: 20,
-  },
-  email: {
-    color: '#FFF', // Texto branco
-    fontSize: 16,
-    marginTop: 20,
-  },
-  password: {
-    color: '#FFF', // Texto branco
-    fontSize: 16,
-    marginTop: 20,
-  },
-  confirmPassword: {
-    color: '#FFF', // Texto branco
-    fontSize: 16,
-    marginTop: 20,
+    marginBottom: 5,
+    marginLeft: 5,
   },
   button: {
-    backgroundColor: '#0782F9',
+    backgroundColor: '#0782F9', // Blue button
     width: '100%',
-    padding: 15,
-    borderRadius: 15,
+    padding: 16,
+    borderRadius: 30, // Make the button have more rounded corners
     alignItems: 'center',
     marginTop: 20,
   },
   buttonText: {
     color: 'white',
-    fontWeight: '700',
     fontSize: 16,
     textAlign: 'center',
-
   },
   selectBox: {
     backgroundColor: 'white',
     width: '100%',
-    paddingVertical: 14,
-    borderRadius: 21,
-    marginTop: 20,
+    paddingVertical: 15,
+    borderRadius: 20, // Rounded corners for the dropdown
+    marginTop: 10,
   },
   selectDropdown: {
-    borderRadius: 21,
+    borderRadius: 10,
     marginTop: 5,
-    color: '#FFFFFF',
   },
-  alert: {
-    color: '#FFFFFF',
-    marginTop: 20
-  }
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
