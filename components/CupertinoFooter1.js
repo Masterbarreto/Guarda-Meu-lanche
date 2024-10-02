@@ -1,0 +1,117 @@
+import React, { Component } from "react";
+import { StyleSheet, View, TouchableOpacity, Text } from "react-native";
+import MaterialCommunityIconsIcon from "react-native-vector-icons/MaterialCommunityIcons";
+
+function CupertinoFooter1(props) {
+  return (
+    <View style={[styles.container, props.style]}>
+      <TouchableOpacity style={styles.btnWrapper1} onPress={() => props.onPress('Home')} >
+        <MaterialCommunityIconsIcon
+          name="home"
+          style={[
+            styles.icon,
+            {
+              color: props.active === 'home' ? "#FDC242" : "#FFFFFF", // Yellow when active, white otherwise
+            }
+          ]}
+        />
+        <Text
+          style={[
+            styles.btn1Caption,
+            {
+              color: props.active === 'home' ? "#FDC242" : "#FFFFFF"
+            }
+          ]}
+        ></Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.btnWrapper2} onPress={() => props.onPress('Home')}>
+        <MaterialCommunityIconsIcon
+          name="basket" // Assuming 'shopping' refers to a shopping basket icon
+          style={[
+            styles.icon,
+            {
+              color: props.active === 'shopping' ? "#FDC242" : "#FFFFFF",
+            }
+          ]}
+        />
+        <Text
+          style={[
+            styles.btn2Caption,
+            {
+              color: props.active === 'shopping' ? "#FDC242" : "#FFFFFF"
+            }
+          ]}
+        ></Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.btnWrapper3} onPress={() => props.onPress('Home')}>
+        <MaterialCommunityIconsIcon
+          name="account" // 'user' icon replacement
+          style={[
+            styles.icon,
+            {
+              color: props.active === 'user' ? "#FDC242" : "#FFFFFF",
+            }
+          ]}
+        />
+        <Text
+          style={[
+            styles.btn3Caption,
+            {
+              color: props.active === 'user' ? "#FDC242" : "#FFFFFF"
+            }
+          ]}
+        ></Text>
+      </TouchableOpacity>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: '#211D1D', // Black background to match the image
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+    height: 60, // Adjusted height for spacing
+    width: "100%",
+  },
+  btnWrapper1: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  icon: {
+    backgroundColor: "transparent",
+    fontSize: 28, // Increased icon size to match the look
+    opacity: 1,   // Full opacity for clarity
+  },
+  btn1Caption: {
+    fontSize: 12,
+    backgroundColor: "transparent",
+    paddingTop: 4,
+  },
+  btnWrapper2: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  btn2Caption: {
+    fontSize: 12,
+    backgroundColor: "transparent",
+    paddingTop: 4,
+  },
+  btnWrapper3: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  btn3Caption: {
+    fontSize: 12,
+    backgroundColor: "transparent",
+    paddingTop: 4,
+  },
+});
+
+export default CupertinoFooter1;

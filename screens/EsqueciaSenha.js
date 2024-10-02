@@ -28,7 +28,7 @@ export default function EsqueciaSenha() {
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
       <View style={styles.contentContainer}>
-        <TouchableOpacity onPress={() => navigation.navigate('Login')} style={styles.voltar} >
+        <TouchableOpacity onPress={() => navigation.goBack()}  style={styles.voltar} >
           <Icon name="arrow-back" size={24} color="#FFF" />
         </TouchableOpacity>
 

@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView } from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import CupertinoFooter1 from "../components/CupertinoFooter1";
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 import { getFirestore, doc, getDoc, collection, query, where } from 'firebase/firestore';
@@ -69,17 +71,10 @@ export default function VendasScreen({ navigation }) {
       )}
 
       {/* Navegação inferior */}
-      <View style={styles.navigationIcons}>
-        <TouchableOpacity style={styles.navigationIcon} onPress={() => navigation.navigate('Home')}>
-          <Ionicons name="home" size={24} color="#FFC535" />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.navigationIcon}>
-          <Ionicons name="cart" size={24} color="#FFC535" />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.navigationIcon}>
-          <Ionicons name="person" size={24} color="#FFC535" />
-        </TouchableOpacity>
-      </View>
+      <CupertinoFooter1 style={styles.cupertinoFooter1}
+        onPress={(route) => navigation.navigate(route)} 
+      ></CupertinoFooter1>
+
     </ScrollView>
   );
 }
@@ -95,12 +90,12 @@ const styles = StyleSheet.create({
   },
   popularItems: {
     paddingHorizontal: 20,
-    marginTop: 20,
+    marginTop: 30,
   },
   sectionTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    marginBottom: 10,
+    marginBottom: 30,
   },
   itemList: {
     flexDirection: 'row',
@@ -141,5 +136,9 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     backgroundColor: '#fff',
     alignItems: 'center',
-  }
+  },
+  cupertinoFooter1: {
+    height: 61,
+    marginTop: 'auto',
+},
 })

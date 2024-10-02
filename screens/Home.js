@@ -5,18 +5,20 @@ import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { getFirestore, doc, getDoc } from 'firebase/firestore';
 import { Ionicons } from '@expo/vector-icons';
 import { myFS } from '../firebase';
+import CupertinoFooter1 from "../components/CupertinoFooter1";
+
 
 export default function FoodPricingScreen({ navigation }) {
 return (
     <View style={styles.container}>
-    <TouchableOpacity onPress={() => navigation.navigate('Vendas')}>
+    <TouchableOpacity onPress={() => navigation.navigate('UserScreem')}>
         <Image
         source={require('../assets/icon.png')}
         style={styles.containerLogo}
 
         />
     </TouchableOpacity>
-    <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Vendas')}>
+    <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Praças')}>
         <Icon name="restaurant-menu" size={24} color="#000000" />
         <Text style={styles.buttonText}>Preço de alimentação - P1</Text>
     </TouchableOpacity>
@@ -35,6 +37,7 @@ return (
     <View style={styles.notfications}>
         <Ionicons name="notifications-outline" size={24} color="white" onPress={() => navigation.navigate('Notificacoes')} />
     </View>
+    <CupertinoFooter1 style={styles.cupertinoFooter1}onPress={(route) => navigation.navigate(route)} ></CupertinoFooter1>
     </View>
 );
 }
@@ -54,8 +57,12 @@ button: {
     marginVertical: 10,
     borderRadius: 20,
     width: '80%',
-    top: -120,
+    top: 110,
     left: 8,
+},
+cupertinoFooter1: {
+    height: 61,
+    marginTop: 'auto',
 },
 buttonText: {
     color: '#000000',
@@ -69,7 +76,7 @@ containerLogo: {
     height: 54,
     borderRadius: 300,
     marginTop: 1,
-    top: -201,
+    top: 20,
     left: -140,
 },
 greeting: {
@@ -81,13 +88,13 @@ greeting: {
 },
 
 notfication: {
-    top: -485,
+    top: -261,
     left: 172,
     width: "25%",
 },
 
 notfications: {
-    top: -523,
+    top: -301,
     left: 150,
 }
 });
