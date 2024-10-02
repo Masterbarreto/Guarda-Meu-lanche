@@ -2,6 +2,8 @@ import yup from "yup";
 import validation from "../../middlewares/validation.js";
 import { Knex } from "../../knex/knex.js";
 import { StatusCodes } from "http-status-codes";
+import { handleError } from "../handlers/handleServerError.js";
+import { checkFoodAreaExists } from "./shared/checkFoodAreaExists.js";
 
 const maxDecimals = (value) => {
   if (value === undefined || value === null || value === "") {
@@ -21,14 +23,15 @@ export const updateValidation = validation((schema) => ({
         .number()
         .optional()
         .positive()
-        .test(
-          "max-decimals",
-          "o preço precisa ter duas casas decimais",
-          (value) => maxDecimals(value, 2)
+        .test("max-decimals", "o preço precisa ter duas casas decimais", (value) =>
+          maxDecimals(value, 2)
         ),
       url: yup.string().url().optional(),
     })
     .noUnknown(true, "chaves adicionais não são permitidas."),
+  params: yup.object().shape({
+    item_id: yup.number(),
+  }),
 }));
 
 const updateItem = async (body) => {
@@ -37,7 +40,7 @@ const updateItem = async (body) => {
     const [item] = await Knex("menu_item")
       .where({ id })
       .update({ ...body })
-      .returning("id");
+      .returning(["name", "desc", "price", "url", "id"]);
     return item;
   } catch (e) {
     console.log(e);
@@ -48,32 +51,35 @@ const updateItem = async (body) => {
   }
 };
 
-const checkRestaurant = async (id) => Knex("restaurants").where({ id }).first();
+const checkRestaurant = async (id, area_id) =>
+  Knex("restaurants").where({ id, area_id }).first();
+
 const checkItem = async (id) => Knex("menu_item").where({ id }).first();
 
 export const update = async (req, res) => {
   const { body } = req;
 
-  const { id, item_id } = req.params;
-  const restaurant = await checkRestaurant(id);
+  const { item_id } = req.params;
+  const { area_id, id } = req.credentials;
+
+  const area = await checkFoodAreaExists(area_id);
+
+  if (area.error) {
+    return res.status(area.error.status).json(area);
+  }
+  const restaurant = await checkRestaurant(id, area_id);
 
   if (!restaurant) {
-    return res
-      .status(StatusCodes.NOT_FOUND)
-      .json({ error: "lanchonete não encontrada" });
+    return res.status(StatusCodes.NOT_FOUND).json({ error: "lanchonete não encontrada" });
   }
   if (restaurant.id !== req.credentials.id) {
-    return res
-      .status(StatusCodes.UNAUTHORIZED)
-      .json({ error: "não autorizado" });
+    return res.status(StatusCodes.UNAUTHORIZED).json({ error: "não autorizado" });
   }
 
   const item = await checkItem(item_id);
 
   if (!item) {
-    return res
-      .status(StatusCodes.NOT_FOUND)
-      .json({ error: "item não encontrado" });
+    return res.status(StatusCodes.NOT_FOUND).json({ error: "item não encontrado" });
   }
 
   try {
@@ -84,11 +90,6 @@ export const update = async (req, res) => {
 
     return res.status(StatusCodes.OK).json(items);
   } catch (e) {
-    if (e.status) {
-      return res.status(e.status).json(e);
-    }
-    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-      error: "erro interno do servidor, por favor tente novamente mais tarde.",
-    });
+    return handleError({ r: res, e: error });
   }
 };

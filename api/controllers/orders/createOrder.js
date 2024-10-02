@@ -2,6 +2,8 @@ import { StatusCodes } from "http-status-codes";
 import { Knex } from "../../knex/knex.js";
 import yup from "yup";
 import validation from "../../middlewares/validation.js";
+import { handleError } from "../handlers/handleServerError.js";
+
 
 //#region validation
 const arraySchema = yup.object().shape({
@@ -25,27 +27,18 @@ export const createOrderValidation = validation((schema) => ({
 const checkUser = async (id) => await Knex("users").where({ id }).first();
 const checkRestaurant = async (id) => await Knex("restaurants").where({ id }).first();
 
-const handleError = ({ r, e }) => {
-  console.log(e);
-
-  if (e.status) return r.status(e.status).json(e);
-
-  return r.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-    error: "erro interno do servidor, por favor tente novamente mais tarde.",
-  });
-};
 //#endregion
 
 const validateItems = async (body) => {
   const { items, restaurant_id } = body;
-  
+
   const itemsWithError = [];
   const noHasItems = items.map(async (i) => {
     const { menu_item_id } = i;
     const result = await Knex("menu_item")
       .where({ id: menu_item_id, restaurant_id: restaurant_id })
       .first();
-      
+
     if (!result) {
       itemsWithError.push(menu_item_id);
     }
@@ -85,12 +78,15 @@ const createOrderRequest = async (orderRequest) => {
         status: "created",
         total_price,
       })
-      .returning(["id", "status"]);
+      .returning(["id", "status", "order_date", "total_price"]);
 
     await addItems(items, order.id);
-
+    const orderItems = await getOrderItems(order.id)
+    order.items= orderItems
     return order;
   } catch (error) {
+    console.log(error);
+    
     throw {
       status: StatusCodes.BAD_REQUEST,
       error: "erro ao criar o pedido",
@@ -100,12 +96,13 @@ const createOrderRequest = async (orderRequest) => {
 
 const addItems = async (items, order_id) => {
   try {
-    const insertPromises = items.map(async(i) =>
-      await Knex("order_items").insert({
-        order_id,
-        menu_item_id: i.menu_item_id,
-        quantity: i.quantity,
-      })
+    const insertPromises = items.map(
+      async (i) =>
+        await Knex("order_items").insert({
+          order_id,
+          menu_item_id: i.menu_item_id,
+          quantity: i.quantity,
+        })
     );
 
     await Promise.all(insertPromises);
@@ -115,6 +112,13 @@ const addItems = async (items, order_id) => {
       error: "erro ao adicionar os itens ao pedido",
     };
   }
+};
+
+const getOrderItems = async (order_id) => {
+  return await Knex("order_items")
+    .join("menu_item", "order_items.menu_item_id", "menu_item.id")
+    .where("order_items.order_id", order_id)
+    .select("menu_item.name", "menu_item.price", "order_items.quantity","desc","url");
 };
 
 export const createOrder = async (req, res) => {
@@ -140,9 +144,12 @@ export const createOrder = async (req, res) => {
 
     const itemsWithError = await validateItems(body);
     if (itemsWithError.length > 0) {
-      return res
-        .status(StatusCodes.BAD_REQUEST)
-        .json({ error: { message: "items nao encontrados ou não pertencem ao restaurante", items:itemsWithError } });
+      return res.status(StatusCodes.BAD_REQUEST).json({
+        error: {
+          message: "items nao encontrados ou não pertencem ao restaurante",
+          items: itemsWithError,
+        },
+      });
     }
     const order = await createOrderRequest({
       user_id: credentials.id,

@@ -3,47 +3,133 @@ import {
   userController,
   restaurantController,
   orderController,
+  foodAreaController,
+  termsController,
 } from "../controllers/index.js";
 import { checkToken } from "../middlewares/checkToken.js";
+
 const router = Router();
 
+//#region users
+
+/**
+ * @swagger
+ * tags:
+ *   name: Users
+ *   description: Operações relacionadas a usuários
+ */
+
 router.post("/users", userController.createValidation, userController.create);
-router.delete("/users", userController.create);
+router.post("/users/login", userController.loginValidation, userController.login);
+router.get("/users/profile", checkToken("user"), userController.getProfile);
+router.patch(
+  "/users",
+  checkToken("user"),
+  userController.updateValidation,
+  userController.updateUser
+);
+router.get(
+  "/users/:user_id",
+  userController.getByIdValidation,
+  userController.getUserById
+);
+router.delete("/users/", checkToken("user"), userController.deleteUser);
+
+router.post(
+  "/users/verify/",
+  userController.verifyQueryValidation,
+  userController.verifyUser
+);
+
+//#endregion
+
+//#region area
+
+router.post("/area/", foodAreaController.createValidation, foodAreaController.create);
+router.get("/area/", foodAreaController.getAll);
+router.get("/area/:area_id/restaurants", foodAreaController.getAllRestaurants);
+router.get(
+  "/area/:area_id/restaurants/:restaurant_id",
+  foodAreaController.createRestaurantValidation,
+  foodAreaController.getRestaurant
+);
+router.get(
+  "/area/:area_id/restaurants/:restaurant_id/items",
+  foodAreaController.createRestaurantValidation,
+  foodAreaController.getRestaurantItems
+);
+router.get(
+  "/area/:area_id/restaurants/:restaurant_id/items/:item_id",
+  foodAreaController.restaurantGetItemValidation,
+  foodAreaController.getRestaurantItemById
+);
+
+//#endregion
+
+//#region restaurants
 
 router.post(
   "/restaurants",
   restaurantController.createValidation,
   restaurantController.create
 );
-
-//#region restaurants
-
 router.get(
-  "/restaurants/:id/items",
-  restaurantController.createQueryValidation,
+  "/restaurants/profile",
+  checkToken("restaurant"),
+  restaurantController.getProfile
+);
+router.get(
+  "/restaurants/items",
+  checkToken("restaurant"),
   restaurantController.getAllItems
 );
 router.post(
-  "/restaurants/:id/items",
+  "/restaurants/items",
   checkToken("restaurant"),
   restaurantController.createItemValidation,
   restaurantController.createItem
 );
 router.patch(
-  "/restaurants/:id/items/:item_id",
+  "/restaurants/items/:item_id",
   checkToken("restaurant"),
+  restaurantController.updateValidation,
   restaurantController.update
 );
 router.delete(
-  "/restaurants/:id/items/:item_id",
+  "/restaurants/items/:item_id",
   checkToken("restaurant"),
+  restaurantController.deleteValidation,
   restaurantController.deleteItem
+);
+router.get(
+  "/restaurants/items/:item_id",
+  checkToken("restaurant"),
+  restaurantController.idValidation,
+  restaurantController.getItem
 );
 
 //#endregion
 
-// Nao implementado
-router.post("/orders", checkToken("user"), orderController.createOrderValidation, orderController.createOrder);
-// router.delete('/orders',);
+//#region orders
+
+router.post(
+  "/orders",
+  checkToken("user"),
+  orderController.createOrderValidation,
+  orderController.createOrder
+);
+router.get(
+  "/orders/:order_id",
+  checkToken("user"),
+  orderController.orderByIdValidation,
+  orderController.getOrderById
+);
+
+//#endregion
+
+//#region terms
+
+router.get("/terms", termsController.terms);
+//#endregion
 
 export { router };

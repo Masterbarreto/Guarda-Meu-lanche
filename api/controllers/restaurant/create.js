@@ -2,8 +2,9 @@ import yup from "yup";
 import validation from "../../middlewares/validation.js";
 import { Knex } from "../../knex/knex.js";
 import { StatusCodes } from "http-status-codes";
-import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { handleError } from "../handlers/handleServerError.js";
+import { checkFoodAreaExists } from "./shared/checkFoodAreaExists.js";
 
 const secret = process.env.JWT_SECRET;
 const expiresIn = process.env.JWT_EXPIRATION;
@@ -13,6 +14,7 @@ export const createValidation = validation((schema) => ({
     .object()
     .shape({
       name: yup.string().required().max(100),
+      area_id: yup.number().required().positive(),
     })
     .noUnknown(true, "chaves adicionais não são permitidas."),
 }));
@@ -23,6 +25,7 @@ const createToken = async (restaurant) => {
       id: restaurant.id,
       name: restaurant.name,
       role: "restaurant",
+      area_id: restaurant.area_id,
     },
     secret,
     { expiresIn }
@@ -30,15 +33,17 @@ const createToken = async (restaurant) => {
 
   return token;
 };
-const createRestaurant = async (body) => {
+const createRestaurant = async (body, area_id) => {
   const { name } = body;
 
   try {
     const [restaurant] = await Knex("restaurants")
-      .insert({ name })
-      .returning("id");
+      .insert({ name, area_id })
+      .returning(["id", "area_id"]);
+
     const { id } = restaurant;
-    const token = await createToken({ id, name });
+
+    const token = await createToken({ id, name, area_id });
     const tokenDecoded = jwt.decode(token);
 
     await Knex("tokens")
@@ -49,8 +54,10 @@ const createRestaurant = async (body) => {
         expires_at: new Date(tokenDecoded.exp * 1000),
       })
       .returning(["id", "expires_at"]);
+
     return {
-      id,
+      id: restaurant.id,
+      area_id: restaurant.area_id,
       token,
       expires_at: new Date(tokenDecoded.exp * 1000),
     };
@@ -58,24 +65,23 @@ const createRestaurant = async (body) => {
     console.log(e);
     throw {
       status: StatusCodes.BAD_REQUEST,
-      error: "erro ao tentar criar um restaurante",
+      error: "erro ao tentar criar uma lanchonete.",
     };
   }
 };
 
 export const create = async (req, res) => {
   try {
-    const response = await createRestaurant(req.body);
+    const area_id = req.body.area_id;
+    const result = await checkFoodAreaExists(area_id, res);
+
+    if (result.error) {
+      return res.status(result.error.status).json(result);
+    }
+
+    const response = await createRestaurant(req.body, area_id);
     return res.status(StatusCodes.CREATED).json(response);
   } catch (e) {
-    if (e.status) {
-      return res.status(e.status).json(e);
-    }
-    return res
-      .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({
-        error:
-          "erro interno do servidor, por favor tente novamente mais tarde.",
-      });
+    return handleError({ r: res, e });
   }
 };

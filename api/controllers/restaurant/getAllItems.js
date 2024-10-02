@@ -1,40 +1,36 @@
-import yup from "yup";
-import validation from "../../middlewares/validation.js";
 import { Knex } from "../../knex/knex.js";
 import { StatusCodes } from "http-status-codes";
+import { handleError } from "../handlers/handleServerError.js";
+import { checkFoodAreaExists } from "./shared/checkFoodAreaExists.js";
 
-export const createQueryValidation = validation((schema) => ({
-  query: yup
-    .object()
-    .shape({
-      name: yup.string().optional(),
-    })
-    .noUnknown(true, "chaves adicionais não são permitidas."),
-}));
-
-const findItems = async (body) => {
+const findItems = async (query) => {
   try {
-    const items = await Knex("menu_item").where(body).returning("id");
+    const items = await Knex("menu_item").select("*").where(query).returning("id");
     return { length: items.length, items };
   } catch (e) {
-    console.log(e);
     throw {
       status: StatusCodes.BAD_REQUEST,
-      error: "erro ao buscar os items",
+      error: "erro ao buscar os items.",
     };
   }
 };
 
-const checkRestaurant = async (id) => Knex("restaurants").where({ id }).first();
+const checkRestaurant = async (id, area_id) =>
+  Knex("restaurants").where({ id, area_id }).first();
 
 export const getAllItems = async (req, res) => {
-  const { id } = req.params;
-  const restaurant = await checkRestaurant(id);
+  const { id, area_id } = req.credentials;
 
+  const result = await checkFoodAreaExists(area_id);
+  if (result.error) {
+    return res.status(result.error.status).json(result);
+  }
+
+  const restaurant = await checkRestaurant(id, area_id);
   if (!restaurant) {
     return res
       .status(StatusCodes.NOT_FOUND)
-      .json({ error: "lanchonete não encontrada" });
+      .json({ error: "lanchonete não encontrada." });
   }
 
   try {
@@ -44,11 +40,6 @@ export const getAllItems = async (req, res) => {
 
     return res.status(StatusCodes.CREATED).json(items);
   } catch (e) {
-    if (e.status) {
-      return res.status(e.status).json(e);
-    }
-    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-      error: "erro interno do servidor, por favor tente novamente mais tarde.",
-    });
+    return handleError({ r: res, e });
   }
 };
