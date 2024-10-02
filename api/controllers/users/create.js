@@ -5,6 +5,47 @@ import { StatusCodes } from "http-status-codes";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { cpf } from "cpf-cnpj-validator";
+import { generateCode } from "../../shared/generatecode.js";
+
+/**
+ * @swagger
+ * /users:
+ *   post:
+ *     summary: Cria um novo usuário
+ *     tags: [Users]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *               cpf:
+ *                 type: string
+ *               age:
+ *                 type: string
+ *                 format: date
+ *                 example: "2000-09-30"
+ *     responses:
+ *       201:
+ *         description: Usuário criado com sucesso
+ *         content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                  id:
+ *                    type: string
+ *                    example: "1"
+ *       400:
+ *         description: Dados inválidos
+ */
 
 const secret = process.env.JWT_SECRET;
 const expiresIn = process.env.JWT_EXPIRATION;
@@ -29,6 +70,7 @@ export const createValidation = validation((schema) => ({
     })
     .noUnknown(true, "chaves adicionais não são permitidas."),
 }));
+const code = generateCode();
 
 const createHash = async (password) => {
   try {
@@ -47,6 +89,8 @@ const createToken = async (user) => {
       email: user.email,
       cpf: user.cpf,
       role: "user",
+      verified: false,
+      code,
     },
     secret,
     { expiresIn }
@@ -55,43 +99,6 @@ const createToken = async (user) => {
   return token;
 };
 // #endregion
-
-
-/**
- * 
- * @swagger
- * components:
- *   schemas:
- *     S:
- *       type: object
- *       required:
- *         - name
- *         - cpf
- *         - email
- *       properties:
- *         id:
- *           type: string
- *           description: The auto-generated id of the book
- *         name:
- *           type: string
- *           description: Nome do usuario
- *         cpf:
- *           type: string
- *           description: Cpf do usuario
- *         email:
- *           type: string
- *           description: Whether you have email reading the book
- *         createdAt:
- *           type: string
- *           format: date
- *           description: The date the book was added
- *       example:
- *         id: d5fE_asz
- *         name: The New Turing Omnibus
- *         cpf: Alexander K. Dewdney
- *         finished: false
- *         createdAt: 2020-03-10T04:05:06.157Z
- */
 
 const createUser = async (body) => {
   const { password, ...rest } = body;
@@ -118,22 +125,26 @@ const createUser = async (body) => {
 
   const passwordHash = await createHash(password);
 
+  const validation_code = code;
+
   const [user] = await Knex("users")
-    .insert({ ...rest, passwordHash })
-    .returning(["id", "email", "cpf"]);
-  const token = await createToken(user);
+    .insert({ ...rest, passwordHash, validation_code })
+    .returning(["id", "email", "cpf", "validation_code"]);
+
+  // const token = await createToken(user);
+
   const id = user.id;
 
-  if (token) {
-    const tokenDecoded = jwt.decode(token);
-    await Knex("tokens").insert({
-      user_id: id,
-      token,
-      expires_at: new Date(tokenDecoded.exp * 1000),
-      type: "user",
-    });
-  }
-  return { token, id };
+  // if (token) {
+  //   const tokenDecoded = jwt.decode(token);
+  //   await Knex("tokens").insert({
+  //     user_id: id,
+  //     token,
+  //     expires_at: new Date(tokenDecoded.exp * 1000),
+  //     type: "user",
+  //   });
+  // }
+  return { id, validation_code };
 };
 
 export const create = async (req, res) => {

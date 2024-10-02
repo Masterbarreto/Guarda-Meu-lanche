@@ -2,7 +2,7 @@ import { Knex } from "../../knex/knex.js";
 import { StatusCodes } from "http-status-codes";
 
 const getUser = async (id) =>
-  Knex("users").select("email", "name", "id", "createdAt", "age").where({ id }).first();
+  Knex("users").select("email", "name", "id", "created_at", "age").where({ id }).first();
 
 const handleError = ({ r, e }) => {
 

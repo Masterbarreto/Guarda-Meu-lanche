@@ -5,7 +5,7 @@
   "scripts": {
     "start": "yarn  nodemon ./app.js",
     "knex:migrate": "knex --knexfile ./knex/knexfile.js migrate:latest --env production",
-    "knex:rollback": "knex  --env-file=.env --knexfile ./knex/knexfile.js migrate:rollback --env production",
+    "knex:rollback": "knex --knexfile ./knex/knexfile.js migrate:rollback --env production",
     "knex:reset": "knex --knexfile ./knex/knexfile.js migrate:rollback --env production && knex --knexfile ./knex/knexfile.js migrate:latest --env production",
     "": "knex --knexfile ./knex/knexfile.js migrate:make a"
   },
