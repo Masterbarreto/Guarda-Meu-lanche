@@ -5,3 +5,5 @@ export * from "./getUserById.js";
 export * from "./delete.js";
 export * from "./verifyUser.js"
 export * from "./login.js"
+export * from "./getOrders.js"
+export * from "./getOrderById.js"

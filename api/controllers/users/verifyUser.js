@@ -3,6 +3,7 @@ import validation from "../../middlewares/validation.js";
 import { handleError } from "../handlers/handleServerError.js";
 import { Knex } from "../../knex/knex.js";
 import { StatusCodes } from "http-status-codes";
+import path from "path";
 
 export const verifyQueryValidation = validation((schema) => ({
   query: yup
@@ -42,21 +43,17 @@ export const verifyUser = async (req, res) => {
 
     const user = await checkUser(user_id);
     if (!user) {
-      return res.status(StatusCodes.NOT_FOUND).json({
-        error: {
-          message: "usuario não encontrado ou já verificado.",
-          status: StatusCodes.NOT_FOUND,
-        },
-      });
+      return res.sendFile(path.resolve("public", "pages", "user_not_found.html"));
     }
 
     const userValidated = await validateCode(user_id, code);
     if (userValidated.error) {
-      return res.status(userValidated.error.status).json(userValidated);
+
+      return res.sendFile(path.resolve("public", "pages", "user_not_found.html"));
     }
 
-    return res.status(StatusCodes.OK).json(userValidated);
+    return res.sendFile(path.resolve("public", "pages", "verified.html"));
   } catch (e) {
-    handleError({ r: res, e });
+    return res.sendFile(path.resolve("public", "pages", "500.html"));
   }
 };

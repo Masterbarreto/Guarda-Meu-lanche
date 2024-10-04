@@ -2,7 +2,6 @@ use std::net::SocketAddr;
 use tokio;
 mod routes;
 use dotenv::dotenv;
-use std::env;
 
 #[tokio::main]
 async fn main() {
