@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { StyleSheet, View, TouchableOpacity, Text } from "react-native";
 import MaterialCommunityIconsIcon from "react-native-vector-icons/MaterialCommunityIcons";
 
-function CupertinoFooter1(props) {
+export default function CupertinoFooter1(props) {
   return (
     <View style={[styles.container, props.style]}>
       <TouchableOpacity style={styles.btnWrapper1} onPress={() => props.onPress('Home')} >
@@ -45,7 +45,7 @@ function CupertinoFooter1(props) {
         ></Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.btnWrapper3} onPress={() => props.onPress('Home')}>
+      <TouchableOpacity style={styles.btnWrapper3} onPress={() => props.onPress('UserScreem')}>
         <MaterialCommunityIconsIcon
           name="account" // 'user' icon replacement
           style={[
@@ -70,12 +70,13 @@ function CupertinoFooter1(props) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#211D1D', // Black background to match the image
+    //backgroundColor: '#211D1D', // Black background to match the image
     flexDirection: "row",
     justifyContent: "space-around",
     alignItems: "center",
     height: 60, // Adjusted height for spacing
     width: "100%",
+    paddingHorizontal: 0,
   },
   btnWrapper1: {
     flex: 1,
@@ -106,6 +107,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+
   },
   btn3Caption: {
     fontSize: 12,
@@ -114,4 +116,3 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CupertinoFooter1;
