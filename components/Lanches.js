@@ -15,7 +15,7 @@ export default function CupertinoFooter1(props) {
                     <Text style={styles.lancheName}>Nome do Lanche</Text>
                     <Text style={styles.lancheDescription}>descrição</Text>
                 </View>
-                <TouchableOpacity style={styles.categoryButton} onPress={() => navigation.navigate('home')}>
+                <TouchableOpacity style={styles.categoryButton} onPress={() => navigation.navigate('Produto')}>
                     <MaterialCommunityIconsIcon name="plus" />
                 </TouchableOpacity>
             </View>
@@ -27,8 +27,11 @@ export default function CupertinoFooter1(props) {
                     <Text style={styles.lancheName}>Nome do Lanche</Text>
                     <Text style={styles.lancheDescription}>descrição</Text>
                 </View>
-                <TouchableOpacity style={styles.categoryButton} onPress={() => navigation.navigate('home')}>
-                    <MaterialCommunityIconsIcon name="plus" />
+                <TouchableOpacity style={styles.categoryButton} onPress={() => navigation.navigate('Produto')}>
+                <MaterialCommunityIconsIcon name="plus" />
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.l} onPress={() => navigation.navigate('Produto')}>
+                    
                 </TouchableOpacity>
             </View>
 
@@ -39,7 +42,7 @@ export default function CupertinoFooter1(props) {
                     <Text style={styles.lancheName}>Nome do Lanche</Text>
                     <Text style={styles.lancheDescription}>descrição</Text>
                 </View>
-                <TouchableOpacity style={styles.categoryButton} onPress={() => navigation.navigate('home')}>
+                <TouchableOpacity style={styles.categoryButton} onPress={() => navigation.navigate('Produto')}>
                     <MaterialCommunityIconsIcon name="plus" />
                 </TouchableOpacity>
             </View>

@@ -21,7 +21,7 @@ export default function PraçasScreen({ navigation }) {
                 <Text style={styles.buttonText}>Loja A</Text>
             </TouchableOpacity>
             
-            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('UploadImage')}>
+            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Vendas')}>
                 <Icon name="fastfood" size={24} color="#000000" />
                 <Text style={styles.buttonText}>Loja B</Text>
             </TouchableOpacity>

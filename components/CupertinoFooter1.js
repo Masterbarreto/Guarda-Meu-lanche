@@ -5,65 +5,65 @@ import MaterialCommunityIconsIcon from "react-native-vector-icons/MaterialCommun
 export default function CupertinoFooter1(props) {
   return (
     <View style={[styles.container, props.style]}>
-      <TouchableOpacity style={styles.btnWrapper1} onPress={() => props.onPress('Home')} >
-        <MaterialCommunityIconsIcon
-          name="home"
-          style={[
-            styles.icon,
-            {
-              color: props.active === 'home' ? "#FDC242" : "#FFFFFF", // Yellow when active, white otherwise
-            }
-          ]}
-        />
-        <Text
-          style={[
-            styles.btn1Caption,
-            {
-              color: props.active === 'home' ? "#FDC242" : "#FFFFFF"
-            }
-          ]}
-        ></Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity style={styles.btnWrapper2} onPress={() => props.onPress('Home')}>
-        <MaterialCommunityIconsIcon
-          name="basket" // Assuming 'shopping' refers to a shopping basket icon
-          style={[
-            styles.icon,
-            {
-              color: props.active === 'shopping' ? "#FDC242" : "#FFFFFF",
-            }
-          ]}
-        />
-        <Text
-          style={[
-            styles.btn2Caption,
-            {
-              color: props.active === 'shopping' ? "#FDC242" : "#FFFFFF"
-            }
-          ]}
-        ></Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity style={styles.btnWrapper3} onPress={() => props.onPress('UserScreem')}>
-        <MaterialCommunityIconsIcon
-          name="account" // 'user' icon replacement
-          style={[
-            styles.icon,
-            {
-              color: props.active === 'user' ? "#FDC242" : "#FFFFFF",
-            }
-          ]}
-        />
-        <Text
-          style={[
-            styles.btn3Caption,
-            {
-              color: props.active === 'user' ? "#FDC242" : "#FFFFFF"
-            }
-          ]}
-        ></Text>
-      </TouchableOpacity>
+      <View style={styles.iconContainer}>
+        <TouchableOpacity style={styles.btnWrapper1} onPress={() => props.onPress('Home')} >
+          <MaterialCommunityIconsIcon
+            name="home"
+            style={[
+              styles.icon,
+              {
+                color: props.active === 'home' ? "#FDC242" : "#FFFFFF",
+              }
+            ]}
+          />
+          <Text
+            style={[
+              styles.btn1Caption,
+              {
+                color: props.active === 'home' ? "#FDC242" : "#FFFFFF"
+              }
+            ]}
+          ></Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.btnWrapper2} onPress={() => props.onPress('Carrinho')}>
+          <MaterialCommunityIconsIcon
+            name="basket"
+            style={[
+              styles.icon,
+              {
+                color: props.active === 'shopping' ? "#FDC242" : "#FFFFFF",
+              }
+            ]}
+          />
+          <Text
+            style={[
+              styles.btn2Caption,
+              {
+                color: props.active === 'shopping' ? "#FDC242" : "#FFFFFF"
+              }
+            ]}
+          ></Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.btnWrapper3} onPress={() => props.onPress('User Screem')}>
+          <MaterialCommunityIconsIcon
+            name="account"
+            style={[
+              styles.icon,
+              {
+                color: props.active === 'user' ? "#FDC242" : "#FFFFFF",
+              }
+            ]}
+          />
+          <Text
+            style={[
+              styles.btn3Caption,
+              {
+                color: props.active === 'user' ? "#FDC242" : "#FFFFFF"
+              }
+            ]}
+          ></Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
@@ -77,6 +77,12 @@ const styles = StyleSheet.create({
     height: 60, // Adjusted height for spacing
     width: "100%",
     paddingHorizontal: 0,
+  },
+  iconContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 80, // ajuste a distância entre os ícones
   },
   btnWrapper1: {
     flex: 1,
@@ -92,27 +98,30 @@ const styles = StyleSheet.create({
     fontSize: 12,
     backgroundColor: "transparent",
     paddingTop: 4,
+    marginHorizontal: 5,
   },
   btnWrapper2: {
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+    marginHorizontal: 5,
   },
   btn2Caption: {
     fontSize: 12,
     backgroundColor: "transparent",
     paddingTop: 4,
+    marginHorizontal: 1,
   },
   btnWrapper3: {
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-
+    marginHorizontal: 5,
   },
   btn3Caption: {
     fontSize: 12,
     backgroundColor: "transparent",
     paddingTop: 4,
+    marginHorizontal: 5,
   },
 });
-

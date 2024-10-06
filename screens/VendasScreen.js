@@ -1,18 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import CupertinoFooter1 from "../components/CupertinoFooter1";
 import Lanches from '../components/Lanches';
+
 export default function VendasScreen({ navigation }) {
   return (
-    <ScrollView style={styles.container}>
+    <View style={styles.container}>
       {/* Imagem de destaque */}
       <Image source={require('../assets/image.png')} style={styles.featuredImage} />
       
       {/* Container branco */}
       <View style={styles.whiteContainer}>
         {/* Nome da praça */}
-        <Text style={styles.title}>Nome da luncheonette</Text>
+        <Text style={styles.title}>Nome da loja</Text>
         <View style={styles.statusBar} />
 
         {/* Categorias (opcional) */}
@@ -27,7 +28,7 @@ export default function VendasScreen({ navigation }) {
             <Text style={styles.categoryText}>Bebidas</Text>
           </TouchableOpacity>
         </View>
-        {/* Seção "Mais Pedidos" */}
+        {/* Lanches */}
         <Lanches onPress={(route) => navigation.navigate(route)} />
         
       </View>
@@ -36,7 +37,7 @@ export default function VendasScreen({ navigation }) {
       <CupertinoFooter1 style={styles.cupertinoFooter1}
         onPress={(route) => navigation.navigate(route)} 
       ></CupertinoFooter1>
-    </ScrollView>
+    </View>
   );
 }
 
