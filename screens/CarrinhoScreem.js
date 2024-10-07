@@ -14,11 +14,16 @@ export default function CarrinhoScreem({ navigation }) {
     return (
         <KeyboardAvoidingView style={styles.container} behavior="padding">
             <View style={styles.lancheContainer}>
-                <TouchableOpacity onPress={() => navigation.goBack()} style={styles.voltar}>
-                    <Icon name="arrow-back" size={24} color="black" />
-                    <Text style={styles.Carrinho}>Carrinho </Text>
-                    <Text style={styles.Limpar}>Limpar </Text>
-                </TouchableOpacity>
+                {/* Header with back button, title, and "Limpar" */}
+                <View style={styles.headerContainer}>
+                    <TouchableOpacity onPress={() => navigation.goBack()} style={styles.voltar}>
+                        <Icon name="arrow-back" size={24} color="black" />
+                    </TouchableOpacity>
+                    <Text style={styles.carrinhoText}>Carrinho</Text>
+                    <TouchableOpacity>
+                        <Text style={styles.limparText}>Limpar</Text>
+                    </TouchableOpacity>
+                </View>
 
                 {/* Status Bar */}
                 <View style={styles.statusBar} />
@@ -42,7 +47,9 @@ export default function CarrinhoScreem({ navigation }) {
                 </View>
 
                 <View style={styles.statusBar4} />
+                <TouchableOpacity onPress={() => navigation.goBack()} style={styles.voltar}>
                 <Text style={styles.maisitens}>Adicionar mais itens</Text>
+                </TouchableOpacity>
                 <View style={styles.statusBar4} />
 
                 {/* Controle de Quantidade */}
@@ -58,7 +65,7 @@ export default function CarrinhoScreem({ navigation }) {
                 </View>
 
                 {/* Botão de Reservar */}
-                <TouchableOpacity style={styles.button} onPress={() => alert('Reserva confirmada!')}>
+                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Confirmaçao')}>
                     <Text style={styles.buttonText}>Reservar</Text>
                 </TouchableOpacity>
 
@@ -92,18 +99,22 @@ const styles = StyleSheet.create({
         shadowRadius: 10,
         elevation: 5,
     },
-    voltar: {
+    headerContainer: {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
         marginBottom: 20,
     },
-    Carrinho: {
+    voltar: {
+        marginRight: 10,
+    },
+    carrinhoText: {
         fontSize: 18,
         fontWeight: 'bold',
-        marginLeft: 10,
+        textAlign: 'center',
+        flex: 1,
     },
-    Limpar: {
+    limparText: {
         fontSize: 16,
         color: '#FF0000',
     },
@@ -227,6 +238,6 @@ const styles = StyleSheet.create({
         fontSize: 16,
     },
     cupertinoFooter1: {
-        marginTop: 80,
+        marginTop: 70,
     },
 });
