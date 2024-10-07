@@ -12,6 +12,14 @@ import Verificacao from './screens/verificação';
 import VendasScreen from './screens/VendasScreen.js';
 import NotificationScreen from './screens/Notificacoes';
 import UploadImageScreen from './screens/UploadScreen.js';
+import PraçasScreen from './screens/PraçasScreen.js'
+import CupertinoFooter1 from './components/CupertinoFooter1.js'
+import UserScreem  from './screens/UserScreem.js'
+import ProdutoScreen from './screens/ProdutoScreen.js';
+import CarrinhoScreem from './screens/CarrinhoScreem.js';
+import codigoScreem from './screens/codigoScreem.js';
+import ConfirmaçaoScreem from './screens/ConfirmaçaoScreem.js'
+
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 
@@ -31,6 +39,14 @@ export default function App() {
         <Stack.Screen name="Vendas" component={VendasScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Notificacoes" component={NotificationScreen} options={{ headerShown: false }} />
         <Stack.Screen name="UploadImage" component={UploadImageScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="Praças" component={PraçasScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="UserScreem" component={UserScreem} options={{ headerShown: false }} />
+        <Stack.Screen name="Produto" component={ProdutoScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="Carrinho" component={CarrinhoScreem} options={{ headerShown: false }} />
+        <Stack.Screen name="codigo" component={codigoScreem} options={{ headerShown: false }} />
+        <Stack.Screen name="Confirmaçao" component={ConfirmaçaoScreem} options={{ headerShown: false }} />
+
+        <Stack.Screen name="CupertinoFooter1" component={CupertinoFooter1} options={{ headerShown: false}}></Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
         </SafeAreaView>
