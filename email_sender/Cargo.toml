@@ -1,5 +1,5 @@
 [package]
-name = "email~_sender"
+name = "email_sender"
 version = "0.1.0"
 edition = "2021"
 

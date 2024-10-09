@@ -1,7 +1,8 @@
 use askama::Template;
+use axum::response::IntoResponse;
 use axum::Json;
 use axum::{
-    routing::{get, post},
+    routing::post,
     Router,
 };
 use lettre::transport::smtp::authentication::Credentials;
@@ -26,7 +27,13 @@ struct VerificationTemplate {
     url: String,
 }
 
-async fn send_mail(Json(payload): Json<EmailRequest>) -> &'static str {
+#[derive(Serialize)]
+struct EmailResponse {
+    status: i16,
+    message: String,
+}
+
+async fn send_mail(Json(payload): Json<EmailRequest>) -> impl IntoResponse {
     let email_user = env::var("EMAIL_USER").expect("EMAIL_USER not set");
     let email_pass = env::var("EMAIL_PASS").expect("EMAIL_PASS not set");
 
@@ -57,11 +64,17 @@ async fn send_mail(Json(payload): Json<EmailRequest>) -> &'static str {
     match mailer.send(&email) {
         Ok(_) => {
             println!("E-mail enviado com sucesso!");
-            "E-mail enviado com sucesso!"
+            Json(EmailResponse {
+                status: 200,
+                message: "e-mail enviado com sucesso.".to_string(),
+            })
         }
         Err(e) => {
             println!("Erro ao enviar o e-mail: {:?}", e);
-            "Falha ao enviar o e-mail."
+            Json(EmailResponse {
+                status: 500,
+                message: "falha ao enviar o e-mail.".to_string(),
+            })
         }
     }
 }

@@ -1,19 +1,7 @@
 import { StatusCodes } from "http-status-codes";
 import { Knex } from "../../knex/knex.js";
-import yup from "yup";
-import validation from "../../middlewares/validation.js";
 import { handleError } from "../handlers/handleServerError.js";
 import { checkFoodAreaExists } from "../restaurant/shared/checkFoodAreaExists.js";
-
-// export const createRestaurantValidation = validation((schema) => ({
-//   params: yup
-//     .object()
-//     .shape({
-//       area_id: yup.number().optional(),
-//       restaurant_id: yup.number().optional(),
-//     })
-//     .noUnknown(true, "chaves adicionais não são permitidas."),
-// }));
 
 const checkRestaurant = async (restaurant_id, area_id) =>
   await Knex("restaurants").where({ id: restaurant_id, area_id }).first();
