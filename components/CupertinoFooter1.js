@@ -44,7 +44,7 @@ export default function CupertinoFooter1(props) {
             ]}
           ></Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.btnWrapper3} onPress={() => props.onPress('User Screem')}>
+        <TouchableOpacity style={styles.btnWrapper3} onPress={() => props.onPress('UserScreem')}>
           <MaterialCommunityIconsIcon
             name="account"
             style={[
