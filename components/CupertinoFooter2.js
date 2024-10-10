@@ -25,7 +25,7 @@ export default function CupertinoFooter2(props) {
             ]}
           ></Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.btnWrapper2} onPress={() => props.onPress('Carrinho')}>
+        <TouchableOpacity style={styles.btnWrapper2} onPress={() => props.onPress('PerfildaLoja')}>
           <MaterialCommunityIconsIcon
             name="basket"
             style={[
@@ -44,7 +44,7 @@ export default function CupertinoFooter2(props) {
             ]}
           ></Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.btnWrapper3} onPress={() => props.onPress('UserScreem')}>
+        <TouchableOpacity style={styles.btnWrapper3} onPress={() => props.onPress('PerfildaLoja')}>
           <MaterialCommunityIconsIcon
             name="account"
             style={[

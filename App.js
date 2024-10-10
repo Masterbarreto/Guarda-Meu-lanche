@@ -25,6 +25,8 @@ import ConfirmaçaoScreem from './screens/usuarios/ConfirmaçaoScreem.js'
 import UploadImageScreen from './screens/Lojistas/UploadScreen.js';
 import MinhasLojas from './screens/Lojistas/MinhasLojasScreen.js';
 import HomeLoja from './screens/Lojistas/homeLojaScreens.js'
+import PerfildaLoja from './screens/Lojistas/PerfildaLojaScreens.js';
+import AdicionarItens from './screens/Lojistas/adicionarItensScreens.js';
 
 
 // componetes 
@@ -57,6 +59,8 @@ export default function App() {
         <Stack.Screen name="Confirmaçao" component={ConfirmaçaoScreem} options={{ headerShown: false }} />
         <Stack.Screen name="MinhasLojas" component={MinhasLojas} options={{ headerShown: false }} />
         <Stack.Screen name="homeLoja" component={HomeLoja} options={{ headerShown: false }} />
+        <Stack.Screen name="PerfildaLoja" component={PerfildaLoja} options={{ headerShown: false }} />
+        <Stack.Screen name="adicionarItens" component={AdicionarItens} options={{ headerShown: false }} />
 
         <Stack.Screen name="CupertinoFooter2" component={CupertinoFooter2} options={{ headerShown: false}}></Stack.Screen>
         <Stack.Screen name="CupertinoFooter1" component={CupertinoFooter1} options={{ headerShown: false}}></Stack.Screen>

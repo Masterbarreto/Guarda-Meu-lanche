@@ -26,7 +26,7 @@ export default function HomeLoja({ navigation }) {
             style={[styles.iconWrapper, selectedIcon === 'loja' && styles.selectedIcon]}
             onPress={() => {
               handleIconPress('loja');
-              navigation.navigate('Home'); // Navega para a tela 'Home'
+              navigation.navigate('PerfildaLoja'); // Navega para a tela 'Home'
             }}
           >
             <Ionicons name="storefront-outline" size={24} color="#000" />
@@ -48,7 +48,7 @@ export default function HomeLoja({ navigation }) {
             style={[styles.iconWrapper, selectedIcon === 'produtos' && styles.selectedIcon]}
             onPress={() => {
               handleIconPress('produtos');
-              navigation.navigate('Home'); // Navega para a tela 'Home'
+              navigation.navigate('adicionarItens'); // Navega para a tela 'Home'
             }}
           >
             <Ionicons name="cube-outline" size={24} color="#000" />
