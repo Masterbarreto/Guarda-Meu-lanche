@@ -21,6 +21,7 @@ const router = Router();
 
 router.post("/users", userController.createValidation, userController.create);
 router.post("/users/login", userController.loginValidation, userController.login);
+router.post("/users/logout", checkToken("user"), userController.logout);
 router.get("/users/profile", checkToken("user"), userController.getProfile);
 router.get("/users/orders", checkToken("user"), userController.getOrders);
 router.get("/users/orders/:order_id", checkToken("user"), userController.orderByIdValidation, userController.getOrderById);
