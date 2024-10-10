@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, Image, ImageBackground, StyleSheet } from 'react-native';
 
-const UserProfileCard = () => {
+export default function UserProfileCard(props) {
   return (
     <View style={styles.container}>
       <View style={styles.card}>
@@ -62,5 +62,3 @@ const styles = StyleSheet.create({
     color: '#000',
   },
 });
-
-export default UserProfileCard;

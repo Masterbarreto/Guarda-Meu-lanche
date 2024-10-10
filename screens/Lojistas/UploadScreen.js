@@ -8,11 +8,10 @@ import { TextInput } from 'react-native';
 
 //----------------- ---------------importaçoes do firebase-----------------------------------------------//
 import * as ImagePicker from 'expo-image-picker';
-import { fbUriToFirebaseStorage } from '../funçoes/fbUriToFirebaseStorage';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../firebase.js';
+import { fbUriToFirebaseStorage } from '../../funçoes/fbUriToFirebaseStorage';
+import { auth } from '../../firebase.js';
 import { addDoc, collection, getFirestore, setDoc } from 'firebase/firestore';
-import { myFS } from '../firebase';
+import { myFS } from '../../firebase';
 //----------------- -------------------------------------------------------------------------------------//
 
 const schema = yup.object({

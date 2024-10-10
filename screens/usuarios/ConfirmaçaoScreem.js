@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Image, KeyboardAvoidingView } from 'react-native';
-import CupertinoFooter1 from "../components/CupertinoFooter1";
+import CupertinoFooter1 from "../../components/CupertinoFooter1";
 
 export default function ConfirmacaoScreen({ navigation }) {
     return (
@@ -11,7 +11,7 @@ export default function ConfirmacaoScreen({ navigation }) {
             </View>
             {/* Checkmark image */}
             <View style={styles.checkmarkContainer}>
-                <Image source={require('../assets/chekin.png')} style={styles.locationImage} />
+                <Image source={require('../../assets/chekin.png')} style={styles.locationImage} />
             </View>
             <Text style={styles.confirmationText}>Sua reserva foi confirmada.</Text>
             <Text style={styles.confirmationText}>Dentro de alguns segundos seu código será gerado.</Text>

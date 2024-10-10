@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput, KeyboardAvoidingView } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import CupertinoFooter1 from "../components/CupertinoFooter1";
+import CupertinoFooter1 from "../../components/CupertinoFooter1";
 
 export default function CarrinhoScreem({ navigation }) {
     const [quantidade, setQuantidade] = useState(1);
@@ -32,7 +32,7 @@ export default function CarrinhoScreem({ navigation }) {
 
                 {/* Imagem de Localização */}
                 <View style={styles.locationContainer}>
-                    <Image source={require('../assets/Rectangle 206.png')} style={styles.locationImage} />
+                    <Image source={require('../../assets/Rectangle 206.png')} style={styles.locationImage} />
                     <View style={styles.textContainer}>
                         <Text style={styles.locationText}>Retirar em</Text>
                         <Text style={styles.locationName}>Senac Santo Amaro</Text>

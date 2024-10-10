@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Image, KeyboardAvoidingView } from 'react-native';
 import { useState } from 'react';
-import CupertinoFooter1 from "../components/CupertinoFooter1";
+import CupertinoFooter1 from "../../components/CupertinoFooter1";
 
     export default function ProdutoScreen ({ navigation }) {   
         return (
             <KeyboardAvoidingView style={styles.container} behavior="padding">
                 {/* Imagem de destaque */}
-                <Image source={require('../assets/Photo Menu.png')} style={styles.featuredImage} />
+                <Image source={require('../../assets/Photo Menu.png')} style={styles.featuredImage} />
                 {/* Imagem de conteiner principal */}
                 <View style={styles.lancheContainer}>
                 <Text style={styles.lancheName}>X-Bacon Burger</Text>

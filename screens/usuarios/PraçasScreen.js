@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Ionicons } from '@expo/vector-icons';
-import CupertinoFooter1 from "../components/CupertinoFooter1";
+import CupertinoFooter1 from "../../components/CupertinoFooter1";
 
 export default function PraçasScreen({ navigation }) {
     return (
@@ -10,7 +10,7 @@ export default function PraçasScreen({ navigation }) {
             {/* Logo */}
             <TouchableOpacity onPress={() => navigation.navigate('UserScreem')}>
                 <Image
-                    source={require('../assets/icon.png')}
+                    source={require('../../assets/icon.png')}
                     style={styles.containerLogo}
                 />
             </TouchableOpacity>
