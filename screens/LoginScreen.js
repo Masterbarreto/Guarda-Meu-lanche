@@ -40,7 +40,7 @@ export default function LoginScreen({ navigation }) {
                 if (userData.role === 'Aluno') {
                     navigation.navigate('Home');
                 } else if (userData.role === 'Lojista') {
-                    navigation.navigate('UploadImage');
+                    navigation.navigate('MinhasLojas');
                 } else {
                     console.error('Papel não reconhecido:', userData.role);
                 }

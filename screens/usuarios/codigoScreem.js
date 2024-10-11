@@ -1,9 +1,9 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Image, KeyboardAvoidingView } from 'react-native';
-import CupertinoFooter1 from "../components/CupertinoFooter1";
-import UserProfileCard  from "../components/codigo";
+import CupertinoFooter1 from "../../components/CupertinoFooter1";
+import UserProfileCard  from "../../components/codigo";
 
-export default function codigoScreem({ navigation }) {
+export default function CodigoScreen({ navigation }) {
     return (
         <KeyboardAvoidingView style={styles.container} behavior="padding">
             <UserProfileCard style={styles.cards}/>

@@ -2,11 +2,11 @@ import React, { Component } from "react";
 import { StyleSheet, View, TouchableOpacity, Text } from "react-native";
 import MaterialCommunityIconsIcon from "react-native-vector-icons/MaterialCommunityIcons";
 
-export default function CupertinoFooter1(props) {
+export default function CupertinoFooter2(props) {
   return (
     <View style={[styles.container, props.style]}>
       <View style={styles.iconContainer}>
-        <TouchableOpacity style={styles.btnWrapper1} onPress={() => props.onPress('Home')} >
+        <TouchableOpacity style={styles.btnWrapper1} onPress={() => props.onPress('homeLoja')} >
           <MaterialCommunityIconsIcon
             name="home"
             style={[
@@ -25,7 +25,7 @@ export default function CupertinoFooter1(props) {
             ]}
           ></Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.btnWrapper2} onPress={() => props.onPress('Carrinho')}>
+        <TouchableOpacity style={styles.btnWrapper2} onPress={() => props.onPress('PerfildaLoja')}>
           <MaterialCommunityIconsIcon
             name="basket"
             style={[
@@ -44,7 +44,7 @@ export default function CupertinoFooter1(props) {
             ]}
           ></Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.btnWrapper3} onPress={() => props.onPress('UserScreem')}>
+        <TouchableOpacity style={styles.btnWrapper3} onPress={() => props.onPress('PerfildaLoja')}>
           <MaterialCommunityIconsIcon
             name="account"
             style={[

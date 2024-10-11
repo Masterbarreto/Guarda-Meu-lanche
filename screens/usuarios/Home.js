@@ -1,11 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { getFirestore, doc, getDoc } from 'firebase/firestore';
 import { Ionicons } from '@expo/vector-icons';
-import { myFS } from '../firebase';
-import CupertinoFooter1 from "../components/CupertinoFooter1";
+import CupertinoFooter1 from "../../components/CupertinoFooter1";
 
 
 export default function FoodPricingScreen({ navigation }) {
@@ -13,7 +10,7 @@ return (
     <View style={styles.container}>
     <TouchableOpacity onPress={() => navigation.navigate('UserScreem')}>
         <Image
-        source={require('../assets/icon.png')}
+        source={require('../../assets/icon.png')}
         style={styles.containerLogo}
 
         />

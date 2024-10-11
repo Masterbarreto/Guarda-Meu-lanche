@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
-import CupertinoFooter1 from "../components/CupertinoFooter1";
-import Lanches from "../components/Lanches";
+import CupertinoFooter1 from "../../components/CupertinoFooter1";
+import Lanches from "../../components/Lanches";
 
 export default function VendasScreen({ navigation }) {
   return (
     <View style={styles.container}>
       {/* Imagem de destaque */}
-      <Image source={require("../assets/image.png")} style={styles.featuredImage} />
+      <Image source={require("../../assets/image.png")} style={styles.featuredImage} />
 
       {/* Container branco */}
       <View style={styles.whiteContainer}>

@@ -1,8 +1,8 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Switch } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import CupertinoFooter1 from "../components/CupertinoFooter1";
-import Userpicte from '../components/Userpicte';
+import CupertinoFooter1 from "../../components/CupertinoFooter1";
+import Userpicte from '../../components/Userpicte';
 
 export default function UserScreem({ navigation }) {
     const [isDarkTheme, setIsDarkTheme] = React.useState(true);
