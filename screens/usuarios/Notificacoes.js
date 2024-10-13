@@ -1,8 +1,10 @@
+// screens/usuarios/NotificationScreen.js
 import React from 'react';
-import { View, Text, StyleSheet, FlatList } from 'react-native';
-import { Ionicons } from '@expo/vector-icons'; 
+import { View, Text, FlatList } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import CupertinoFooter1 from "../../components/CupertinoFooter1";
+import styles from "../../styles/usuarios/NotificacoesStyles";
 
 const NOTIFICATIONS = [
   { id: '1', type: 'Cadastro realizado', message: 'Seu cadastro foi concluído com sucesso!' },
@@ -41,61 +43,3 @@ export default function NotificationScreen({ navigation }) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#211D1D', // Fundo escuro
-    justifyContent: 'center',
-  },
-  cupertinoFooter1: {
-    height: 61,
-    marginTop: '20',
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 20,
-    paddingHorizontal: 17,
-    justifyContent: 'center',
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: 'white',
-    textAlign: 'center',
-  },
-  notificationItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 20,
-    borderBottomWidth: 1,
-    borderBottomColor: '#444',
-    backgroundColor: '#333', // Fundo escuro do item
-    borderRadius: 10,
-    marginHorizontal: 20,
-    marginVertical: 5,
-  },
-  textContainer: {
-    marginLeft: 10,
-  },
-  notificationType: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: 'white', // Texto em branco
-  },
-  notificationMessage: {
-    fontSize: 14,
-    color: 'white', // Texto em branco
-  },
-  back: { 
-    position: 'absolute',
-    left: 15,
-    top: 20,
-    backgroundColor: 'transparent',
-  },
-  icon: {
-    marginRight: 10,
-    color: 'white', // Ícone em branco
-  },
-});

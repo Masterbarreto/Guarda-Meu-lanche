@@ -8,10 +8,10 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import LoginScreen from './screens/LoginScreen.js';
 import EsqueciaSenha from './screens/EsqueciaSenha';
 import RegisterScreen from './screens/RegisterScreen'; 
+import Verificacao from './screens/verificação';
 
 // telas para  usuarios 
 import FoodPricingScreen from './screens/usuarios/Home.js';
-import Verificacao from './screens/usuarios/verificação';
 import VendasScreen from './screens/usuarios/VendasScreen.js';
 import NotificationScreen from './screens/usuarios/Notificacoes';
 import PraçasScreen from './screens/usuarios/PraçasScreen.js';
@@ -20,6 +20,7 @@ import ProdutoScreen from './screens/usuarios/ProdutoScreen.js';
 import CarrinhoScreem from './screens/usuarios/CarrinhoScreem.js';
 import codigoScreem from './screens/usuarios/codigoScreem.js';
 import ConfirmaçaoScreem from './screens/usuarios/ConfirmaçaoScreem.js'
+import StatusScress from './screens/usuarios/StatusScress'
 
 // telas para logistas
 import UploadImageScreen from './screens/Lojistas/UploadScreen.js';
@@ -28,8 +29,11 @@ import HomeLoja from './screens/Lojistas/homeLojaScreens.js'
 import PerfildaLoja from './screens/Lojistas/PerfildaLojaScreens.js';
 import AdicionarItens from './screens/Lojistas/adicionarItensScreens.js';
 import UploadScreen2 from './screens/Lojistas/UploadScreen-2.js'
-import PedidosScreen from './screens/Lojistas/PedidosScreens.js'
+import PedidoScreen from './screens/Lojistas/PedidoScreens.js'
 import PedidosStatus from './screens/Lojistas/PedidosStatus.js'
+import PedidosScreen from './screens/Lojistas/PedidosScreens.js'
+
+
 
 
 // componetes 
@@ -67,6 +71,10 @@ export default function App() {
         <Stack.Screen name="UploadScreens2" component={UploadScreen2} options={{ headerShown: false }} />
         <Stack.Screen name="Pedidos" component={PedidosScreen} options={{ headerShown: false }} />
         <Stack.Screen name="PedidosStatus" component={PedidosStatus} options={{ headerShown: false }} />
+        <Stack.Screen name="Status" component={StatusScress} options={{ headerShown: false }} />
+        <Stack.Screen name="Pedido" component={PedidoScreen} options={{ headerShown: false }} />
+        
+
 
         <Stack.Screen name="CupertinoFooter2" component={CupertinoFooter2} options={{ headerShown: false}}></Stack.Screen>
         <Stack.Screen name="CupertinoFooter1" component={CupertinoFooter1} options={{ headerShown: false}}></Stack.Screen>

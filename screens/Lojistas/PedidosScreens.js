@@ -33,7 +33,7 @@ export default function PedidosScreen({ navigation }) {
                 name="information-circle-outline" 
                 size={24} 
                 color="#8E8E93" 
-                onPress={() => navigation.navigate('PedidosStatus')} // Utilizar navigation para navegar
+                onPress={() => navigation.navigate('Pedido')} // Utilizar navigation para navegar
               />
             </TouchableOpacity>
             <View style={[styles.status, { backgroundColor: pedido.cor }]}>
@@ -131,4 +131,3 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 })
-
