@@ -1,8 +1,10 @@
+// screens/usuarios/UserScreem.js
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Switch } from 'react-native';
+import { View, Text, TouchableOpacity, Switch } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import CupertinoFooter1 from "../../components/CupertinoFooter1";
 import Userpicte from '../../components/Userpicte';
+import styles from "../../styles/usuarios/UserScreenStyles";
 
 export default function UserScreen({ navigation }) {
     const [isDarkTheme, setIsDarkTheme] = React.useState(true);
@@ -33,7 +35,7 @@ export default function UserScreen({ navigation }) {
                     />
                 </View>
 
-                <TouchableOpacity style={styles.buttonStyle} onPress={() => navigation.navigate('Notificacoes')} >
+                <TouchableOpacity style={styles.buttonStyle} onPress={() => navigation.navigate('Notificacoes')}>
                     <Text style={styles.settingText}>Notificações</Text>
                     <Ionicons name="arrow-down" size={24} color="gray" style={styles.iconStyle} />
                 </TouchableOpacity>
@@ -52,75 +54,3 @@ export default function UserScreen({ navigation }) {
         </View>
     );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#FFFFFF',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    cupertinoFooter1: {
-        height: 61,
-        marginTop: 'auto',
-    },
-    logoContainer: {
-        alignItems: 'center',
-        marginBottom: 10,
-        marginLeft: 10,
-    },
-    profileContainer: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 0,
-    },
-    profileName: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        color: '#FFFFFF',
-    },
-    profileInfo: {
-        fontSize: 14,
-        color: '#CCCCCC',
-    },
-    profileRole: {
-        fontSize: 14,
-        color: '#CCCCCC',
-        marginBottom: 10,
-    },
-    settingsContainer: {
-        width: '100%',
-        padding: 30,
-    },
-    buttonStyle: {
-        flexDirection: 'row', // Alinhar ícone e texto em linha
-        justifyContent: 'space-between', // Espaçar entre o texto e ícone
-        alignItems: 'center', // Centralizar conteúdo verticalmente
-        backgroundColor: 'white',
-        width: '100%',
-        paddingVertical: 15, // Aumentado para deixar o botão mais alto
-        paddingHorizontal: 20, // Adiciona espaçamento interno horizontal
-        marginTop: 20,
-        borderRadius: 21,
-    },
-    settingText: {
-        color: '#2E2E2E',
-        fontWeight: '700',
-        fontSize: 16,
-    },
-    iconStyle: {
-        marginLeft: 10, // Espaçamento entre o texto e o ícone
-    },
-    logoutButton: {
-        marginTop: 30, // Aumenta o espaçamento superior
-        paddingVertical: 15, // Aumenta o tamanho do botão
-        paddingHorizontal: 100, // Alarga o botão
-        backgroundColor: '#FF4D4D',
-        borderRadius: 12,
-    },
-    logoutText: {
-        fontSize: 18, // Texto maior
-        color: 'white',
-        fontWeight: 'bold',
-    },
-});

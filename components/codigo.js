@@ -26,7 +26,7 @@ export default function UserProfileCard(props) {
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',// Centraliza horizontalmente
-    marginTop: 110, // Espaçamento superior
+    marginTop: -200, // Espaçamento superior
   },
   card: {
     width: 312, // Definindo largura do cartão
