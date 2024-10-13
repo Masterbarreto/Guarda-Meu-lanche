@@ -25,7 +25,7 @@ export default function CupertinoFooter2(props) {
             ]}
           ></Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.btnWrapper2} onPress={() => props.onPress('PerfildaLoja')}>
+        <TouchableOpacity style={styles.btnWrapper2} onPress={() => props.onPress('adicionarItens')}>
           <MaterialCommunityIconsIcon
             name="basket"
             style={[

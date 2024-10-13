@@ -37,7 +37,7 @@ export default function HomeLoja({ navigation }) {
             style={[styles.iconWrapper, selectedIcon === 'pedidos' && styles.selectedIcon]}
             onPress={() => {
               handleIconPress('pedidos');
-              navigation.navigate('Home'); // Navega para a tela 'Home'
+              navigation.navigate('Pedidos'); // Navega para a tela 'Home'
             }}
           >
             <Ionicons name="clipboard-outline" size={24} color="#000" />

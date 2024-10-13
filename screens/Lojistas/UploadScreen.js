@@ -14,9 +14,9 @@ const schema = yup.object({
 });
 
 const select = [
-  { key: 'Eletrônicos', value: 'Eletrônicos' },
-  { key: 'Roupas', value: 'Roupas' },
-  { key: 'Livros', value: 'Livros' },
+  { key: 'Hamburguer', value: 'Hamburguer' },
+  { key: 'Pizza', value: 'Pizza' },
+  { key: 'Refri', value: 'Refri' },
 ];
 
 export default function UploadImageScreen({ navigation }) {
@@ -41,10 +41,16 @@ export default function UploadImageScreen({ navigation }) {
   };
 
   const onSubmit = (data) => {
-    console.log('Submitted data:', data);
-    // Aqui você pode navegar para a próxima tela
-    navigation.navigate('Carrinho');
+    console.log(`
+      Submitted data:
+      • Name: ${data.name}
+      • Category: ${selectedCategory}
+      • Description: ${data.description}
+      • Image: ${selectedImage.uri}
+    `);
+    navigation.navigate('UploadScreens2'); // Navega para a tela UploadScreens2
   };
+
 
   // Verifica se todos os campos obrigatórios estão preenchidos
   const isAllFieldsFilled = () => {
@@ -178,8 +184,8 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   image: {
-    width: '100%',
-    height: 100,
+    
+    
     resizeMode: 'contain',
     alignSelf: 'center',
     marginVertical: 20,
@@ -192,9 +198,11 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   uploadButton: {
+    width: 160,
+    height: 36,
     backgroundColor: '#FFC107',
-    borderRadius: 5,
-    padding: 15,
+    borderRadius: 15,
+    padding: -10,
     alignItems: 'center',
     marginTop: 40,
     alignSelf: 'center',

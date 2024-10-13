@@ -27,6 +27,9 @@ import MinhasLojas from './screens/Lojistas/MinhasLojasScreen.js';
 import HomeLoja from './screens/Lojistas/homeLojaScreens.js'
 import PerfildaLoja from './screens/Lojistas/PerfildaLojaScreens.js';
 import AdicionarItens from './screens/Lojistas/adicionarItensScreens.js';
+import UploadScreen2 from './screens/Lojistas/UploadScreen-2.js'
+import PedidosScreen from './screens/Lojistas/PedidosScreens.js'
+import PedidosStatus from './screens/Lojistas/PedidosStatus.js'
 
 
 // componetes 
@@ -61,6 +64,9 @@ export default function App() {
         <Stack.Screen name="homeLoja" component={HomeLoja} options={{ headerShown: false }} />
         <Stack.Screen name="PerfildaLoja" component={PerfildaLoja} options={{ headerShown: false }} />
         <Stack.Screen name="adicionarItens" component={AdicionarItens} options={{ headerShown: false }} />
+        <Stack.Screen name="UploadScreens2" component={UploadScreen2} options={{ headerShown: false }} />
+        <Stack.Screen name="Pedidos" component={PedidosScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="PedidosStatus" component={PedidosStatus} options={{ headerShown: false }} />
 
         <Stack.Screen name="CupertinoFooter2" component={CupertinoFooter2} options={{ headerShown: false}}></Stack.Screen>
         <Stack.Screen name="CupertinoFooter1" component={CupertinoFooter1} options={{ headerShown: false}}></Stack.Screen>
