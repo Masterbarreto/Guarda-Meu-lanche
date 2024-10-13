@@ -1,21 +1,28 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, KeyboardAvoidingView, Alert } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import { sendPasswordResetEmail } from 'firebase/auth';
-import { auth } from '../firebase';
-
+import React, { useState } from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  TouchableOpacity,
+  KeyboardAvoidingView,
+  Alert,
+} from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import Icon from "react-native-vector-icons/MaterialIcons";
+import { sendPasswordResetEmail } from "firebase/auth";
+import { auth } from "../firebase";
 
 export default function EsqueciaSenha() {
   const navigation = useNavigation();
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState("");
 
   const handlePasswordReset = async () => {
     if (email !== "") {
       try {
         await sendPasswordResetEmail(auth, email);
         Alert.alert(`Foi enviado um email para: ${email}.`);
-        navigation.navigate('Login');
+        navigation.navigate("Login");
       } catch (error) {
         console.error(error);
         Alert.alert("Erro ao enviar email de redefinição de senha");
@@ -27,13 +34,15 @@ export default function EsqueciaSenha() {
 
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
+      <TouchableOpacity onPress={() => navigation.goBack()} style={styles.voltar}>
+        <Icon name="arrow-back" size={24} color="#fff" />
+      </TouchableOpacity>
       <View style={styles.contentContainer}>
-        <TouchableOpacity onPress={() => navigation.goBack()}  style={styles.voltar} >
-          <Icon name="arrow-back" size={24} color="#FFF" />
-        </TouchableOpacity>
-
-        <Text style={styles.titulo}>Esqueceu a senha?</Text>
-        <Text style={styles.texto}>Digite seu e-mail para o processo de verificação,dentro de alguns minutos enviaremos o código para o seu e-mail.</Text>
+        <Text style={styles.title}>Esqueceu a senha?</Text>
+        <Text style={styles.texto}>
+          Digite seu e-mail para o processo de verificação,dentro de alguns minutos
+          enviaremos o código para o seu e-mail.
+        </Text>
         <Text style={styles.email}>Email</Text>
         <TextInput
           placeholder="Ex: seu.email@example.com"
@@ -52,53 +61,63 @@ export default function EsqueciaSenha() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#211D1D',
+    justifyContent: "center",
+    backgroundColor: "#161616",
   },
   contentContainer: {
-    width: '100%',
-    marginTop: -120,
-    padding: 20,
+    marginTop: 20,
+    padding: 0,
+    flex: 1,
+    marginHorizontal: 20,
   },
   voltar: {
-    color: '#FFF',
+    height: 50,
+    marginTop: 20,
+    marginHorizontal: 20,
+    color: "#FFF",
     fontSize: 16,
-    marginBottom: 50,
+    marginBottom: 20,
   },
-  titulo: {
-    color: '#2C5697',
+  title: {
+    color: "whitesmoke",
     fontSize: 30,
-    fontWeight: 'bold',
+    fontWeight: "600",
     marginBottom: 7,
+    // backgroundColor:"red"
   },
   texto: {
-    color: '#FFF',
+    color: "whitesmoke",
     fontSize: 16,
     marginBottom: 50,
+    marginTop: 10,
   },
   email: {
-    color: '#FFF',
-    fontSize: 16,
-    marginBottom: 10,
+    color: "whitesmoke",
+    fontSize: 15,
+    fontWeight: "700",
+    marginLeft: 3,
   },
   input: {
-    backgroundColor: 'white',
-    paddingHorizontal: 12,
+    width: "100%",
+    backgroundColor: "white",
+    paddingHorizontal: 16,
     paddingVertical: 10,
-    borderRadius: 20,
-    marginBottom: 250,
+    borderRadius: 8,
+    marginVertical: 5,
+    fontWeight: "600",
+    fontSize: 15,
   },
   button: {
-    backgroundColor: '#0782F9',
+    backgroundColor: "#434343",
     padding: 15,
-    borderRadius: 15,
-    alignItems: 'center',
-  
+    borderRadius: 9,
+    marginTop: 15,
+    alignItems: "center",
+    width: "auto",
   },
   buttonText: {
-    color: 'white',
-    fontWeight: '700',
+    color: "white",
+    fontWeight: "700",
     fontSize: 16,
   },
 });

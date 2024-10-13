@@ -4,7 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import CupertinoFooter1 from "../../components/CupertinoFooter1";
 import Userpicte from '../../components/Userpicte';
 
-export default function UserScreem({ navigation }) {
+export default function UserScreen({ navigation }) {
     const [isDarkTheme, setIsDarkTheme] = React.useState(true);
 
     const toggleSwitch = () => setIsDarkTheme(previousState => !previousState);

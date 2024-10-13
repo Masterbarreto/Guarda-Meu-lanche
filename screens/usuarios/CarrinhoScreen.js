@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput, KeyboardAvo
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import CupertinoFooter1 from "../../components/CupertinoFooter1";
 
-export default function CarrinhoScreem({ navigation }) {
+export default function CarrinhoScreen({ navigation }) {
     const [quantidade, setQuantidade] = useState(1);
 
     const aumentarQuantidade = () => setQuantidade(quantidade + 1);

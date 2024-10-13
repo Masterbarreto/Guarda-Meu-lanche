@@ -8,7 +8,7 @@ import CupertinoFooter1 from "../../components/CupertinoFooter1";
 export default function FoodPricingScreen({ navigation }) {
 return (
     <View style={styles.container}>
-    <TouchableOpacity onPress={() => navigation.navigate('UserScreem')}>
+    <TouchableOpacity onPress={() => navigation.navigate('UserScreen')}>
         <Image
         source={require('../../assets/icon.png')}
         style={styles.containerLogo}

@@ -8,7 +8,7 @@ export default function PraçasScreen({ navigation }) {
     return (
         <View style={styles.container}>
             {/* Logo */}
-            <TouchableOpacity onPress={() => navigation.navigate('UserScreem')}>
+            <TouchableOpacity onPress={() => navigation.navigate('UserScreen')}>
                 <Image
                     source={require('../../assets/icon.png')}
                     style={styles.containerLogo}
