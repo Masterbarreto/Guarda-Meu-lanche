@@ -122,8 +122,9 @@ export default function LoginScreen({ navigation }) {
                     {
                       borderWidth: errors.email && 1,
                       borderColor: errors.email && "#ff375b",
-                      fontWeight:"600",
-                      fontSize:15
+                      fontWeight: "600",
+                      letterSpacing: 0.3,
+                      fontSize: 15,
                     },
                   ]}
                 />
@@ -148,9 +149,9 @@ export default function LoginScreen({ navigation }) {
                     {
                       borderWidth: errors.password && 1,
                       borderColor: errors.password && "#ff375b",
-                      fontWeight:"900",
-                      letterSpacing:3,
-                      fontSize:18
+                      fontWeight: "900",
+                      letterSpacing: 3,
+                      fontSize: 18,
                     },
                   ]}
                 />
@@ -226,13 +227,13 @@ const styles = StyleSheet.create({
     color: "whitesmoke",
     fontWeight: "600",
     fontSize: 18,
-    letterSpacing:1
+    letterSpacing: 1,
   },
   buttonOutline: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    flex:.7,
+    flex: 0.7,
   },
   buttonOutlineText: {
     color: "#434343",
@@ -246,7 +247,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     textAlign: "right",
     marginRight: 2,
-    fontWeight:'600'
+    fontWeight: "600",
   },
   label: {
     color: "#444444",
@@ -297,6 +298,6 @@ const styles = StyleSheet.create({
     alignSelf: "flex-start",
     marginLeft: 25,
     paddingBottom: 20,
-    margin:0
+    margin: 0,
   },
 });

@@ -12,6 +12,7 @@ import { useNavigation } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "../firebase";
+import GoBack from "../components/Back";
 
 export default function EsqueciaSenha() {
   const navigation = useNavigation();
@@ -34,9 +35,7 @@ export default function EsqueciaSenha() {
 
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
-      <TouchableOpacity onPress={() => navigation.goBack()} style={styles.voltar}>
-        <Icon name="arrow-back" size={24} color="#fff" />
-      </TouchableOpacity>
+      <GoBack></GoBack>
       <View style={styles.contentContainer}>
         <Text style={styles.title}>Esqueceu a senha?</Text>
         <Text style={styles.texto}>
@@ -64,26 +63,22 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: "#161616",
   },
+    scrollContainer: {
+    flexGrow: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
   contentContainer: {
     marginTop: 20,
     padding: 0,
     flex: 1,
     marginHorizontal: 20,
   },
-  voltar: {
-    height: 50,
-    marginTop: 20,
-    marginHorizontal: 20,
-    color: "#FFF",
-    fontSize: 16,
-    marginBottom: 20,
-  },
   title: {
     color: "whitesmoke",
     fontSize: 30,
     fontWeight: "600",
     marginBottom: 7,
-    // backgroundColor:"red"
   },
   texto: {
     color: "whitesmoke",

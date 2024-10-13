@@ -1,313 +1,279 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, Image, KeyboardAvoidingView } from 'react-native';
-import { SelectList } from 'react-native-dropdown-select-list';
-import { Controller, useForm } from "react-hook-form";
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
-import { createUserWithEmailAndPassword} from 'firebase/auth';
-import { auth } from '../firebase.js';
-import { addDoc, collection, doc, getFirestore, setDoc } from 'firebase/firestore';
-import { myFS } from '../firebase';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import React, { useState } from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  TouchableOpacity,
+  KeyboardAvoidingView,
+  Alert,
+} from "react-native";
+import {Picker} from '@react-native-picker/picker';
+import { useNavigation } from "@react-navigation/native";
+import { createUserWithEmailAndPassword } from "firebase/auth"; // Função para criar conta
+import { auth } from "../firebase"; // Firebase auth import
+import GoBack from "../components/Back";
 
-const schema = yup.object().shape({
-  email: yup.string().email("Email inválido").required("Informe seu email"),
-  password: yup.string().required("Informe sua senha").min(6, "A senha deve ter pelo menos 6 dígitos"),
-  name: yup.string().required("Informe seu nome"),
-  birthDate: yup.string().required("Informe seu aniversário").test("data-valida","Data inválida. Utilize o formato DD/MM/AAAA",(value) => {const regex = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/([12][0-9]{3})$/;return regex.test(value);}),
-  surname: yup.string().required("Informe seu sobrenome"),
-  confirmPassword: yup.string()
-    .required("Informe sua senha")
-    .min(6, "A senha deve ter pelo menos 6 dígitos")
-    .oneOf([yup.ref("password")], "As senhas devem ser iguais"),
-});
+export default function RegisterScreen() {
+  const navigation = useNavigation();
+  const [step, setStep] = useState(1);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [birthDate, setBirthDate] = useState("");
+  const [role, setRole] = useState(""); // Aluno ou Funcionário
+  const [errors, setErrors] = useState({}); // Para armazenar erros
+  const totalSteps = 3;
 
-export default function RegisterScreen({ navigation }) {
-  const [selected, setSelected] = React.useState("");
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [user, setUser] = useState(null);
-  
+  const handleNextStep = () => {
+    let hasError = false;
+    let newErrors = {};
 
-  const { control, handleSubmit, formState: { errors } } = useForm({
-    resolver: yupResolver(schema),
-  });
-
-  const handleRegister = async (data) => {
-    try {
-      const userCredential = await createUserWithEmailAndPassword(auth, data.email, data.password);
-      const user = userCredential.user;
-
-      // Store user data in Firestore
-      await setDoc(doc(myFS, "users", user.uid), {
-        email: data.email,
-        name: data.name,
-        birthDate: data.birthDate,
-        surname: data.surname,
-        role: selected,
-      });
-
-      console.log('Usuário criado com sucesso!');
-      navigation.navigate('Home'); 
-    } catch (error) {
-      if (error.code === 'auth/email-already-in-use') {
-        console.error('O endereço de e-mail já está em uso. Por favor, tente um endereço de e-mail diferente.');
-      } else {
-        console.error('Erro ao criar usuário:', error);
+    // Validação simples sem Yup
+    if (step === 1) {
+      if (!name) {
+        hasError = true;
+        newErrors.name = "Por favor, preencha seu nome.";
       }
+      if (!email) {
+        hasError = true;
+        newErrors.email = "Por favor, preencha seu email.";
+      }
+    } else if (step === 2) {
+      if (!password) {
+        hasError = true;
+        newErrors.password = "Por favor, preencha sua senha.";
+      }
+      if (password !== confirmPassword) {
+        hasError = true;
+        newErrors.confirmPassword = "As senhas não coincidem.";
+      }
+      if (!birthDate) {
+        hasError = true;
+        newErrors.birthDate = "Por favor, preencha sua data de nascimento.";
+      }
+    } else if (step === 3) {
+      if (!role) {
+        hasError = true;
+        newErrors.role = "Por favor, selecione Aluno ou Funcionário.";
+      }
+    }
+
+    if (hasError) {
+      setErrors(newErrors);
+      return; // Não avança se houver erros
+    }
+
+    // Se não houver erros, avance para a próxima etapa ou registre
+    if (step < totalSteps) {
+      setStep(step + 1);
+    } else {
+      handleRegister();
     }
   };
 
-  const select = [
-    {key:'1', value:'Aluno'},
-    {key:'2', value:'Funcionario'},
-  ]
+  const handlePreviousStep = () => {
+    if (step > 1) {
+      setStep(step - 1);
+    }
+  };
+
+  const handleRegister = async () => {
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+      Alert.alert("Conta criada com sucesso!", `Bem-vindo(a), ${name}!`);
+      navigation.navigate("Login");
+    } catch (error) {
+      console.error(error);
+      Alert.alert("Erro ao criar a conta", "Verifique os dados e tente novamente.");
+    }
+  };
 
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
+      <GoBack></GoBack>
       <View style={styles.contentContainer}>
-        <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-          <Icon name="arrow-back" size={24} color="#FFF" style={styles.voltar} />
-        </TouchableOpacity>
+        <Text style={styles.title}>Cadastro</Text>
+        <Text style={styles.stepText}>Passo {step} de 3</Text>
+        <View style={styles.progressBar}>
+          <View style={[styles.progress, { width: `${(step / totalSteps) * 100}%` }]} />
+        </View>
 
-        <Text style={styles.label}>Aluno ou Funcionário</Text>
-        <SelectList
-          setSelected={(val) => setSelected(val)}
-          data={select}
-          save="value"
-          boxStyles={styles.selectBox}
-          dropdownStyles={styles.selectDropdown}
-        />
-        <Controller
-          control={control}
-          name="name"
-          render={({ field: { onChange, onBlur, value } }) => (
-            <View>
-              <Text style={styles.label}>Nome</Text>
-              {errors.name?.message && <Text style={styles.labelError}>{errors.name?.message}</Text>}
-              <TextInput
-                placeholder=""
-                value={value}
-                onChangeText={onChange}
-                onBlur={onBlur}
-                style={[styles.input, { borderColor: errors.name && '#ff375b' }]}
-              />
+        {/* Step 1: Nome e Email */}
+        {step === 1 && (
+          <>
+            <Text style={styles.label}>Nome</Text>
+            <TextInput
+              placeholder="Digite seu nome"
+              value={name}
+              onChangeText={setName}
+              style={styles.input}
+            />
+            {errors.name && <Text style={styles.error}>{errors.name}</Text>}
+            <Text style={styles.label}>Email</Text>
+            <TextInput
+              placeholder="Ex: seu.email@example.com"
+              value={email}
+              onChangeText={setEmail}
+              style={styles.input}
+            />
+            {errors.email && <Text style={styles.error}>{errors.email}</Text>}
+          </>
+        )}
+
+        {/* Step 2: Senha e Data de Nascimento */}
+        {step === 2 && (
+          <>
+            <Text style={styles.label}>Senha</Text>
+            <TextInput
+              placeholder="Digite sua senha"
+              value={password}
+              onChangeText={setPassword}
+              secureTextEntry
+              style={styles.input}
+            />
+            {errors.password && <Text style={styles.error}>{errors.password}</Text>}
+            <Text style={styles.label}>Repita Sua Senha</Text>
+            <TextInput
+              placeholder="Confirme sua senha"
+              value={confirmPassword}
+              onChangeText={setConfirmPassword}
+              secureTextEntry
+              style={styles.input}
+            />
+            {errors.confirmPassword && (
+              <Text style={styles.error}>{errors.confirmPassword}</Text>
+            )}
+            <Text style={styles.label}>Data de Nascimento</Text>
+            <TextInput
+              placeholder="DD/MM/AAAA"
+              value={birthDate}
+              onChangeText={setBirthDate}
+              style={styles.input}
+            />
+            {errors.birthDate && <Text style={styles.error}>{errors.birthDate}</Text>}
+          </>
+        )}
+
+        {/* Step 3: Aluno ou Funcionário */}
+        {step === 3 && (
+          <>
+            <Text style={styles.label}>Você é:</Text>
+            <View style={styles.pickerContainer}>
+              <Picker
+                selectedValue={setRole}
+                onValueChange={(itemValue, itemIndex) => setRole(itemValue)}
+              >
+                <Picker.Item label="Aluno" value="user" />
+                <Picker.Item label="Funcionario" value="employee" />
+              </Picker>
             </View>
+            {errors.role && <Text style={styles.error}>{errors.role}</Text>}
+          </>
+        )}
+
+        {/* Botões de Navegação */}
+        <View style={styles.buttonContainer}>
+          {step > 1 && (
+            <TouchableOpacity onPress={handlePreviousStep} style={styles.button}>
+              <Text style={styles.buttonText}>Voltar</Text>
+            </TouchableOpacity>
           )}
-        />
-        <Controller
-          control={control}
-          name="surname"
-          render={({ field: { onChange, onBlur, value } }) => (
-            <View>
-              <Text style={styles.label}>Sobrenome</Text>
-              {errors.surname?.message && <Text style={styles.labelError}>{errors.surname?.message}</Text>}
-              <TextInput
-                placeholder=""
-                value={value}
-                onChangeText={onChange}
-                onBlur={onBlur}
-                style={[styles.input, { borderColor: errors.surname && '#ff375b' }]}
-              />
-            </View>
-          )}
-        />
-        <Controller
-          control={control}
-          name="birthDate"
-          render={({ field: { onChange, onBlur, value } }) => (
-            <View>
-              <Text style={styles.label}>Data de nacimento</Text>
-              {errors.birthDate?.message && <Text style={styles.labelError}>{errors.birthDate?.message}</Text>}
-              <TextInput
-                placeholder=" Data de nacimento "
-                value={value}
-                onChangeText={onChange}
-                onBlur={onBlur}
-                style={[styles.input, { borderColor: errors.birthDate && '#ff375b' }]}
-              />
-            </View>
-          )}
-        />
-        <Controller
-          control={control}
-          name="email"
-          render={({ field: { onChange, onBlur, value } }) => (
-            <View>
-              <Text style={styles.label}>Email</Text>
-              {errors.email?.message && <Text style={styles.labelError}>{errors.email?.message}</Text>}
-              <TextInput
-                placeholder=""
-                value={value}
-                onChangeText={onChange}
-                onBlur={onBlur}
-                style={[styles.input, { borderColor: errors.email && '#ff375b' }]}
-              />
-            </View>
-          )}
-        />
-        <Controller
-          control={control}
-          name="password"
-          render={({ field: { onChange, onBlur, value } }) => (
-            <View>
-              <Text style={styles.label}>Senha</Text>
-              {errors.password?.message && <Text style={styles.labelError}>{errors.password?.message}</Text>}
-              <TextInput
-                placeholder=""
-                value={value}
-                onChangeText={onChange}
-                secureTextEntry
-                onBlur={onBlur}
-                style={[styles.input, { borderColor: errors.password && '#ff375b' }]}
-              />
-            </View>
-          )}
-        />
-        <Controller
-          control={control}
-          name="confirmPassword"
-          render={({ field: { onChange, onBlur, value } }) => (
-            <View>
-              <Text style={styles.label}>Confirmar Senha</Text>
-              {errors.confirmPassword?.message && <Text style={styles.labelError}>{errors.confirmPassword?.message}</Text>}
-              <TextInput
-                placeholder=" "
-                value={value}
-                onChangeText={onChange}
-                secureTextEntry
-                onBlur={onBlur}
-                style={[styles.input, { borderColor: errors.confirmPassword && '#ff375b' }]}
-              />
-            </View>
-          )}
-        />
-        <TouchableOpacity onPress={handleSubmit(handleRegister)} style={styles.button}>
-          <Text style={styles.buttonText}>Entrar</Text>
-        </TouchableOpacity>
+          <TouchableOpacity onPress={handleNextStep} style={styles.button}>
+            <Text style={styles.buttonText}>
+              {step < totalSteps ? "Próximo" : "Cadastrar"}
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </KeyboardAvoidingView>
   );
 }
 
-
-///__________________________________________________________________________________________//
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#1B1B1B',
+    justifyContent: "center",
+    backgroundColor: "#161616",
   },
   contentContainer: {
-    width: '90%', 
-    padding: 11,
-    marginTop: -50, 
+    marginTop: 20,
+    padding: 0,
+    flex: 1,
+    marginHorizontal: 20,
   },
-  voltar: {
-    color: '#FFF',
-    fontSize: 24,
-    marginBottom: 20,
+  title: {
+    color: "whitesmoke",
+    fontSize: 30,
+    fontWeight: "600",
+    marginBottom: 7,
   },
-  input: {
-    backgroundColor: 'white',
-    width: '100%',
-    padding: 9,
-    borderRadius: 20, // Rounded corners for inputs
-    paddingHorizontal: 10,
-    marginTop: 1,
-    fontSize: 16,
+  stepText: {
+    color: "whitesmoke",
+    fontSize: 15,
+    marginBottom: 10,
+    textAlign: "center",
   },
   label: {
-    color: '#FFF',
-    fontSize: 14,
-    marginBottom: 11,
-    marginLeft: 8,
+    color: "whitesmoke",
+    fontSize: 15,
+    fontWeight: "700",
+    marginLeft: 3,
   },
-  labelError: {
-    color: "#ff375b",
+  error: {
+    color: "red",
+    fontSize: 12,
+    fontWeight: "600",
+    marginLeft: 3,
     marginBottom: 5,
-    marginLeft: 5,
   },
-  button: {
-    backgroundColor: '#0782F9', // Blue button
-    width: '100%',
-    padding: 16,
-    borderRadius: 30, // Make the button have more rounded corners
-    alignItems: 'center',
+  input: {
+    width: "100%",
+    backgroundColor: "white",
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    borderRadius: 8,
+    marginVertical: 5,
+    fontWeight: "600",
+    fontSize: 15,
+  },
+  pickerContainer: {
+    backgroundColor: "white",
+    borderRadius: 8,
+    marginVertical: 5,
+  },
+  picker: {
+    height: 50,
+    width: "100%",
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
     marginTop: 20,
   },
+  button: {
+    backgroundColor: "#434343",
+    padding: 15,
+    borderRadius: 9,
+    alignItems: "center",
+    width: "45%",
+  },
   buttonText: {
-    color: 'white',
+    color: "white",
+    fontWeight: "700",
     fontSize: 16,
-    textAlign: 'center',
   },
-  selectBox: {
-    backgroundColor: 'white',
-    width: '100%',
-    paddingVertical: 15,
-    borderRadius: 20, // Rounded corners for the dropdown
-    marginTop: 10,
+  progressBar: {
+    height: 3,
+    width: "100%",
+    backgroundColor: "#434343",
+    borderRadius: 5,
+    marginBottom: 20,
   },
-  selectDropdown: {
-    borderRadius: 10,
-    marginTop: 5,
+  progress: {
+    height: 3,
+    backgroundColor: "#00ff00",
+    borderRadius: 5,
   },
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

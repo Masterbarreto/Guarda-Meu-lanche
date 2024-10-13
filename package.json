@@ -14,15 +14,18 @@
     "@react-native-async-storage/async-storage": "^1.23.1",
     "@react-native-community/datetimepicker": "^8.2.0",
     "@react-native-community/masked-view": "^0.1.11",
+    "@react-native-picker/picker": "^2.8.1",
     "@react-navigation/bottom-tabs": "^6.5.20",
     "@react-navigation/native": "^6.1.17",
     "@react-navigation/stack": "^6.3.29",
     "cuid": "^3.0.0",
     "expo": "^51.0.17",
+    "expo-dev-client": "~4.0.28",
     "expo-image-picker": "^15.0.7",
     "expo-status-bar": "~1.12.1",
     "final-form": "^4.20.10",
     "firebase": "^10.12.3",
+    "formik": "^2.4.6",
     "nativewind": "^2.0.11",
     "react": "18.2.0",
     "react-dom": "18.2.0",
@@ -44,8 +47,7 @@
     "react-native-web": "~0.19.10",
     "react-router-native": "^6.23.0",
     "typescript": "~5.3.3",
-    "yup": "^1.4.0",
-    "expo-dev-client": "~4.0.28"
+    "yup": "^1.4.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
