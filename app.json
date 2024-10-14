@@ -21,8 +21,7 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      },
-      "package": "com.masterhenrique.guardameulanchebeta"
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"

@@ -1,0 +1,26 @@
+{
+  "name": "ws",
+  "version": "1.0.0",
+  "main": "ws.js",
+  "scripts": {
+    "start": "nodemon ./ws.js"
+  },
+  "type": "module",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.7.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "expres": "^0.0.5",
+    "express": "^4.21.0",
+    "http": "^0.0.1-security",
+    "jsonwebtoken": "^9.0.2",
+    "redis": "^4.7.0",
+    "socket.io": "^4.8.0",
+    "socket.io-client": "^4.8.0",
+    "ws": "^8.18.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.7"
+  }
+}

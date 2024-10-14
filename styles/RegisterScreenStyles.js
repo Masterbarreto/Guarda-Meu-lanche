@@ -1,65 +1,89 @@
+import { StyleSheet } from "react-native";
 
-import { StyleSheet } from 'react-native';
-
-export default StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#1B1B1B',
+    justifyContent: "center",
+    backgroundColor: "#161616",
   },
   contentContainer: {
-    width: '90%', 
-    padding: 11,
-    marginTop: -50, 
+    marginTop: 20,
+    padding: 0,
+    flex: 1,
+    marginHorizontal: 20,
   },
-  voltar: {
-    color: '#FFF',
-    fontSize: 24,
-    marginBottom: 20,
+  title: {
+    color: "whitesmoke",
+    fontSize: 30,
+    fontWeight: "600",
+    marginBottom: 7,
   },
-  input: {
-    backgroundColor: 'white',
-    width: '100%',
-    padding: 9,
-    borderRadius: 20, 
-    paddingHorizontal: 10,
-    marginTop: 1,
-    fontSize: 16,
+  stepText: {
+    color: "whitesmoke",
+    fontSize: 15,
+    marginBottom: 10,
+    textAlign: "center",
   },
   label: {
-    color: '#FFF',
-    fontSize: 14,
-    marginBottom: 11,
-    marginLeft: 8,
+    color: "whitesmoke",
+    fontSize: 15,
+    fontWeight: "700",
+    marginLeft: 3,
   },
-  labelError: {
-    color: "#ff375b",
+  error: {
+    color: "red",
+    fontSize: 12,
+    fontWeight: "600",
+    marginLeft: 3,
     marginBottom: 5,
-    marginLeft: 5,
   },
-  button: {
-    backgroundColor: '#0782F9', 
-    width: '100%',
-    padding: 16,
-    borderRadius: 30, 
-    alignItems: 'center',
+  input: {
+    width: "100%",
+    backgroundColor: "white",
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    borderRadius: 8,
+    marginVertical: 5,
+    fontWeight: "600",
+    fontSize: 15,
+  },
+  pickerContainer: {
+    backgroundColor: "white",
+    borderRadius: 8,
+    marginVertical: 5,
+  },
+  picker: {
+    height: 50,
+    width: "100%",
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
     marginTop: 20,
   },
+  button: {
+    backgroundColor: "#434343",
+    padding: 15,
+    borderRadius: 9,
+    alignItems: "center",
+    width: "45%",
+  },
   buttonText: {
-    color: 'white',
+    color: "white",
+    fontWeight: "700",
     fontSize: 16,
-    textAlign: 'center',
   },
-  selectBox: {
-    backgroundColor: 'white',
-    width: '100%',
-    paddingVertical: 15,
-    borderRadius: 20, 
-    marginTop: 10,
+  progressBar: {
+    height: 3,
+    width: "100%",
+    backgroundColor: "#434343",
+    borderRadius: 5,
+    marginBottom: 20,
   },
-  selectDropdown: {
-    borderRadius: 10,
-    marginTop: 5,
+  progress: {
+    height: 3,
+    backgroundColor: "#00ff00",
+    borderRadius: 5,
   },
 });
+export default styles 
