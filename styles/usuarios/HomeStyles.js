@@ -46,8 +46,8 @@ const styles = StyleSheet.create({
     left: -10,
   },
   notfication: {
-    top: -261,
-    left: 172,
+    top: '-34.8%',
+    left: '47.1%',
     width: '25%',
   },
   notfications: {

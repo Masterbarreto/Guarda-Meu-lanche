@@ -10,7 +10,9 @@ export default function CupertinoFooter1(props) {
         <View style={styles.container}>
             {/* Lanche 1 */}
             <View style={styles.lancheContainer}>
-                <Image source={require('../assets/lanche1.png')} style={styles.featuredImage} />
+                <View style={styles.IMGContainer}>
+                    <Image source={require('../assets/lanche1.png')} style={styles.featuredImage} />
+                </View>
                 <View style={styles.textContainer}>
                     <Text style={styles.lancheName}>Nome do Lanche</Text>
                     <Text style={styles.lancheDescription}>descrição</Text>
@@ -22,22 +24,26 @@ export default function CupertinoFooter1(props) {
 
             {/* Lanche 2 */}
             <View style={styles.lancheContainer}>
-                <Image source={require('../assets/lanche2.png')} style={styles.featuredImage2} />
+                <View style={styles.IMGContainer}>
+                    <Image source={require('../assets/lanche2.png')} style={styles.featuredImage} />
+                </View>
                 <View style={styles.textContainer}>
                     <Text style={styles.lancheName}>Nome do Lanche</Text>
                     <Text style={styles.lancheDescription}>descrição</Text>
                 </View>
                 <TouchableOpacity style={styles.categoryButton} onPress={() => navigation.navigate('Produto')}>
-                <MaterialCommunityIconsIcon name="plus" />
+                    <MaterialCommunityIconsIcon name="plus" />
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.l} onPress={() => navigation.navigate('Produto')}>
-                    
+
                 </TouchableOpacity>
             </View>
 
             {/* Lanche 2 */}
             <View style={styles.lancheContainer}>
-                <Image source={require('../assets/lanche3.png')} style={styles.featuredImage2} />
+                <View style={styles.IMGContainer}>
+                    <Image source={require('../assets/lanche3.png')} style={styles.featuredImage} />
+                </View>
                 <View style={styles.textContainer}>
                     <Text style={styles.lancheName}>Nome do Lanche</Text>
                     <Text style={styles.lancheDescription}>descrição</Text>
@@ -53,31 +59,43 @@ export default function CupertinoFooter1(props) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 16,
+        padding: 10,
         backgroundColor: 'white',
+        marginLeft: '-2%',
+        display: "flex",
+        flexDirection: 'column',
+        alignItems: "center",
+    },
+    IMGContainer: {
+        flexDirection: 'column',
+        alignItems: 'center',
+        alignContent: 'flex-',
+        width: 100,
+        height: 100,
+        backgroundColor: '#FFF',
     },
     lancheContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-between',
-        marginBottom: 20,
+        justifyContent: 'center',
+        marginBottom: 10,
     },
     textContainer: {
         flex: 1,
         marginLeft: 10,
+        justifyContent: 'center',
+        display: "flex",
     },
     featuredImage: {
-        width: 95,
-        height: 69,
-    },
-    featuredImage2: {
-        width: 78,
-        height: 80,
+        width: '100%',
+        height: '100%',
+        resizeMode: "contain",
     },
     lancheName: {
         fontSize: 16,
         fontWeight: 'bold',
         color: '#000',
+
     },
     lancheDescription: {
         fontSize: 14,
@@ -90,6 +108,7 @@ const styles = StyleSheet.create({
         borderRadius: 15,
         justifyContent: 'center',
         alignItems: 'center',
+        marginRight: '10%',
     },
     buttonText: {
         fontSize: 14,

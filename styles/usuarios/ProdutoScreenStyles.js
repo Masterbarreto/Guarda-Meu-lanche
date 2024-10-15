@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   cupertinoFooter1: {
-    marginTop: 60,
+    marginTop: '5%',
   },
 });
 

@@ -4,6 +4,7 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 
 export default function LojaItem({ label, onPress, navigation }) {
   return (
+
     <TouchableOpacity style={styles.item} onPress={onPress}>
       <Image
         source={require('../assets/icon.png')}
@@ -21,10 +22,14 @@ const styles = StyleSheet.create({
   item: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 25, 
-    paddingVertical: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: "#ddd",
+    marginBottom: 30,
+    paddingVertical: 50,
+    marginTop: '-10%',
+  },
+  statusBar: {
+    height: 1,
+    backgroundColor: "black",
+    marginTop: 10,
   },
   icon: {
     width: 40,

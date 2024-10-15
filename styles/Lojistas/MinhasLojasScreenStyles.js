@@ -12,6 +12,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   minhaLoja: {
+    marginTop: '-1%',
     fontSize: 20,
     fontWeight: "bold",
     color: "#ffff",
@@ -31,6 +32,12 @@ const styles = StyleSheet.create({
     height: 1,
     backgroundColor: "black",
     marginTop: 10,
+    marginBottom: -19,
+  },
+  statusBar1: {
+    height: 1,
+    backgroundColor: "black",
+    marginTop: '-20%',
   },
   titleLoja: {
     color: "#000",
@@ -38,10 +45,10 @@ const styles = StyleSheet.create({
     fontWeight: "400",
   },
   LojaItem: {
-    marginTop: 30,
+    marginTop: '5%',
   },
   cupertinoFooter1: {
-    marginTop: 300,
+    marginTop: '95%',
     alignItems: 'center',
   },
 });

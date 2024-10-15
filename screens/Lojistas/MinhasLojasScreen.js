@@ -17,24 +17,28 @@ export default function MinhasLojas({ navigation }) {
           <Text style={styles.titleLoja}>loja</Text>
           <View style={styles.statusBar} />
           <View style={styles.LojaItem}>
+
             {/* Loja A */}
             <LojaItem
               label="LOJA A - P1"
               onPress={() => navigation.navigate('homeLoja')}
               navigation={navigation}
             />
+            <View style={styles.statusBar1} />
             {/* Loja B */}
             <LojaItem
               label="LOJA B - P2"
               onPress={() => navigation.navigate('homeLoja')}
               navigation={navigation}
             />
+            <View style={styles.statusBar1} />
             {/* Loja C */}
             <LojaItem
               label="LOJA C - P3"
               onPress={() => navigation.navigate('homeLoja')}
               navigation={navigation}
             />
+            <View style={styles.statusBar1} />
           </View>
         </ScrollView>
       </View>

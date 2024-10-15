@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 80, // ajuste a distância entre os ícones
+    paddingHorizontal: '10%', // ajuste a distância entre os ícones
   },
   btnWrapper1: {
     flex: 1,
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
   btn1Caption: {
     fontSize: 12,
     backgroundColor: "transparent",
-    paddingTop: 4,
+    paddingTop: '70%',
     marginHorizontal: 5,
   },
   btnWrapper2: {
@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
   btn2Caption: {
     fontSize: 12,
     backgroundColor: "transparent",
-    paddingTop: 4,
+    paddingTop: '70%',
     marginHorizontal: 1,
   },
   btnWrapper3: {
@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
   btn3Caption: {
     fontSize: 12,
     backgroundColor: "transparent",
-    paddingTop: 4,
+    paddingTop: '70%',
     marginHorizontal: 5,
   },
 });

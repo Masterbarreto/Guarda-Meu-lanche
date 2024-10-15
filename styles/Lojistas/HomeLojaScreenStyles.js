@@ -5,7 +5,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#211D1D",
-    paddingTop: 40,
+    paddingTop: '5%',
     paddingHorizontal: 20,
   },
   title: {
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
   },
   chartContainer: {
     backgroundColor: "#fff",
-    padding: 20,
+    padding: 10,
     borderRadius: 10,
     marginBottom: 20,
   },
@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#F1F1F1",
     borderRadius: 10,
     padding: 20,
-    marginBottom: 20,
+    marginBottom: '13%',
   },
   productItemContainer: {
     flexDirection: 'row',
