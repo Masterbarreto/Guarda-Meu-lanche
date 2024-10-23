@@ -28,7 +28,6 @@ export default function MinhasLojas({ navigation }) {
             {/* Loja B */}
             <LojaItem
               label="LOJA B - P2"
-              onPress={() => navigation.navigate('homeLoja')}
               navigation={navigation}
             />
             <View style={styles.statusBar1} />
