@@ -1,0 +1,80 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0 user-scalable=no" />
+
+    <!DOCTYPE html>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        padding: 0;
+        margin: 0;
+        display: flex;
+      }
+      .email-container {
+        max-width: 900px;
+        margin: 10px auto;
+        margin-top: 0;
+        background-color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+      }
+
+      .email-body {
+        padding: 20px;
+        text-align: center;
+      }
+    
+      .verification-code {
+        background-color: #f2f2f2;
+        padding: 10px;
+        border-radius: 5px;
+        display: inline-block;
+        font-size: 22px;
+        margin: 20px 0;
+        font-style: bold;
+      }
+      .verify-button {
+        background-color: #4caf50;
+        color: white;
+        padding: 12px 20px;
+        text-decoration: none;
+        border-radius: 5px;
+        font-size: 20px;
+        display: inline-block;
+        font-weight: 600;
+      }
+      .verify-button:hover {
+        background-color: #45a049;
+      }
+      .title {
+        text-align: center;
+        padding: 10px;
+        font-size: 22px;
+      }
+
+      .text{
+        font-weight: 500;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="email-container">
+      <h1 class="title">
+        Olá, <strong>{{name}}</strong>, obrigado por se registrar no Guarda meu lanche!
+      </h1>
+    
+      <div class="email-body">
+        <p class="text">
+          Seu código de verificação é:
+          <strong class="verification-code">{{ verification_code }}</strong>
+        </p>
+        <a href={{url}} class="verify-button"
+          >Verificar E-mail</a
+        >
+      </div>
+    </div>
+  </body>
+</html>
