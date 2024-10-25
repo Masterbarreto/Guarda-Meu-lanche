@@ -13,6 +13,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#ffff",
     marginBottom: 60,
+    marginTop: 12,
   },
   caixaBranca: {
     backgroundColor: "#fff",

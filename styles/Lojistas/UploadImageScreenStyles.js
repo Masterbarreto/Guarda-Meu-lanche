@@ -18,6 +18,7 @@ const styles = StyleSheet.create({
     shadowRadius: 20,
     shadowOffset: { width: 0, height: 5 },
     alignSelf: 'center',
+    marginTop: '15%',
   },
   input: {
     backgroundColor: '#F0F0F0',
@@ -60,8 +61,9 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     padding: -10,
     alignItems: 'center',
-    marginTop: 40,
+    marginTop: 30,
     alignSelf: 'center',
+    justifyContent: 'center',
   },
   buttonText: {
     color: 'white',
@@ -77,6 +79,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     width: 140,
     marginBottom: 5,
+    marginLeft: '-3%',
   },
   stageBarsContainer: {
     flexDirection: 'row',
@@ -98,9 +101,10 @@ const styles = StyleSheet.create({
   stageText: {
     color: '#333',
     fontWeight: 'bold',
+    marginLeft: '12.5%',
   },
   cupertinoFooter1: {
-    marginBottom: -0,
+    marginBottom: '-10%',
     alignItems: 'center',
   },
 });
