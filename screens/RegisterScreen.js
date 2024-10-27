@@ -10,8 +10,6 @@ import {
 } from "react-native";
 import { Picker } from '@react-native-picker/picker';
 import { useNavigation } from "@react-navigation/native";
-import { createUserWithEmailAndPassword } from "firebase/auth"; // Função para criar conta
-import { auth } from "../firebase"; // Firebase auth import
 import GoBack from "../components/Back";
 import styles from '../styles/RegisterScreenStyles';
 import * as Yup from 'yup';
@@ -47,6 +45,7 @@ export default function RegisterScreen() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [birthDate, setBirthDate] = useState("");
+  const [cpf, setCpf] = useState(""); // Campo CPF
   const [role, setRole] = useState("");
   const [errors, setErrors] = useState({});
   const totalSteps = 3;
@@ -103,13 +102,37 @@ export default function RegisterScreen() {
   };
 
   const handleRegister = async () => {
+    const requestBody = {
+      email: email.trim(),
+      password: password,
+      name: name.trim(),
+      cpf: cpf.replace(/\D/g, ""), // Remove caracteres não numéricos do CPF
+      age: birthDate.replace(/(\d{2})\/(\d{2})\/(\d{4})/, "$3-$2-$1"), // Converte para formato YYYY-MM-DD
+      role: role
+    };
+
+    console.log("JSON enviado:", requestBody); // Log para inspecionar o JSON
+
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
-      Alert.alert("Conta criada com sucesso!", `Bem-vindo(a), ${name}!`);
-      navigation.navigate("Login");
+      const response = await fetch("http://192.168.0.89:4000/api/v1/users", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestBody),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        Alert.alert("Conta criada com sucesso!", `Bem-vindo(a), ${name}!`);
+        navigation.navigate("Login");
+      } else {
+        const errorData = await response.json();
+        Alert.alert("Erro ao criar conta", errorData.errors ? errorData.errors.join(", ") : "Erro desconhecido. Verifique os dados e tente novamente.");
+      }
     } catch (error) {
-      console.error(error);
-      Alert.alert("Erro ao criar a conta", "Verifique os dados e tente novamente.");
+      console.error("Erro na requisição de rede:", error.message);
+      Alert.alert("Erro na Rede", `Não foi possível se conectar ao servidor: ${error.message}. Verifique sua conexão e tente novamente.`);
     }
   };
 
@@ -171,17 +194,24 @@ export default function RegisterScreen() {
             <Text style={styles.label}>Data de Nascimento</Text>
             <TextInput
               placeholder="DD/MM/YYYY"
-              value={formatDate(birthDate)} // Usando a função de formatação
-              onChangeText={(text) => setBirthDate(formatDate(text))} // Atualizando a data formatada
+              value={formatDate(birthDate)}
+              onChangeText={(text) => setBirthDate(formatDate(text))}
               style={styles.input}
             />
             {errors.birthDate && <Text style={styles.error}>{errors.birthDate}</Text>}
           </>
         )}
 
-        {/* Step 3: Função */}
+        {/* Step 3: Função e CPF */}
         {step === 3 && (
-         <>
+          <>
+            <Text style={styles.label}>CPF</Text>
+            <TextInput
+              placeholder="Digite seu CPF"
+              value={cpf}
+              onChangeText={setCpf}
+              style={styles.input}
+            />
             <Text style={styles.label}>Você é:</Text>
             <View style={styles.pickerContainer}>
               <Picker

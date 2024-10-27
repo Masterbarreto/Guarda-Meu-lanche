@@ -10,8 +10,9 @@ export const up = function (knex) {
     t.string("name", 250).notNullable();
     t.timestamp("created_at").defaultTo(knex.fn.now());
     t.string("validation_code").nullable();
-    t.boolean("is_verified").defaultTo(false); 
-  });
+    t.boolean("is_verified").defaultTo(false);
+    t.enu('role', ['Aluno', 'Funcionário', 'Administrador']).notNullable();
+  })
 };
 
 export const down = function (knex) {

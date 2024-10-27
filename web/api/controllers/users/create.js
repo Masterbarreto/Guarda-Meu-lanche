@@ -67,6 +67,7 @@ export const createValidation = validation((schema) => ({
                 .matches(/^\d{4}-\d{2}-\d{2}$/, "A data deve estar no formato yyyy-mm-dd")
                 .required(),
             name: yup.string().required(),
+            role: yup.string().oneOf(['Aluno', 'Funcionário', 'Administrador']).required(),
         })
         .noUnknown(true, "chaves adicionais não são permitidas."),
 }));
@@ -112,8 +113,8 @@ const createUser = async (body) => {
     const validation_code = code;
 
     const [user] = await Knex("users")
-        .insert({ ...rest, passwordHash, validation_code })
-        .returning(["id", "email", "cpf", "validation_code", "name"]);
+        .insert({ ...rest, passwordHash, validation_code , role: body.role})
+        .returning(["id", "email", "cpf", "validation_code", "name", "role"]);
 
     const id = user.id;
 
@@ -127,6 +128,7 @@ export const create = async (req, res) => {
         if (userResponse.errors) {
             return res.status(StatusCodes.BAD_REQUEST).json({ errors: userResponse.errors });
         }
+            /* parete de envio de email
         const api = process.env.EMAIL_API + "/send_code"
         const BASE_URL = process.env.BASE_URL
         const response = await axios.post(api,
@@ -140,10 +142,11 @@ export const create = async (req, res) => {
             }
         )
         console.log(response.data);
-        
+        */
         return res.status(StatusCodes.CREATED).json({ id: userResponse.id, validation_code: userResponse.validation_code });
     } catch (e) {
         console.log(e);
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: e.message });
     }
+
 };
