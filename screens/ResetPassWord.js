@@ -11,10 +11,10 @@ import { useNavigation } from "@react-navigation/native";
 import { sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "../firebase";
 import GoBack from "../components/Back";
-import styles from "../styles/EsqueciaSenhaStyles"; // Importa os estilos
+import styles from "../styles/ResetPasswordStyles"; // Importa os estilos
 import EmailCode from "./EmailCode";
 
-export default function EsqueciaSenha() {
+export default function ResetPassword() {
   const navigation = useNavigation();
   const [email, setEmail] = useState("");
   const [showResetMessage, setShowResetMessage] = useState(false); // Estado para controlar o componente exibido
@@ -35,28 +35,36 @@ export default function EsqueciaSenha() {
 
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
-      <GoBack/>
+      <GoBack />
       <View style={styles.contentContainer}>
-        {showResetMessage ? ( 
+        {showResetMessage ? (
           // Exibe a mensagem de confirmação após o reset de senha
-         <EmailCode userEmail={email}></EmailCode>
-        ) : ( 
+          <EmailCode userEmail={email}></EmailCode>
+        ) : (
           // Formulário padrão de redefinição de senha
           <>
-            <Text style={styles.title}>Esqueceu a senha?</Text>
-            <Text style={styles.texto}>
-              Digite seu e-mail para o processo de verificação, dentro de alguns minutos
-              enviaremos o código para o seu e-mail.
+            <Text style={styles.title}>Crie uma nova senha</Text>
+            <Text style={styles.text}>
+              Ela deve conter no mínimo 6 caracteres.
+              {"\n"}
+              <Text style={styles.redText}>Recomendamos usar números e caracteres.</Text>
             </Text>
-            <Text style={styles.email}>Email</Text>
+            <Text style={styles.email}>Crie uma senha</Text>
             <TextInput
-              placeholder="Ex: seu.email@example.com"
+              placeholder="Sua senha super segura."
+              value={email}
+              onChangeText={setEmail}
+              style={styles.input}
+            />
+            <Text style={styles.email}>Confirme sua nova senha</Text>
+            <TextInput
+              placeholder="* * * * * *"
               value={email}
               onChangeText={setEmail}
               style={styles.input}
             />
             <TouchableOpacity onPress={handlePasswordReset} style={styles.button}>
-              <Text style={styles.buttonText}>Continue</Text>
+              <Text style={styles.buttonText}>Criar nova senha.</Text>
             </TouchableOpacity>
           </>
         )}
