@@ -58,6 +58,10 @@ Contribuições são bem-vindas! Se você deseja melhorar o aplicativo, siga est
 2. Crie uma branch para sua nova funcionalidade ou correção de bug.
 3. Faça suas alterações e envie um pull request.
 
+## Versão Desktop
+Este projeto também possui uma versão Desktop! Confira em: https://github.com/Masterbarreto/GML-desktop
+
+
 ## Licença
 
 Este projeto está licenciado sob a [MIT License](LICENSE).
