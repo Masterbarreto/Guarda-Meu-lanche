@@ -1,7 +1,10 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0 user-scalable=no" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0 user-scalable=no"
+    />
 
     <!DOCTYPE html>
     <style>
@@ -11,69 +14,84 @@
         padding: 0;
         margin: 0;
         display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
       }
+
       .email-container {
-        max-width: 900px;
-        margin: 10px auto;
-        margin-top: 0;
+        max-width: 600px;
+        width: 100%;
         background-color: #ffffff;
-        border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
         overflow: hidden;
+      }
+
+      .header {
+        background-color: #4caf50;
+        color: white;
+        padding: 15px;
+        text-align: center;
       }
 
       .email-body {
         padding: 20px;
         text-align: center;
       }
-    
+
       .verification-code {
-        background-color: #f2f2f2;
+        background-color: #e8f5e9;
         padding: 10px;
         border-radius: 5px;
         display: inline-block;
-        font-size: 22px;
+        font-size: 24px;
         margin: 20px 0;
-        font-style: bold;
+        font-weight: bold;
+        width: 80%;
+        color: #388e3c;
+        font-size: 30px;
+        letter-spacing: 5;
       }
+
       .verify-button {
         background-color: #4caf50;
         color: white;
-        padding: 12px 20px;
+        padding: 12px 25px;
         text-decoration: none;
         border-radius: 5px;
         font-size: 20px;
-        display: inline-block;
-        font-weight: 600;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+        margin-top: 40px;
       }
+
       .verify-button:hover {
         background-color: #45a049;
       }
-      .title {
-        text-align: center;
-        padding: 10px;
-        font-size: 22px;
-      }
 
-      .text{
+      .text {
         font-weight: 500;
+        margin: 10px 0;
+        line-height: 1.6;
+        font-size: 15px;
       }
     </style>
   </head>
   <body>
     <div class="email-container">
-      <h1 class="title">
-        Olá, <strong>{{name}}</strong>, obrigado por se registrar no Guarda meu lanche!
-      </h1>
-    
+      <div class="header">
+        <h1 class="title">
+          Olá, <strong>{{name}}</strong>, obrigado por se registrar no Guarda meu lanche!
+        </h1>
+      </div>
+
       <div class="email-body">
         <p class="text">
           Seu código de verificação é:
           <strong class="verification-code">{{ verification_code }}</strong>
         </p>
-        <a href={{url}} class="verify-button"
-          >Verificar E-mail</a
-        >
+        <a href="{{url}}" class="verify-button">Verificar E-mail</a>
       </div>
     </div>
   </body>
