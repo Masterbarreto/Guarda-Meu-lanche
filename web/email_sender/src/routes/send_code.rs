@@ -4,7 +4,12 @@ use axum::Json;
 use axum::{
     routing::post,
     Router,
+    
 };
+use crate::app_state::AppState;
+
+use axum::extract::State;
+use std::sync::Arc;
 use lettre::transport::smtp::authentication::Credentials;
 use lettre::{Message, SmtpTransport, Transport};
 use serde::{Deserialize, Serialize};
@@ -33,7 +38,10 @@ struct EmailResponse {
     message: String,
 }
 
-async fn send_mail(Json(payload): Json<EmailRequest>) -> impl IntoResponse {
+async fn send_mail(
+    State(app_state): State<Arc<AppState>>, 
+    Json(payload): Json<EmailRequest>
+) -> impl IntoResponse {
     let email_user = env::var("EMAIL_USER").expect("EMAIL_USER not set");
     let email_pass = env::var("EMAIL_PASS").expect("EMAIL_PASS not set");
 
@@ -78,6 +86,6 @@ async fn send_mail(Json(payload): Json<EmailRequest>) -> impl IntoResponse {
         }
     }
 }
-pub fn create_router() -> Router {
-    Router::new().route("/", post(send_mail))
+pub fn create_router(app_state: Arc<AppState>) -> Router {
+    Router::new().route("/", post(send_mail)).with_state(app_state)
 }

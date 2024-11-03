@@ -136,7 +136,7 @@ export default function LoginScreen({ navigation }) {
               )}
             />
 
-            <TouchableOpacity onPress={() => { navigation.navigate('EsqueciSenha') }}>
+            <TouchableOpacity onPress={() => { navigation.navigate('EsqueciaSenha') }}>
               <Text style={styles.forgotPasswordText}>Esqueceu sua senha?</Text>
             </TouchableOpacity>
           </View>
