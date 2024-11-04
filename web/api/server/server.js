@@ -1,13 +1,17 @@
 import "dotenv/config";
 import "../shared/yup.js";
 import express from "express";
+import cors from 'cors';
 import { apiRouter } from "../routes/api.js";
 import { router } from "../routes/router.js";
 import { apiRedirect } from "./apiRedirect.js";
 import swaggerJsdoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 import path from "path";
+
 const server = express();
+
+server.use(cors());
 
 server.use(express.json());
 server.use(express.urlencoded({ extended: true }));

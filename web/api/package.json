@@ -17,9 +17,11 @@
   "dependencies": {
     "axios": "^1.7.7",
     "bcrypt": "^5.1.1",
+    "cors": "^2.8.5",
     "cpf-cnpj-validator": "^1.0.3",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
+    "guarda-meu-lanche-server": "file:",
     "http-status-codes": "^2.3.0",
     "jsonwebtoken": "^9.0.2",
     "knex": "^3.1.0",
