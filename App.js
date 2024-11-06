@@ -1,7 +1,6 @@
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { CardStyleInterpolators, createStackNavigator } from "@react-navigation/stack";
-// import firebase from "./firebase.js";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 // telas gerais
