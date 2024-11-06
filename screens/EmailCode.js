@@ -1,10 +1,20 @@
 import React, { useState, useRef } from "react";
 import { Text, View, TextInput, TouchableOpacity, Alert, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import GoBack from "../components/Back";
+import * as Yup from "yup";
+import { API_URL } from "@env";
+import axios from "axios";
+const validationSchema = Yup.object().shape({
+  code: Yup.string()
+    .length(5, "O código deve ter exatamente 5 dígitos")
+    .required("O código é obrigatório"),
+});
 
 export default function EmailCode({ userEmail }) {
   const navigation = useNavigation();
+
+  const [validationError, setValidationError] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
   const [code, setCode] = useState(["", "", "", "", ""]); // Estado para os 5 dígitos
   const inputRefs = useRef([]); // Referências para os inputs
 
@@ -12,40 +22,60 @@ export default function EmailCode({ userEmail }) {
     const newCode = [...code];
     newCode[index] = text;
     setCode(newCode);
+    setValidationError(""); // Limpa a mensagem de erro ao digitar
 
     if (text && index < 4) {
-      // Move o foco para o próximo campo se houver entrada
       inputRefs.current[index + 1].focus();
     }
   };
 
   const handleKeyPress = (e, index) => {
     if (e.nativeEvent.key === "Backspace" && !code[index]) {
-      // Limpa o campo e move o foco para o campo anterior se estiver vazio
       if (index > 0) {
         inputRefs.current[index - 1].focus();
-        const newCode = [...code];
-        newCode[index - 1] = ""; // Limpa o campo anterior
-        setCode(newCode);
       }
     }
   };
 
-  const handleVerifyCode = () => {
-    const enteredCode = code.join("");
-    if (enteredCode.length === 5) {
-      Alert.alert("Código verificado com sucesso!");
-      navigation.navigate("ResetPassword");
-    } else {
-      Alert.alert("Por favor, insira o código completo.");
+  const handleVerifyCode = async () => {
+    try {
+      const enteredCode = code.join("");
+      await validationSchema.validate({ code: enteredCode }); // Validação agora aceita string
+      let validatedCode = await validateCode(userEmail, enteredCode);
+
+      if (validatedCode.error) {
+        setValidationError("Código inválido.");
+        return;
+      }
+
+      setTimeout(() => {
+        navigation.navigate(
+          "ResetPassword",
+            { userEmail,code:enteredCode },
+        );
+      }, 300);
+    } catch (error) {
+      console.log(error);
+
+      setValidationError(error.message);
     }
   };
+  const validateCode = async (userEmail, code) => {
+    const email = userEmail;
 
+    const url = `${API_URL}/reset_password?email=${email}&code=${code}`;
+
+    return axios
+      .get(url)
+      .then((data) => data.data)
+      .catch((e) => e.response.data);
+  };
   return (
     <View>
       <Text style={styles.title}>Digite o código enviado</Text>
       <Text style={styles.texto}>
-        Digite o código de verificação que enviamos para <Text style={styles.email}>{userEmail}</Text>.
+        Digite o código de verificação que enviamos para{" "}
+        <Text style={styles.email}>{userEmail}</Text>.
       </Text>
 
       <View style={styles.codeContainer}>
@@ -62,6 +92,11 @@ export default function EmailCode({ userEmail }) {
           />
         ))}
       </View>
+      {validationError ? (
+        <Text style={{ color: "red", marginTop: 3, fontSize: 12, fontWeight: "700" }}>
+          {validationError}
+        </Text>
+      ) : null}
 
       <TouchableOpacity onPress={handleVerifyCode} style={styles.button}>
         <Text style={styles.buttonText}>Verificar Código</Text>
@@ -75,17 +110,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     backgroundColor: "#161616",
-  },
-  scrollContainer: {
-    flexGrow: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  contentContainer: {
-    marginTop: 20,
-    padding: 0,
-    flex: 1,
-    marginHorizontal: 20,
   },
   title: {
     color: "whitesmoke",
@@ -126,7 +150,6 @@ const styles = StyleSheet.create({
     borderRadius: 9,
     marginTop: 15,
     alignItems: "center",
-    width: "auto",
   },
   buttonText: {
     color: "white",

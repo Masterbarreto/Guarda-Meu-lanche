@@ -13,35 +13,64 @@ import { auth } from "../firebase";
 import GoBack from "../components/Back";
 import styles from "../styles/EsqueciaSenhaStyles"; // Importa os estilos
 import EmailCode from "./EmailCode";
+import * as Yup from "yup";
+import axios from "axios";
+import { API_URL } from "@env";
+
+const validationSchema = Yup.object().shape({
+  email: Yup.string().email("Email inválido").required("O email é obrigatório"),
+});
 
 export default function EsqueciaSenha() {
-  const navigation = useNavigation();
   const [email, setEmail] = useState("");
-  const [showResetMessage, setShowResetMessage] = useState(false); // Estado para controlar o componente exibido
+  const [validationError, setValidationError] = useState("");
+
+  const navigation = useNavigation();
+  const [showResetMessage, setShowResetMessage] = useState(false);
 
   const handlePasswordReset = async () => {
-    if (email !== "") {
-      try {
-        await sendPasswordResetEmail(auth, email);
-        setShowResetMessage(true); // Alterna para a mensagem de confirmação
-      } catch (error) {
-        console.error(error);
-        Alert.alert("Erro ao enviar email de redefinição de senha");
+    try {
+      await validationSchema.validate({ email });
+
+      const userData = await sendMail(email);
+      console.log(userData);
+      
+      if (userData.error?.status) {
+        if (userData.error.status == 404) {
+          setValidationError("Email não encontrado.");
+          return
+        }
+        
       }
-    } else {
-      Alert.alert("Por favor, informe um email válido.");
+
+      setShowResetMessage(true);
+    } catch (error) {
+      console.log(error);
+      
+      if (error.name === "ValidationError") {
+        setValidationError(error.message);
+      } else {
+        console.error("Erro inesperado:", error);
+        setValidationError("Ocorreu um erro inesperado. Tente novamente.");
+      }
     }
   };
 
+  const sendMail = async (email) => {
+    const url = `${API_URL}/reset_password?email=${email}`;
+
+    return axios
+      .get(url)
+      .then((data) => data.data)
+      .catch((e) => e.response.data);
+  };
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
-      <GoBack/>
+      <GoBack />
       <View style={styles.contentContainer}>
-        {showResetMessage ? ( 
-          // Exibe a mensagem de confirmação após o reset de senha
-         <EmailCode userEmail={email}></EmailCode>
-        ) : ( 
-          // Formulário padrão de redefinição de senha
+        {showResetMessage ? (
+          <EmailCode userEmail={email} />
+        ) : (
           <>
             <Text style={styles.title}>Esqueceu a senha?</Text>
             <Text style={styles.texto}>
@@ -55,6 +84,13 @@ export default function EsqueciaSenha() {
               onChangeText={setEmail}
               style={styles.input}
             />
+            {validationError ? (
+              <Text
+                style={{ color: "red", marginTop: 3, fontSize: 12, fontWeight: "700" }}
+              >
+                {validationError}
+              </Text>
+            ) : null}
             <TouchableOpacity onPress={handlePasswordReset} style={styles.button}>
               <Text style={styles.buttonText}>Continue</Text>
             </TouchableOpacity>

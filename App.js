@@ -3,7 +3,6 @@ import { NavigationContainer } from "@react-navigation/native";
 import { CardStyleInterpolators, createStackNavigator } from "@react-navigation/stack";
 // import firebase from "./firebase.js";
 import { SafeAreaView } from "react-native-safe-area-context";
-
 // telas gerais
 import LoginScreen from "./screens/LoginScreen.js";
 import EsqueciaSenha from "./screens/EsqueciaSenha";
@@ -39,6 +38,7 @@ import CupertinoFooter2 from "./components/CupertinoFooter2.js";
 import LojaItem from "./components/LojaItem.js";
 import EmailCode from "./screens/EmailCode.js";
 import ResetPassword from "./screens/ResetPassWord.js";
+import Terms from "./screens/Terms.js";
 
 const Stack = createStackNavigator();
 
@@ -69,6 +69,11 @@ export default function App() {
           <Stack.Screen
             name="Login"
             component={LoginScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Terms"
+            component={Terms}
             options={{ headerShown: false }}
           />
           <Stack.Screen
@@ -191,7 +196,6 @@ export default function App() {
             component={PedidoScreen}
             options={{ headerShown: false }}
           />
-
           <Stack.Screen
             name="CupertinoFooter2"
             component={CupertinoFooter2}
