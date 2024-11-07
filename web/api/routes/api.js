@@ -19,6 +19,8 @@ const router = Router();
  *   description: Operações relacionadas a usuários
  */
 
+router.get("/reset_password", userController.sendValidationCode);
+router.post("/reset_password", userController.resetPasswordValidation, userController.resetPassword);
 router.post("/users", userController.createValidation, userController.create);
 router.post("/users/login", userController.loginValidation, userController.login);
 router.post("/users/logout", checkToken("user"), userController.logout);

@@ -10,7 +10,7 @@ use axum::{
     routing::{get,post},
     Json, Router,
 };
-use chrono::{Datelike, Duration, Timelike, Utc};
+use chrono::{Datelike, Duration, Timelike, Utc, FixedOffset};
 use lettre::transport::smtp::authentication::Credentials;
 use lettre::{Message, SmtpTransport, Transport};
 use serde::{Deserialize, Serialize};
@@ -58,6 +58,8 @@ async fn send_password_code(
             email_pass.to_string(),
         ))
         .build();
+
+    let brasilia_offset = FixedOffset::west(3 * 3600); // UTC-3
 
     let minutes_time = 10;
     let verification_code: String = generate_verification_code();

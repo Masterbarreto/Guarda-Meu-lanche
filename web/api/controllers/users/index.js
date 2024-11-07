@@ -3,8 +3,10 @@ export * from "./profile.js";
 export * from "./update.js";
 export * from "./getUserById.js";
 export * from "./delete.js";
-export * from "./verifyUser.js"
-export * from "./login.js"
-export * from "./getOrders.js"
-export * from "./getOrderById.js"
-export * from "./logout.js"
+export * from "./verifyUser.js";
+export * from "./login.js";
+export * from "./getOrders.js";
+export * from "./getOrderById.js";
+export * from "./logout.js";
+export * from "./sendPasswordResetCode.js";
+export * from "./resetPassword.js";
