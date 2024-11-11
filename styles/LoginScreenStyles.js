@@ -5,7 +5,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    backgroundColor: '#211D1D',
+    backgroundColor: '#161616',
   },
   scrollContainer: {
     flexGrow: 1,
@@ -24,17 +24,22 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     paddingHorizontal: 16,
     paddingVertical: 12,
-    borderRadius: 16,
+    borderRadius: 8,
+    marginVertical: 5,
+    fontWeight: "600",
+    fontSize: 15,
   },
+ 
   buttonContainer: {
     marginTop: -30,
   },
   button: {
     backgroundColor: '#2C5697',
     padding: 15,
-    borderRadius: 180,
     alignItems: 'center',
     width: 340,
+    borderRadius:8
+
   },
   buttonText: {
     color: 'white',
@@ -46,6 +51,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    
   },
   buttonOutlineText: {
     color: '#0782F9',
@@ -54,11 +60,12 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
   },
   forgotPasswordText: {
-    color: '#0782F9',
-    marginTop: 12,
-    fontSize: 14,
+    color: 'red',
+    marginTop: 5,
+    fontSize: 12,
     textAlign: 'right',
     marginRight: 2,
+    fontWeight:"700"
   },
   label: {
     color: '#fff',
