@@ -25,10 +25,20 @@ const checkEmail = async (email) =>
 const checkCode = async (email) =>
     await Knex("password_reset_codes").select("*").where({ email }).first();
 
+const createHash = async (password) => {
+    try {
+        const salt = await bcrypt.genSalt(10);
+        const hash = await bcrypt.hash(String(password), salt);
+        return hash;
+    } catch (err) {
+        throw new Error("Error creating hash password.");
+    }
+};
 const changePassword = async (email, password) => {
+    const passwordHash = await createHash(password);
     const user = await Knex("users")
         .where({ email })
-        .update({ passwordHash: password })
+        .update({ passwordHash })
         .returning("id");
     return user;
 };
@@ -87,15 +97,6 @@ const changePassword = async (email, password) => {
 //     });
 // };
 
-// const createHash = async (password) => {
-//     try {
-//         const salt = await bcrypt.genSalt(10);
-//         const hash = await bcrypt.hash(String(password), salt);
-//         return hash;
-//     } catch (err) {
-//         throw new Error("Error creating hash password.");
-//     }
-// };
 // const comparePassword = async (password, hash) =>
 //     bcrypt.compare(password, hash);
 

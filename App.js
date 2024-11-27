@@ -14,7 +14,7 @@ import VendasScreen from "./screens/usuarios/VendasScreen.js";
 import NotificationScreen from "./screens/usuarios/Notificacoes";
 import PraçasScreen from "./screens/usuarios/PraçasScreen.js";
 import UserScreen from "./screens/usuarios/UserScreen.js";
-import ProdutoScreen from "./screens/usuarios/ProdutoScreen.js";
+import ProductDetails from "./screens/usuarios/ProdutoScreen.js";
 import CarrinhoScreen from "./screens/usuarios/CarrinhoScreen.js";
 import codigoScreen from "./screens/usuarios/codigoScreen.js";
 import ConfirmaçaoScreen from "./screens/usuarios/ConfirmaçaoScreen.js";
@@ -38,10 +38,75 @@ import LojaItem from "./components/LojaItem.js";
 import EmailCode from "./screens/EmailCode.js";
 import ResetPassword from "./screens/ResetPassWord.js";
 import Terms from "./screens/Terms.js";
+import { ActivityIndicator } from "react-native";
+import {
+  useFonts,
+  Roboto_100Thin,
+  Roboto_100Thin_Italic,
+  Roboto_300Light,
+  Roboto_300Light_Italic,
+  Roboto_400Regular,
+  Roboto_400Regular_Italic,
+  Roboto_500Medium,
+  Roboto_500Medium_Italic,
+  Roboto_700Bold,
+  Roboto_700Bold_Italic,
+  Roboto_900Black,
+  Roboto_900Black_Italic,
+} from "@expo-google-fonts/roboto";
 
+import { Montserrat_600SemiBold } from "@expo-google-fonts/montserrat";
+
+import RestaurantsScreen from "./screens/usuarios/RestaurantScreen.js";
+import RestaurantHomeScreen from "./screens/usuarios/RestaurantHomeScreen.js";
 const Stack = createStackNavigator();
 
+const scr_opts = {
+  headerShown: false,
+  cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS, // Transição lateral específica
+};
 export default function App() {
+  // const [loaded, error] = useFonts({
+  //   Roboto_400Regular,
+  //   Roboto_700Bold,
+  //   Inter_900Black,
+  // });
+  let [fontsLoaded] = useFonts({
+    // Poppins_500Medium,
+    // Poppins_600SemiBold,
+    Circular: require("./assets/fonts/circular-std-medium-500.ttf"),
+    GothamLight: require("./assets/fonts/GothamLight.ttf"),
+    GothamMedium: require("./assets/fonts/GothamMedium.ttf"),
+    GothamBold: require("./assets/fonts/GothamBold.ttf"),
+    "Gilroy-Regular": require("./assets/fonts/Gilroy-Regular.ttf"),
+    Roboto_100Thin,
+    Roboto_100Thin_Italic,
+    Roboto_300Light,
+    Roboto_300Light_Italic,
+    Roboto_400Regular,
+    Roboto_400Regular_Italic,
+    Roboto_500Medium,
+    Roboto_500Medium_Italic,
+    Roboto_700Bold,
+    Roboto_700Bold_Italic,
+    Roboto_900Black,
+    Roboto_900Black_Italic,
+    Montserrat_600SemiBold,
+  });
+  // useEffect(() => {
+  //   if (loaded || error) {
+  //     SplashScreen.hideAsync();
+  //   }
+  // }, [loaded, error]);
+
+  // if (!loaded && !error) {
+  //   return null;
+  // }
+  // Exibe um carregador enquanto as fontes estão sendo carregadas
+  if (!fontsLoaded) {
+    return <ActivityIndicator size="large" color="#0000ff" />;
+  }
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <NavigationContainer
@@ -59,157 +124,54 @@ export default function App() {
             animationEnabled: true,
             headerShown: false,
             transitionSpec: {
-              open: { animation: "timing", config: { duration: 300 } },
+              open: { animation: "timing", config: { duration: 100 } },
               close: { animation: "timing", config: { duration: 300 } },
             },
           }}
           initialRouteName="Login"
         >
           <Stack.Screen
-            name="Login"
-            component={LoginScreen}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="Terms"
-            component={Terms}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
             name="EsqueciaSenha"
             component={EsqueciaSenha}
-            options={{
-              headerShown: false,
-              cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS, // Transição lateral específica
-            }}
+            options={scr_opts}
           />
           <Stack.Screen
-            name="ResetPassword"
-            component={ResetPassword}
-            options={{
-              headerShown: false,
-            }}
+            name="Restaurants"
+            component={RestaurantsScreen}
+            options={scr_opts}
           />
           <Stack.Screen
-            name="Criar Conta"
-            component={RegisterScreen}
-            options={{ headerShown: false }}
+            name="RestaurantHomeScreen"
+            component={RestaurantHomeScreen}
+            options={scr_opts}
           />
-          <Stack.Screen
-            name="Home"
-            component={FoodPricingScreen}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="Verificacao"
-            component={Verificacao}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="Vendas"
-            component={VendasScreen}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="Notificacoes"
-            component={NotificationScreen}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="UploadImage"
-            component={UploadImageScreen}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="Praças"
-            component={PraçasScreen}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="UserScreen"
-            component={UserScreen}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="Produto"
-            component={ProdutoScreen}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="Carrinho"
-            component={CarrinhoScreen}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="codigo"
-            component={codigoScreen}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="Confirmaçao"
-            component={ConfirmaçaoScreen}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="MinhasLojas"
-            component={MinhasLojas}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="homeLoja"
-            component={HomeLoja}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="PerfildaLoja"
-            component={PerfildaLoja}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="adicionarItens"
-            component={AdicionarItens}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="UploadScreens2"
-            component={UploadScreen2}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="Pedidos"
-            component={PedidosScreen}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="PedidosStatus"
-            component={PedidosStatus}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="Status"
-            component={StatusScress}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="Pedido"
-            component={PedidoScreen}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="CupertinoFooter2"
-            component={CupertinoFooter2}
-            options={{ headerShown: false }}
-          ></Stack.Screen>
-          <Stack.Screen
-            name="CupertinoFooter1"
-            component={CupertinoFooter1}
-            options={{ headerShown: false }}
-          ></Stack.Screen>
-          <Stack.Screen
-            name="LojaItem"
-            component={LojaItem}
-            options={{ headerShown: false }}
-          ></Stack.Screen>
+          <Stack.Screen name="Login" component={LoginScreen} />
+          <Stack.Screen name="Terms" component={Terms} />
+          <Stack.Screen name="ResetPassword" component={ResetPassword} />
+          <Stack.Screen name="Criar Conta" component={RegisterScreen} />
+          <Stack.Screen name="Home" component={FoodPricingScreen} />
+          <Stack.Screen name="Verificacao" component={Verificacao} />
+          <Stack.Screen name="Vendas" component={VendasScreen} />
+          <Stack.Screen name="Notificacoes" component={NotificationScreen} />
+          <Stack.Screen name="UploadImage" component={UploadImageScreen} />
+          <Stack.Screen name="Praças" component={PraçasScreen} />
+          <Stack.Screen name="UserScreen" component={UserScreen} />
+          <Stack.Screen name="ProductDetails" component={ProductDetails} />
+          <Stack.Screen name="Carrinho" component={CarrinhoScreen} />
+          <Stack.Screen name="Code" component={codigoScreen} />
+          <Stack.Screen name="Confirmaçao" component={ConfirmaçaoScreen} />
+          <Stack.Screen name="MinhasLojas" component={MinhasLojas} />
+          <Stack.Screen name="homeLoja" component={HomeLoja} />
+          <Stack.Screen name="PerfildaLoja" component={PerfildaLoja} />
+          <Stack.Screen name="adicionarItens" component={AdicionarItens} />
+          <Stack.Screen name="UploadScreens2" component={UploadScreen2} />
+          <Stack.Screen name="Pedidos" component={PedidosScreen} />
+          <Stack.Screen name="PedidosStatus" component={PedidosStatus} />
+          <Stack.Screen name="Status" component={StatusScress} />
+          <Stack.Screen name="Pedido" component={PedidoScreen} />
+          <Stack.Screen name="LojaItem" component={LojaItem} />
+          <Stack.Screen name="CupertinoFooter2" component={CupertinoFooter2} />
+          <Stack.Screen name="CupertinoFooter1" component={CupertinoFooter1} />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaView>

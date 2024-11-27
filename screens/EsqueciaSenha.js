@@ -8,7 +8,7 @@ import {
   Alert,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { sendPasswordResetEmail } from "firebase/auth";
+// import { sendPasswordResetEmail } from "firebase/auth";
 import GoBack from "../components/Back";
 import styles from "../styles/EsqueciaSenhaStyles"; // Importa os estilos
 import EmailCode from "./EmailCode";
