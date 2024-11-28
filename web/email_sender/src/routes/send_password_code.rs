@@ -27,7 +27,7 @@ struct CodeRequest {
 #[derive(Template)]
 #[template(path = "password_code.html")]
 struct PasswordCodeTemplate {
-    code: String,
+    code:  String,
     expires_at: String,
 }
 
@@ -63,6 +63,8 @@ async fn send_password_code(
 
     let minutes_time = 10;
     let verification_code: String = generate_verification_code();
+
+    println!("{}", &verification_code)
     let now = Utc::now();
     let now = now + Duration::minutes(minutes_time);
     let year: i32 = now.year();
@@ -99,13 +101,13 @@ async fn send_password_code(
     let mut code = PasswordResetCode {
         id: None,
         email: payload.to.clone(),
-        verification_code: generate_verification_code(),
+        verification_code: verification_code.clone(),
         expires_at,
         created_at: None,
     };
 
     let template = PasswordCodeTemplate {
-        code: verification_code,
+        code: verification_code.clone(),
         expires_at: expires_at.to_string(),
     };
     let rendered = template.render().unwrap();

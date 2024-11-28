@@ -20,6 +20,9 @@ const router = Router();
  */
 
 router.get("/reset_password", userController.sendValidationCode);
+router.post("/", async (req, res)=>{
+    res.json({message:"oi"})
+});
 router.post("/reset_password", userController.resetPasswordValidation, userController.resetPassword);
 router.post("/users", userController.createValidation, userController.create);
 router.post("/users/login", userController.loginValidation, userController.login);

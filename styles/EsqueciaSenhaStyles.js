@@ -1,4 +1,3 @@
-// EsqueciaSenhaStyles.js
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
@@ -13,7 +12,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   contentContainer: {
-    marginTop: 20,
+    marginTop: 10,
     padding: 0,
     flex: 1,
     marginHorizontal: 20,
@@ -23,18 +22,22 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontWeight: "600",
     marginBottom: 7,
+    fontFamily:"Circular"
   },
   texto: {
     color: "whitesmoke",
     fontSize: 16,
     marginBottom: 50,
     marginTop: 10,
+    fontFamily:"Circular",
   },
   email: {
     color: "whitesmoke",
     fontSize: 15,
     fontWeight: "700",
     marginLeft: 3,
+    fontFamily:"Circular",
+
   },
   input: {
     width: "100%",
@@ -45,6 +48,8 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     fontWeight: "600",
     fontSize: 15,
+    fontFamily:"Circular",
+
   },
   button: {
     backgroundColor: "#434343",
@@ -58,6 +63,8 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "700",
     fontSize: 16,
+    fontFamily:"Circular",
+
   },
 });
 
