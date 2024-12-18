@@ -59,6 +59,7 @@ import { Montserrat_600SemiBold } from "@expo-google-fonts/montserrat";
 
 import RestaurantsScreen from "./screens/usuarios/RestaurantScreen.js";
 import RestaurantHomeScreen from "./screens/usuarios/RestaurantHomeScreen.js";
+import MyOrdersScreen from "./screens/MyOrders.js";
 const Stack = createStackNavigator();
 
 const scr_opts = {
@@ -146,6 +147,7 @@ export default function App() {
             options={scr_opts}
           />
           <Stack.Screen name="Login" component={LoginScreen} />
+          <Stack.Screen name="MyOrders" component={MyOrdersScreen} />
           <Stack.Screen name="Terms" component={Terms} />
           <Stack.Screen name="ResetPassword" component={ResetPassword} />
           <Stack.Screen name="Criar Conta" component={RegisterScreen} />

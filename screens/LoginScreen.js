@@ -77,37 +77,6 @@ export default function LoginScreen({ navigation }) {
 
       navigation.navigate(roles[response.type]);
 
-      // if (!response.ok) {
-      //   // Lidando com erros de resposta da API de forma mais informativa
-      //   if (response.status === 401) {
-      //     // Credenciais inválidas
-      //     Alert.alert("Erro", "Email ou senha incorretos.");
-      //   } else {
-      //     // Outros erros de API
-      //     Alert.alert(
-      //       "Erro",
-      //       "Ocorreu um erro ao fazer login. Tente novamente mais tarde."
-      //     );
-      //   }
-      //   throw new Error("Erro ao fazer login");
-      // }
-
-      // const userData = await response.json();
-      // console.log(userData);
-
-      // Agora você tem userData.type após o login
-      // if (userData && userData.type) {
-      //   if (userData.type === "user") {
-      //     navigation.navigate("Home");
-      //   } else if (userData.type === "Lojista") {
-      //     navigation.navigate("MinhasLojas");
-      //   } else {
-      //     console.error("Papel não reconhecido:", userData.type);
-      //   }
-      // } else {
-      //   console.error("Usuário sem papel definido");
-      // }
-
       reset(); // Limpar os campos após o login (opcional)
     } catch (error) {
       console.error("Erro ao fazer login:", error);
@@ -126,15 +95,27 @@ export default function LoginScreen({ navigation }) {
       setPasswordValidation("");
       setValidationError("");
       setKeyboardActive(false);
-
-      // Lógica para quando o teclado é ocultado (opcional)
     });
 
-    // Limpar listeners ao desmontar o componente
     return () => {
       keyboardDidHideListener.remove();
       keyboardDidShowListener.remove();
     };
+  }, []);
+
+  useState(async () => {
+    let rawCredentials = await AsyncStorage.getItem("credentials");
+    let credentials = JSON.parse(rawCredentials);
+    const token = credentials.token;
+    console.log(credentials, 33);
+
+    if (token) {
+      const roles = {
+        user: "Home",
+        employer: "MinhasLojas",
+      };
+      navigation.navigate(roles[credentials.type]);
+    }
   }, []);
 
   return (
@@ -169,7 +150,6 @@ export default function LoginScreen({ navigation }) {
                     {
                       borderWidth: errors.email ? 1 : 0,
                       borderColor: errors.email ? "red" : "#434343",
-                      fontWeight: "800",
                     },
                   ]}
                 />
@@ -182,7 +162,6 @@ export default function LoginScreen({ navigation }) {
                   marginBottom: 8,
                   marginTop: 8,
                   fontSize: 12,
-                  fontWeight: "700",
                 }}
               >
                 {validationError}

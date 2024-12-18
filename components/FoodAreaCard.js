@@ -22,6 +22,7 @@ export default function FoodAreaCard({ navigation }) {
         });
       setAreas(response.areas);
     } catch (error) {
+      
       console.error("Erro ao carregar áreas: ", error);
     } finally {
       setLoading(false); // Finaliza o carregamento

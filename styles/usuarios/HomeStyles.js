@@ -20,8 +20,8 @@ const styles = StyleSheet.create({
     left: 8,
   },
   cupertinoFooter1: {
-    height: 61,
-    marginTop: "auto",
+    marginTop: "5",
+    marginBottom:5
   },
   buttonText: {
     color: "#000000",

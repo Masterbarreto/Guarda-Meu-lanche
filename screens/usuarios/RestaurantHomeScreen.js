@@ -97,7 +97,7 @@ export default function RestaurantHomeScreen({ navigation, route }) {
                 }
                 return (
                   <TouchableOpacity
-                    onPress={() => navigation.navigate("ProductDetails", { item })}
+                    onPress={() => navigation.navigate("ProductDetails", { item, restaurantId: restaurantId })}
                     style={styles.card}
                   >
                     <Image

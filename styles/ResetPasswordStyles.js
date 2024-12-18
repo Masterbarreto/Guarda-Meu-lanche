@@ -39,16 +39,16 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: "700",
     marginLeft: 3,
+    fontFamily:"Circular"
   },
   input: {
-    width: "100%",
     backgroundColor: "white",
-    paddingHorizontal: 16,
-    paddingVertical: 10,
     borderRadius: 8,
     marginVertical: 5,
     fontWeight: "600",
     fontSize: 15,
+    padding: 15,
+
   },
   button: {
     backgroundColor: "#434343",
