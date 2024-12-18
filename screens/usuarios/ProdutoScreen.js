@@ -3,6 +3,9 @@ import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import GoBack from "../../components/Back";
 import { color } from "react-native-elements/dist/helpers";
+import { API_URL } from "@env";
+import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const renderStars = (rating) => {
   const fullStars = Math.floor(rating);
@@ -26,13 +29,53 @@ const renderStars = (rating) => {
 export default function ProductDetails({ navigation, route }) {
   const areaId = route.params.id;
   const item = route.params.item;
+  const restaurantId = route.params.restaurantId;
+
   const [quantity, setQuantity] = useState(1); // Estado para quantidade
+  const [isReserved, setIsReserved] = useState(false);
 
   const increaseQuantity = () => setQuantity((prev) => prev + 1);
   const decreaseQuantity = () => {
     if (quantity > 1) setQuantity((prev) => prev - 1);
   };
 
+  const reserveItem = async () => {
+    try {
+      let rawCredentials = await AsyncStorage.getItem("credentials");
+      let credentials = JSON.parse(rawCredentials);
+      const token = credentials.token;
+
+      const body = {
+        restaurant_id: Number(restaurantId),
+        items: [
+          {
+            menu_item_id: item.id,
+            quantity: Number(quantity),
+          },
+        ],
+      };
+
+      const url = `${API_URL}/orders/`;
+      const response = await axios
+        .post(url, body, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then((r) => r.data)
+        .catch((e) => e.response.data);
+
+      if (response.error) {
+        alert(`O item "${item.name}" não foi reservado!`);
+      }
+
+      if (response.id) {
+        navigation.navigate("Code", { order: response });
+      }
+
+      setIsReserved(true);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -64,7 +107,7 @@ export default function ProductDetails({ navigation, route }) {
           <Text style={[styles.genericText, styles.h3]}>Batata</Text>
         </View>
 
-        <View style={{ flex: 1, justifyContent: "flex-end" }}>
+        <View style={{ flex: 1, justifyContent: "flex-end" , }}>
           <View style={styles.quantitySelector}>
             <Text
               style={[
@@ -73,10 +116,8 @@ export default function ProductDetails({ navigation, route }) {
                   color: "whitesmoke",
                   marginHorizontal: 4,
                   fontSize: 21,
-                  //   textAlign: "center",
                   marginLeft: 3,
                   marginRight: 15,
-                  //   width:"auto"
                 },
               ]}
             >
@@ -101,24 +142,23 @@ export default function ProductDetails({ navigation, route }) {
               </Text>
             </Text>
           </View>
-          <TouchableOpacity style={styles.addToCartButton}>
-            <Text style={[styles.genericText, styles.buttonText]}>
-              Adicionar ao carrinho
-            </Text>
-          </TouchableOpacity>{" "}
-          <TouchableOpacity
-            style={styles.addToCartButton}
-            onPress={() => navigation.navigate("Code")}
-          >
-            <Text style={[styles.genericText, styles.buttonText]}>Reservar</Text>
-          </TouchableOpacity>
+          <View style={{ borderTopWidth: 1, borderColor: "#333", paddingTop:10 }}>
+            <TouchableOpacity style={styles.addToCartButton}>
+              <Text style={[styles.genericText, styles.buttonText]}>
+                Adicionar ao carrinho
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.addToCartButton} onPress={reserveItem}>
+              <Text style={[styles.genericText, styles.buttonText]}>Reservar</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     </View>
   );
 }
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#161616",
@@ -134,6 +174,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 5,
     width: "100%",
+    marginRight:20
   },
   title: {
     fontSize: 18,
@@ -186,7 +227,6 @@ const styles = StyleSheet.create({
     borderRadius: 9,
     marginBottom: 15,
     alignItems: "center",
-    width: "auto",
   },
   buttonText: {
     fontSize: 16,

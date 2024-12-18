@@ -23,6 +23,7 @@ export default function FoodPricingScreen({ navigation }) {
       let rawCredentials = await AsyncStorage.getItem("credentials");
       let credentials = JSON.parse(rawCredentials);
       const token = credentials.token;
+      
 
       const response = await axios.get(`${API_URL}/users/profile`, {
         headers: { Authorization: `Bearer ${token}` },

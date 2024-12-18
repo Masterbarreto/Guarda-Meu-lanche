@@ -8,14 +8,16 @@ import swaggerJsdoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 import path from "path";
 import { StatusCodes } from "http-status-codes";
+import morgan from "morgan";
 const server = express();
+
+server.use(morgan("dev"));
 
 server.use(express.json());
 server.use(express.urlencoded({ extended: true }));
 server.use(apiRedirect);
 server.use("/api/v1", apiRouter);
 server.use(router);
-
 server.use("/pages", express.static(path.resolve("./public/pages")));
 
 server.use((req, res, next) => {

@@ -10,3 +10,5 @@ export * from "./getOrderById.js";
 export * from "./logout.js";
 export * from "./sendPasswordResetCode.js";
 export * from "./resetPassword.js";
+export * from "./getCart.js";
+export * from "./updateCart.js";

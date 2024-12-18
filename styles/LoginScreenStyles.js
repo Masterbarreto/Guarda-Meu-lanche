@@ -24,12 +24,11 @@ const styles = StyleSheet.create({
   input: {
     width: 350,
     backgroundColor: "white",
-    paddingHorizontal: 16,
-    paddingVertical: 12,
     borderRadius: 8,
     marginVertical: 5,
-    fontWeight: "700",
     fontSize: 15,
+    padding: 15,
+    fontFamily:"Circular"
   },
 
   buttonContainer: {

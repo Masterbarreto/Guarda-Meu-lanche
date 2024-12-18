@@ -1,59 +1,74 @@
 // styles/usuarios/UserScreemStyles.js
-import { StyleSheet } from 'react-native';
+import React from "react";
+import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#161616",
+    alignItems: "center",
+    justifyContent: "center",
   },
   cupertinoFooter1: {
     height: 61,
-    marginTop: 'auto',
+    marginTop: "auto",
   },
   logoContainer: {
-    alignItems: 'center',
+    alignItems: "center",
     marginBottom: 10,
     marginLeft: 10,
   },
   profileContainer: {
-    justifyContent: 'center',
+    justifyContent: "flex-start",
     alignItems: 'center',
     marginTop: 0,
+    // backgroundColor:"black",
+    marginTop: 5,
+    width: "100%",
+  },
+  profileImage: {
+    width: 50,
+    height: 50,
+    borderRadius: 100,
+    top: 5,
+    marginRight:10
   },
   profileName: {
     fontSize: 20,
-    fontWeight: 'bold',
-    color: '#FFFFFF',
+    fontWeight: "bold",
+    color: "#FFFFFF",
+    fontFamily: "Circular",
+    marginTop:5
   },
   profileInfo: {
     fontSize: 14,
-    color: '#CCCCCC',
+    color: "#CCCCCC",
+    fontFamily: "Circular",
   },
   profileRole: {
     fontSize: 14,
-    color: '#CCCCCC',
+    color: "#CCCCCC",
     marginBottom: 10,
+    fontFamily: "Circular",
   },
   settingsContainer: {
-    width: '100%',
+    width: "100%",
     padding: 30,
   },
   buttonStyle: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    backgroundColor: 'white',
-    width: '100%',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    backgroundColor: "white",
+    width: "100%",
     paddingVertical: 15,
     paddingHorizontal: 20,
     marginTop: 20,
     borderRadius: 21,
   },
   settingText: {
-    color: '#2E2E2E',
-    fontWeight: '700',
+    color: "#2E2E2E",
+    fontWeight: "700",
     fontSize: 16,
   },
   iconStyle: {
@@ -63,13 +78,13 @@ const styles = StyleSheet.create({
     marginTop: 30,
     paddingVertical: 15,
     paddingHorizontal: 100,
-    backgroundColor: '#FF4D4D',
+    backgroundColor: "#FF4D4D",
     borderRadius: 12,
   },
   logoutText: {
     fontSize: 18,
-    color: 'white',
-    fontWeight: 'bold',
+    color: "white",
+    fontWeight: "bold",
   },
 });
 
