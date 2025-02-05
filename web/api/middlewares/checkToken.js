@@ -64,7 +64,6 @@ export const checkToken = (role) => {
           }
         }
         req.credentials = decode;
-        console.log(decode);
 
         next();
       });
